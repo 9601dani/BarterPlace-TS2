@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit{
       });
       console.log("Registrado");
       console.log(this.registerForm.value);
-      
+
     } else {
       Swal.fire({
         title: 'Error!',
