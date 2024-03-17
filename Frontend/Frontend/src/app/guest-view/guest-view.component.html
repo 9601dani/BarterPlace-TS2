@@ -1,0 +1,37 @@
+<p>
+  <!-- Barra de navegacion, con color hexadecimal -->
+  <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2 ">
+    <!-- Imagen logo-->
+    <mat-icon (click)="changePantalla('main')" style="cursor: pointer">shopping-bag</mat-icon>
+    <!-- Name App-->
+    <span (click)="changePantalla('main')" style="cursor: pointer" >BarterPlace</span>
+
+    <!-- Foto de perfil hasta la derecha imagen angular material-->
+    <hr>
+    <button mat-icon-button [matMenuTriggerFor]="menu_2" class="example-icon">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+  </mat-toolbar>
+  <mat-menu #menu_2="matMenu">
+    <button (click)="changePantalla('register')" mat-menu-item>Registrarse
+      <mat-icon>home</mat-icon>
+      <!--La accion del boton -->
+
+    </button>
+    <button (click)="changePantalla('login')" mat-menu-item>Iniciar Sesión
+      <mat-icon>login</mat-icon>
+    </button>
+  </mat-menu>
+</p>
+
+<!-- Componente a mostrar -->
+<div *ngIf="getPantalla() === 'main'">
+  <app-main></app-main>
+</div>
+<div *ngIf="getPantalla() === 'login'">
+  <app-login></app-login>
+</div>
+<div *ngIf="getPantalla() === 'register'">
+  <app-register></app-register>
+</div>
