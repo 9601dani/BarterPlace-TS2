@@ -18,6 +18,7 @@ import { LoginComponent } from './guest-view/views-guest/login/login.component';
 import {MatCardModule} from "@angular/material/card";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatGridListModule} from "@angular/material/grid-list";
+import { HomeAdminComponent } from './admin-views/home-admin/home-admin.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {MatGridListModule} from "@angular/material/grid-list";
     GuestViewComponent,
     MainComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    HomeAdminComponent
   ],
   imports: [
     BrowserModule,
