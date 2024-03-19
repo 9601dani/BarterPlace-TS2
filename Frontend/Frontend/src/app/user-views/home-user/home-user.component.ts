@@ -1,20 +1,20 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "../../../models/User";
 import {Router} from "@angular/router";
-import {AdminService} from "../../../../service/admin_service/admin.service";
+import {User} from "../../../models/User";
+import {UserService} from "../../../../service/user_service/user.service";
 
 @Component({
-  selector: 'app-home-admin',
-  templateUrl: './home-admin.component.html',
-  styleUrls: ['./home-admin.component.css']
+  selector: 'app-home-user',
+  templateUrl: './home-user.component.html',
+  styleUrls: ['./home-user.component.css']
 })
-export class HomeAdminComponent implements OnInit{
-  public user_admin!:User;
+export class HomeUserComponent implements OnInit{
+  public user!:User;
   constructor(
     private router: Router,
-    private Service: AdminService
+    private Service:UserService
   ) {
-    this.user_admin = JSON.parse(localStorage.getItem('user') || '{}');
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
   }
 
   ngOnInit(): void {
@@ -27,7 +27,8 @@ export class HomeAdminComponent implements OnInit{
   }
 
   public validarSesion(){
-    if(this.user_admin.username==null){
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    if(user.username==null){
       this.router.navigate(['/']);
     }
   }

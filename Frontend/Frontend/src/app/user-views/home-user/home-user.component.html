@@ -1,0 +1,50 @@
+<!-- Admin Menu -->
+<div style="background-color:  #D0DDD7">
+  <!-- Barra de navegacion, con color hexadecimal -->
+  <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2 ">
+    <!-- Imagen logo-->
+    <mat-icon (click)="changePantalla('')" style="cursor: pointer">shopping-bag</mat-icon>
+    <!-- Name App-->
+    <span (click)="changePantalla('')" style="cursor: pointer" >Bienvenido {{this.user.username}}</span>
+
+    <button mat-icon-button class="example-icon" >
+      <mat-icon>store</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" >
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
+
+    <hr>
+
+
+    <button mat-icon-button [matMenuTriggerFor]="menu_1" class="example-icon" >
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+  </mat-toolbar>
+  <mat-menu #menu_1="matMenu">
+    <button (click)="changePantalla('')" mat-menu-item>Ver Perfil
+      <mat-icon>account_box</mat-icon>
+    </button>
+    <button (click)="cerrarSesion()" mat-menu-item>Cerrar Sesion
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-menu>
+  <!-- User Views -->
+  <div *ngIf="this.getPantalla()==''">
+  <app-my-profile></app-my-profile>
+  </div>
+
+
+  <!-- Footer, que este hasta abajo de la pagina y centrando el div -->
+  <div style="position: fixed; bottom: 0; width: 100%;">
+    <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2">
+      <!-- centrar el texto-->
+      <div class="centered">
+        <span>Todos los derechos reservados &copy; 2024</span>
+        <hr>
+        <span>Desarrollado por: Danimo #14</span>
+      </div>
+    </mat-toolbar>
+  </div>
+</div>

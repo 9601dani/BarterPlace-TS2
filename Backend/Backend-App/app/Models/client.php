@@ -19,6 +19,7 @@ class client extends Model
         'description',
         'profile_picture',
         'role',
-        'gender'];
+        'gender',
+        'is_seller'];
         public $timestamps = false;
 }

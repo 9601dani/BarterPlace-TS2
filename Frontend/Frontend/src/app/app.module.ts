@@ -19,6 +19,12 @@ import {MatCardModule} from "@angular/material/card";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { HomeAdminComponent } from './admin-views/home-admin/home-admin.component';
+import { HomeUserComponent } from './user-views/home-user/home-user.component';
+import { ManagementUserComponent } from './admin-views/management-user/management-user.component';
+import { MyProfileComponent } from './admin-views/my-profile/my-profile.component';
+import { CreateUserComponent } from './admin-views/create-user/create-user.component';
+import { ReportUsersComponent } from './admin-views/report-users/report-users.component';
+import { RequestPublishComponent } from './admin-views/request-publish/request-publish.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +33,13 @@ import { HomeAdminComponent } from './admin-views/home-admin/home-admin.componen
     MainComponent,
     RegisterComponent,
     LoginComponent,
-    HomeAdminComponent
+    HomeAdminComponent,
+    HomeUserComponent,
+    ManagementUserComponent,
+    MyProfileComponent,
+    CreateUserComponent,
+    ReportUsersComponent,
+    RequestPublishComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-<p>
+<div style="background-color: #D0DDD7">
   <!-- Barra de navegacion, con color hexadecimal -->
   <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2 ">
     <!-- Imagen logo-->
@@ -21,28 +21,29 @@
       <mat-icon>login</mat-icon>
     </button>
   </mat-menu>
-</p>
+  <!-- Componente a mostrar -->
+      <div *ngIf="getPantalla() === 'main'">
+        <app-main></app-main>
+      </div>
+      <div *ngIf="getPantalla() === 'login'">
+        <app-login></app-login>
+      </div>
+      <div *ngIf="getPantalla() === 'register'">
+        <app-register></app-register>
+      </div>
 
-<!-- Componente a mostrar -->
-<div *ngIf="getPantalla() === 'main'">
-  <app-main></app-main>
-</div>
-<div *ngIf="getPantalla() === 'login'">
-  <app-login></app-login>
-</div>
-<div *ngIf="getPantalla() === 'register'">
-  <app-register></app-register>
+      <!-- Footer, que este hasta abajo de la pagina y centrando el div -->
+      <div style="position: fixed; bottom: 0; width: 100%;">
+        <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2">
+          <!-- centrar el texto-->
+          <div class="centered">
+            <span>Todos los derechos reservados &copy; 2024</span>
+            <hr>
+            <span>Desarrollado por: Danimo #14</span>
+          </div>
+        </mat-toolbar>
+      </div>
 </div>
 
-<!-- Footer, que este hasta abajo de la pagina y centrando el div -->
-<div style="position: fixed; bottom: 0; width: 100%;">
-  <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2">
-    <!-- centrar el texto-->
-    <div class="centered">
-      <span>Todos los derechos reservados &copy; 2024</span>
-      <hr>
-      <span>Desarrollado por: Danimo #14</span>
-    </div>
-  </mat-toolbar>
-</div>
+
 

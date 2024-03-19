@@ -14,7 +14,7 @@ export class GuestViewComponent implements OnInit{
   getPantalla(){
     return this.GuestService.getPantalla();
   }
-  
+
   changePantalla(pantalla: string){
     this.GuestService.setPantalla(pantalla);
   }

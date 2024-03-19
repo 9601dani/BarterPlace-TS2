@@ -36,7 +36,11 @@ export class LoginComponent implements OnInit{
           });
           //Guardare el user en el local storage
           localStorage.setItem('user', JSON.stringify(data));
-          this.router.navigate(['/admin']);
+          if(data.role=='admin'){
+            this.router.navigate(['/admin']);
+          }else if(data.role=='user'){
+            this.router.navigate(['/user']);
+          }
         } else {
           Swal.fire({
             title: 'Error!',
@@ -59,7 +63,7 @@ export class LoginComponent implements OnInit{
 
   public static setUser():User{
     let user=JSON.parse(localStorage.getItem('user')!);
-    return new User(user.username, user.email, user.password, user.name, user.date_of_birth, user.description, user.profile_picture, user.role, user.gender);
+    return new User(user.username, user.email, user.password, user.name, user.date_of_birth, user.description, user.profile_picture, user.role, user.gender, user.is_seller);
   }
 
 

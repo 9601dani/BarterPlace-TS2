@@ -3,6 +3,8 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import Swal from 'sweetalert2';
 import {User} from "../../../../models/User";
 import {GuestService} from "../../../../../service/guest_service/guest.service";
+import {GuestViewComponent} from "../../guest-view.component";
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -30,7 +32,7 @@ export class RegisterComponent implements OnInit{
         this.registerForm.get('username')?.value,
         this.registerForm.get('email')?.value,
         this.registerForm.get('password')?.value,
-        "","","","",'user',"");
+        "","","","",'admin',"",false);
       //Aqui se debe llamar al servicio para ver si existe el usuario
       this.Service.getUser(user.username).subscribe((data: any) => {
         if (data!=null) {
@@ -65,6 +67,8 @@ export class RegisterComponent implements OnInit{
   }
 
   public clearForm(){
-    this.registerForm.reset();
+    this.registerForm.get('username')?.setValue('');
+    this.registerForm.get('password')?.setValue('');
+    this.registerForm.get('email')?.setValue('');
   }
 }

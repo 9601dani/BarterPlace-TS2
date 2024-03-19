@@ -1,11 +1,11 @@
 <!-- Admin Menu -->
-<p>
+<div style="background-color:  #D0DDD7">
   <!-- Barra de navegacion, con color hexadecimal -->
   <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2 ">
     <!-- Imagen logo-->
-    <mat-icon style="cursor: pointer">shopping-bag</mat-icon>
+    <mat-icon (click)="changePantalla('')" style="cursor: pointer">shopping-bag</mat-icon>
     <!-- Name App-->
-    <span style="cursor: pointer" >Bienvenido {{this.user_admin.username}}</span>
+    <span (click)="changePantalla('')" style="cursor: pointer" >Bienvenido {{this.user_admin.username}}</span>
 
     <!-- Foto de perfil hasta la derecha imagen angular material-->
     <hr>
@@ -18,36 +18,64 @@
 
   </mat-toolbar>
   <mat-menu #menu_1="matMenu">
-    <button mat-menu-item>Ver Perfil
+    <button (click)="changePantalla('')" mat-menu-item>Ver Perfil
       <mat-icon>account_box</mat-icon>
       <!--La accion del boton -->
     </button>
-    <button mat-menu-item>Cerrar Sesion
-      <mat-icon>logout</mat-icon>
+    <button (click)="this.changePantalla('managament-user')" mat-menu-item>Administrar Usuarios
+      <mat-icon>people</mat-icon>
     </button>
-    <button mat-menu-item>Crear Usuario
+    <button (click)="changePantalla('create-user')" mat-menu-item>Crear Usuario
       <mat-icon>perm_identity</mat-icon>
     </button>
+    <button (click)="cerrarSesion()" mat-menu-item>Cerrar Sesion
+      <mat-icon>logout</mat-icon>
+    </button>
+
   </mat-menu>
   <!-- menu de tareas de admin -->
   <mat-menu #menu_2="matMenu">
-    <button mat-menu-item>Ver Reporte de Usuarios
+    <button (click)="changePantalla('report-users')" mat-menu-item>Ver Reporte de Usuarios
       <mat-icon>report_problem</mat-icon>
     </button>
-    <button mat-menu-item>Ver Solicitudes de Publicaciones
+    <button (click)="changePantalla('request-publish')" mat-menu-item>Ver Solicitudes de Publicaciones
       <mat-icon>report</mat-icon>
     </button>
   </mat-menu>
-</p>
 
-<!-- Footer, que este hasta abajo de la pagina y centrando el div -->
-<div style="position: fixed; bottom: 0; width: 100%;">
-  <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2">
-    <!-- centrar el texto-->
-    <div class="centered">
-      <span>Todos los derechos reservados &copy; 2024</span>
-      <hr>
-      <span>Desarrollado por: Danimo #14</span>
+      <!-- Admin Views -->
+    <div class="container" style="background-color: #D0DDD7">
+      <div *ngIf="this.getPantalla()== 'managament-user'">
+        <app-management-user></app-management-user>
+      </div>
+      <div *ngIf="this.getPantalla()== ''">
+        <app-my-profile></app-my-profile>
+      </div>
+      <div *ngIf="this.getPantalla()=='create-user'">
+        <app-create-user></app-create-user>
+      </div>
+      <div *ngIf="this.getPantalla()=='request-publish'">
+        <app-request-publish></app-request-publish>
+      </div>
+      <div *ngIf="this.getPantalla()=='report-users'">
+        <app-report-users></app-report-users>
+      </div>
     </div>
-  </mat-toolbar>
+
+
+      <!-- Footer, que este hasta abajo de la pagina y centrando el div -->
+      <div style="position: fixed; bottom: 0; width: 100%;">
+        <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2">
+          <!-- centrar el texto-->
+          <div class="centered">
+            <span>Todos los derechos reservados &copy; 2024</span>
+            <hr>
+            <span>Desarrollado por: Danimo #14</span>
+          </div>
+        </mat-toolbar>
+      </div>
 </div>
+
+
+
+

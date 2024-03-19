@@ -33,7 +33,8 @@ class UserController extends Controller
             'description' => 'nullable',
             'profile_picture' => 'nullable',
             'role' => 'nullable',
-            'gender'=> 'nullable'
+            'gender'=> 'nullable',
+            'is_seller' => 'required'
         ]);
         $user = new Client;
         $user->username = $request->username;
@@ -44,7 +45,8 @@ class UserController extends Controller
         $user->description = $request->description;
         $user->profile_picture = $request->profile_picture;
         $user->role = $request->role;
-        $user->gender = $request->gender; 
+        $user->gender = $request->gender;
+        $user->is_seller = $request->is_seller; 
 
         $user->save();
 
@@ -56,8 +58,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         //aqui pondre el id a buscar
-        $user = Client::find($id);
-        return $user;
+        return Client::find($id);
             
     }
 
@@ -85,5 +86,10 @@ class UserController extends Controller
         }else{
             return null;
         }
+    }
+
+    public function getAllAdmins()
+    {
+        return Client::where('role', 'admin')->get();
     }
 }

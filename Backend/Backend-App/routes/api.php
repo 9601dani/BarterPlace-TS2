@@ -18,3 +18,6 @@ Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/auth', [UserController::class, 'auth']);
 
+// ROUTAS DE ADMINISTRADORES
+Route::get('/admins', [UserController::class, 'getAllAdmins']);
+
