@@ -90,6 +90,15 @@ class UserController extends Controller
 
     public function getAllAdmins()
     {
-        return Client::where('role', 'admin')->get();
+        return Client::all()->where ('role', 'admin');
+    
+    }
+
+    public function deleteAdmin(string $id)
+    {
+        $user = Client::find($id);
+        if($user->role == 'admin'){
+            $user->delete();
+        }
     }
 }

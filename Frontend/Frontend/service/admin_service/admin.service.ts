@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {User} from "../../src/models/User";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,9 @@ export class AdminService {
   }
 
   public obtenerAdmins(){
-    return this.HttpClient.get(`${this.APIUrl}/admins`);
-
+    return this.HttpClient.get<User[]>(`${this.APIUrl}/admins`);
+  }
+  public eliminarAdmin(username: string){
+    return this.HttpClient.delete(`${this.APIUrl}/admins/${username}`);
   }
 }

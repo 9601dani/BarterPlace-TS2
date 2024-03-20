@@ -25,6 +25,7 @@ import { MyProfileComponent } from './admin-views/my-profile/my-profile.componen
 import { CreateUserComponent } from './admin-views/create-user/create-user.component';
 import { ReportUsersComponent } from './admin-views/report-users/report-users.component';
 import { RequestPublishComponent } from './admin-views/request-publish/request-publish.component';
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { RequestPublishComponent } from './admin-views/request-publish/request-p
     MatInputModule,
     MatCardModule,
     ReactiveFormsModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTableModule,
   ],
   providers: [TestService],
   bootstrap: [AppComponent]

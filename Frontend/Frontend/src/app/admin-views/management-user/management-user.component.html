@@ -1,1 +1,46 @@
-<p>management-user works!</p>
+
+<!--Aqui ira el titulo de "Administracion de usuarios-administrador, centrado"-->
+<br>
+<hr>
+<div class="container">
+  <h1 style="text-align: center">Administracion de Usuarios Administradores</h1>
+  <hr>
+  <br>
+</div>
+
+<!--Aqui ira la tabla-->
+<table mat-table [dataSource]="admin_users" class="mat-elevation-z8">
+   <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Username </th>
+      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+   </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+    <td mat-cell *matCellDef="let element" [ngClass]="{'texto-rojo': !element.name}">
+      {{ element.name ? element.name : 'Actualizacion de datos pendiente!!!' }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="role">
+    <th mat-header-cell *matHeaderCellDef> Rol </th>
+    <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef> Email </th>
+    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+  </ng-container>
+  <ng-container matColumnDef="gender">
+    <th mat-header-cell *matHeaderCellDef> Gender </th>
+    <td mat-cell *matCellDef="let element"> {{element.gender ? element.gender:'----------'}} </td>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="warn" (click)="eliminarUsuario(element.username)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+

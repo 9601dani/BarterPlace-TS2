@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit{
         this.registerForm.get('username')?.value,
         this.registerForm.get('email')?.value,
         this.registerForm.get('password')?.value,
-        "","","","",'admin',"",false);
+        "","","","",'user',"",false);
       //Aqui se debe llamar al servicio para ver si existe el usuario
       this.Service.getUser(user.username).subscribe((data: any) => {
         if (data!=null) {
