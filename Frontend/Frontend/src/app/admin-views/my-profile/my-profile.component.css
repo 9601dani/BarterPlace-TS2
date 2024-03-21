@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px; /* Margen negativo para compensar el padding de las columnas */
+}
+
+.column {
+  flex: 1; /* Establece que cada columna ocupe el mismo ancho */
+  padding: 0 15px; /* Añade un poco de espacio entre las columnas */
+}
+.centered {
+  justify-content: center;
+  align-items: center;
+}

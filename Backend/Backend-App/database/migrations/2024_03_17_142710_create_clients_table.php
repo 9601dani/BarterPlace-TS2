@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')-> nullable()->comment = 'The name of the user';
             $table->date('date_of_birth')->nullable()->comment = 'The date of birth of the user';
             $table->string('description')->nullable()->comment = 'The description of the user';
-            $table->binary('profile_picture')->nullable()->comment = 'The profile picture of the user';
+            $table->longText('profile_picture')->nullable()->comment = 'The profile picture of the user';
             $table->string('role')->default('user')->comment = 'The role of the user';
             $table->string('gender')->nullable()->comment ='The gender of the user';
             $table->boolean('is_seller')->default(false)->comment = 'The status of the user';

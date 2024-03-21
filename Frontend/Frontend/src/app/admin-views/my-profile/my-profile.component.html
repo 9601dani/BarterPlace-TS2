@@ -1,9 +1,97 @@
 <br>
 <hr>
-<div class="container">
+<div>
   <h1 style="text-align: center">Mi Perfil
-  <mat-icon>account_circle</mat-icon>
   </h1>
   <hr>
   <br>
 </div>
+<!-- Datos del perfil para poder editar, con angular material -->
+<div class="centered">
+  <mat-card align="center" style="background-color: #D0DDD7">
+    <mat-card-header class="centered">
+      <mat-card-title>
+        <div *ngIf="user.profile_picture!=null">
+        <img src="{{this.user.profile_picture}}" alt="profile picture" style="width: 450px; height: 450px; border-radius: 90%">
+        </div>
+        <div *ngIf="user.profile_picture==null">
+          <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile picture" style="width: 450px; height: 450px; border-radius: 90%">
+        </div>
+        <button mat-raised-button color="primary" (click)="cambiarFoto()">
+          Cambiar Foto
+          <mat-icon>add_a_photo</mat-icon>
+        </button>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <br><br><br><br><br>
+      <hr>
+      <form [formGroup]="myProfileForm" (ngSubmit)="onSubmit()" class="form-container">
+       <mat-grid-list cols="3" rowHeight="125px">
+        <mat-grid-tile>
+          <mat-label style="font-size: larger; font-style: italic">Username :</mat-label>
+          <mat-form-field class="full-with" appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" value="{{this.user.username}}" readonly>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-label style="font-size: larger; font-style: italic">Correo :</mat-label>
+          <mat-form-field class="full-with" appearance="fill">
+            <mat-label>Correo</mat-label>
+            <input matInput formControlName="email" value="{{this.user.email}}" readonly>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-label style="font-size: larger; font-style: italic">Contraseña :</mat-label>
+          <mat-form-field class="full-with" appearance="fill">
+            <mat-label>Contraseña</mat-label>
+            <input matInput formControlName="password" value="{{this.user.password}}">
+          </mat-form-field>
+        </mat-grid-tile>
+         <mat-grid-tile>
+           <mat-label style="font-size: larger; font-style: italic">Nombre :</mat-label>
+           <mat-form-field class="full-with" appearance="fill">
+             <mat-label>Nombre</mat-label>
+             <input matInput formControlName="name" value="{{this.user.name}}">
+           </mat-form-field>
+         </mat-grid-tile>
+         <mat-grid-tile>
+           <mat-label style="font-size: larger; font-style: italic">Fecha de Nacimiento :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Fecha de Nacimiento</mat-label>
+              <input type="date" matInput formControlName="birthdate" value="{{this.user.date_of_birth}}">
+            </mat-form-field>
+         </mat-grid-tile>
+         <mat-grid-tile>
+           <mat-label style="font-size: larger; font-style: italic">Descripcion :</mat-label>
+           <mat-form-field class="full-with" appearance="fill">
+             <mat-label>Descripcion </mat-label>
+             <textarea cols="50" rows="4" matInput formControlName="description" value="{{this.user.description}}">
+              </textarea>
+           </mat-form-field>
+         </mat-grid-tile>
+         <mat-grid-tile>
+           <mat-label style="font-size: larger; font-style: italic">Genero :</mat-label>
+           <mat-form-field class="full-with" appearance="fill">
+             <mat-label>Genero </mat-label>
+             <mat-select matInput formControlName="gender" value="{{this.user.gender}}">
+                <mat-option value="M">Masculino</mat-option>
+                <mat-option value="F">Femenino</mat-option>
+             </mat-select>
+           </mat-form-field>
+         </mat-grid-tile>
+         <mat-grid-tile>
+           <button mat-raised-button color="primary" type="submit">Actualizar
+             <mat-icon>update</mat-icon>
+           </button>
+         </mat-grid-tile>
+       </mat-grid-list>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  <br><br><br>
+  <hr>
+</div>
+
+

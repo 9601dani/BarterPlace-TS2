@@ -27,4 +27,12 @@ export class AdminService {
   public eliminarAdmin(username: string){
     return this.HttpClient.delete(`${this.APIUrl}/admins/${username}`);
   }
+
+  public updateUser(user: User){
+    return this.HttpClient.put(`${this.APIUrl}/admins`, user);
+  }
+  public updateImage(user: User){
+    console.log('entro al servicio de imagen'+ user);
+    return this.HttpClient.put(`${this.APIUrl}/admins/image`, user);
+  }
 }

@@ -65,9 +65,25 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         //
+        $user = new Client;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->name = $request->name;
+        $user->date_of_birth = $request->date_of_birth;
+        $user->description = $request->description;
+        $user->profile_picture = $request->profile_picture;
+        $user->role = $request->role;
+        $user->gender = $request->gender;
+        $user->is_seller = $request->is_seller;
+
+        return Client::query()
+        ->where('username', $request->username)
+        ->update($user->toArray());
+
     }
 
     /**
@@ -97,8 +113,21 @@ class UserController extends Controller
     public function deleteAdmin(string $id)
     {
         $user = Client::find($id);
-        if($user->role == 'admin'){
-            $user->delete();
-        }
+        $user->delete();
     }
+
+    public function updateImg(Request $request)
+    {
+        $validate = $request->validate([
+            'username' => 'required',
+            'profile_picture' => 'required'
+        ]);
+        $user = new Client;
+        $user->profile_picture = $request->profile_picture;
+
+        return Client::query()
+        ->where('username', $request->username)
+        ->update($user->toArray());
+    }
+
 }

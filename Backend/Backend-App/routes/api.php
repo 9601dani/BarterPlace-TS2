@@ -21,4 +21,6 @@ Route::post('/auth', [UserController::class, 'auth']);
 // ROUTAS DE ADMINISTRADORES
 Route::get('/admins', [UserController::class, 'getAllAdmins']);
 Route::delete('/admins/{id}', [UserController::class, 'deleteAdmin']);
+Route::put('/admins', [UserController::class, 'update']);
+Route::put('/admins/image', [UserController::class, 'updateImg']);
 

@@ -13,7 +13,14 @@
       <mat-icon>more_options</mat-icon>
     </button>
     <button mat-icon-button [matMenuTriggerFor]="menu_1" class="example-icon">
+      <div *ngIf="user_admin.profile_picture==null">
       <mat-icon>account_circle</mat-icon>
+      </div>
+      <div *ngIf="user_admin.profile_picture!=null">
+        <mat-icon>
+          <img [src]="user_admin.profile_picture" alt="profile" style="border-radius: 100%; width: 25px; height: 25px">
+        </mat-icon>
+      </div>
     </button>
 
   </mat-toolbar>
