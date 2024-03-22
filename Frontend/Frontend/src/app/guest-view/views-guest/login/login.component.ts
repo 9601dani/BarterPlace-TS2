@@ -39,7 +39,19 @@ export class LoginComponent implements OnInit{
           if(data.role=='admin'){
             this.router.navigate(['/admin']);
           }else if(data.role=='user'){
-            this.router.navigate(['/user']);
+            this.Service.getBank(data.username).subscribe((data: any) => {
+              if(data!=null){
+                localStorage.setItem('bank', JSON.stringify(data));
+                this.router.navigate(['/user']);;
+              }else{
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Error al cargar la cuenta bancaria!',
+                  icon: 'error',
+                  confirmButtonText: 'Ok'
+                });
+              }
+            });
           }
         } else {
           Swal.fire({

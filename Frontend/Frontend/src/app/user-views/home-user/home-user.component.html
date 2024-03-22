@@ -7,21 +7,26 @@
     <!-- Name App-->
     <span (click)="changePantalla('')" style="cursor: pointer" >Bienvenido {{this.user.username}}</span>
 
-    <button mat-icon-button class="example-icon" >
+    <button (click)="changePantalla('publish')" mat-icon-button class="example-icon" matTooltip='Mis Publicaciones' >
       <mat-icon>store</mat-icon>
     </button>
-    <button mat-icon-button class="example-icon" >
+    <button (click)="changePantalla('store')" mat-icon-button class="example-icon" matTooltip='Ir a Tienda' >
       <mat-icon>shopping_cart</mat-icon>
     </button>
 
     <hr>
-    <!-- icon of money
-    <div>{{this.user.name}}
-      <mat-icon>
+    <div>
+      <mat-icon matTooltip='Moneda Virtual'>
         money
       </mat-icon>
-    </div>-->
-    <hr>
+      {{this.bank_user.money}}
+    </div>
+    <div>
+      <mat-icon matTooltip='Moneda Real'>
+        account_balance
+      </mat-icon>
+      Q{{this.bank_user.aplication_currency+this.bank_user.volunteer_currency}}
+    </div>
     <button mat-icon-button [matMenuTriggerFor]="menu_1" class="example-icon">
       <div *ngIf="user.profile_picture==null">
         <mat-icon>account_circle</mat-icon>
@@ -45,6 +50,12 @@
   <!-- User Views -->
   <div *ngIf="this.getPantalla()==''">
   <app-my-profile></app-my-profile>
+  </div>
+  <div *ngIf="this.getPantalla()=='publish'">
+    <app-publish></app-publish>
+  </div>
+  <div *ngIf="this.getPantalla()=='store'">
+    <app-store></app-store>
   </div>
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\client;
 
+
 class UserController extends Controller
 {
     /**
@@ -49,6 +50,12 @@ class UserController extends Controller
         $user->is_seller = $request->is_seller; 
 
         $user->save();
+        //Llamar al metodo store de BankController, si el usuario es 'user'
+        if($user->role == 'user'){
+            $bank = new BankController;
+            $bank->store($request->username);
+        }
+
 
     }
 

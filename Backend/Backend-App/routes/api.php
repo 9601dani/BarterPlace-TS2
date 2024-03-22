@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BankController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,10 +18,13 @@ Route::get('/test', function () {
 Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/auth', [UserController::class, 'auth']);
+Route::get('/bank/{username}', [BankController::class, 'show']);
 
 // ROUTAS DE ADMINISTRADORES
 Route::get('/admins', [UserController::class, 'getAllAdmins']);
 Route::delete('/admins/{id}', [UserController::class, 'deleteAdmin']);
 Route::put('/admins', [UserController::class, 'update']);
 Route::put('/admins/image', [UserController::class, 'updateImg']);
+
+
 

@@ -3,16 +3,16 @@
   <!-- Barra de navegacion, con color hexadecimal -->
   <mat-toolbar class="mat-toolbar-centered" style="background-color: #C5D9E2 ">
     <!-- Imagen logo-->
-    <mat-icon (click)="changePantalla('')" style="cursor: pointer">shopping-bag</mat-icon>
+    <mat-icon (click)="changePantalla('')" style="cursor: pointer" matTooltip='Home'>shopping-bag</mat-icon>
     <!-- Name App-->
-    <span (click)="changePantalla('')" style="cursor: pointer" >Bienvenido {{this.user_admin.username}}</span>
+    <span (click)="changePantalla('')" style="cursor: pointer" matTooltip='Home' >Bienvenido {{this.user_admin.username}}</span>
 
     <!-- Foto de perfil hasta la derecha imagen angular material-->
     <hr>
-    <button mat-icon-button [matMenuTriggerFor]="menu_2" class="example-icon">
+    <button mat-icon-button [matMenuTriggerFor]="menu_2" class="example-icon" matTooltip='Solicitudes'>
       <mat-icon>more_options</mat-icon>
     </button>
-    <button mat-icon-button [matMenuTriggerFor]="menu_1" class="example-icon">
+    <button mat-icon-button [matMenuTriggerFor]="menu_1" class="example-icon" matTooltip='Mi Perfil'>
       <div *ngIf="user_admin.profile_picture==null">
       <mat-icon>account_circle</mat-icon>
       </div>

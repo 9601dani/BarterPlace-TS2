@@ -27,6 +27,9 @@ import { ReportUsersComponent } from './admin-views/report-users/report-users.co
 import { RequestPublishComponent } from './admin-views/request-publish/request-publish.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatSelectModule} from "@angular/material/select";
+import { PublishComponent } from './user-views/publish/publish.component';
+import { StoreComponent } from './user-views/store/store.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -41,25 +44,28 @@ import {MatSelectModule} from "@angular/material/select";
     MyProfileComponent,
     CreateUserComponent,
     ReportUsersComponent,
-    RequestPublishComponent
+    RequestPublishComponent,
+    PublishComponent,
+    StoreComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatSlideToggleModule,
-    MatButtonModule,
-    HttpClientModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatMenuModule,
-    MatInputModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatGridListModule,
-    MatTableModule,
-    MatSelectModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatSlideToggleModule,
+        MatButtonModule,
+        HttpClientModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatMenuModule,
+        MatInputModule,
+        MatCardModule,
+        ReactiveFormsModule,
+        MatGridListModule,
+        MatTableModule,
+        MatSelectModule,
+        MatTooltipModule,
+    ],
   providers: [TestService],
   bootstrap: [AppComponent]
 })

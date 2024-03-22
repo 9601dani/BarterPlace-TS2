@@ -27,4 +27,8 @@ export class GuestService {
     return this.HttpClient.post(`${this.APIUrl}/auth`, {username, password});
   }
 
+  public getBank(username:string){
+    console.log('estoy en el servicio')
+    return this.HttpClient.get(`${this.APIUrl}/bank/${username}`);
+  }
 }
