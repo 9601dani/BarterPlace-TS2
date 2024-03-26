@@ -30,6 +30,7 @@ import {MatSelectModule} from "@angular/material/select";
 import { PublishComponent } from './user-views/publish/publish.component';
 import { StoreComponent } from './user-views/store/store.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import { RequestSellerComponent } from './admin-views/request-seller/request-seller.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     ReportUsersComponent,
     RequestPublishComponent,
     PublishComponent,
-    StoreComponent
+    StoreComponent,
+    RequestSellerComponent
   ],
     imports: [
         BrowserModule,

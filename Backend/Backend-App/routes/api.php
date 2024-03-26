@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\RequestSellerController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,6 +26,8 @@ Route::get('/admins', [UserController::class, 'getAllAdmins']);
 Route::delete('/admins/{id}', [UserController::class, 'deleteAdmin']);
 Route::put('/admins', [UserController::class, 'update']);
 Route::put('/admins/image', [UserController::class, 'updateImg']);
-
-
+Route::get('/request/sellers', [RequestSellerController::class, 'index']);
+Route::post('/request/sellers', [RequestSellerController::class, 'store']);
+Route::get('/request/sellers/{username}', [RequestSellerController::class, 'show']);
+Route::put('/request/sellers/{username}', [RequestSellerController::class, 'update']);
 

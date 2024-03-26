@@ -7,7 +7,7 @@
     <!-- Name App-->
     <span (click)="changePantalla('')" style="cursor: pointer" >Bienvenido {{this.user.username}}</span>
 
-    <button (click)="changePantalla('publish')" mat-icon-button class="example-icon" matTooltip='Mis Publicaciones' >
+    <button (click)="verificarSeller()" mat-icon-button class="example-icon" matTooltip='Mis Publicaciones' >
       <mat-icon>store</mat-icon>
     </button>
     <button (click)="changePantalla('store')" mat-icon-button class="example-icon" matTooltip='Ir a Tienda' >
@@ -51,7 +51,7 @@
   <div *ngIf="this.getPantalla()==''">
   <app-my-profile></app-my-profile>
   </div>
-  <div *ngIf="this.getPantalla()=='publish'">
+  <div *ngIf="this.getPantalla()=='publish' && this.user.is_seller==true">
     <app-publish></app-publish>
   </div>
   <div *ngIf="this.getPantalla()=='store'">

@@ -1,0 +1,26 @@
+<!--titulo-->
+<div class="titulo" align="center">
+  <h1>Solicitudes de Usuarios</h1>
+</div>
+
+<section class="contenido">
+  <div class="mostrador" *ngFor="let usuario of users">
+    <div class="fila">
+      <div (click)="cuestionOfAccepted(usuario.username)" class="item">
+        <span class="precio">Username: {{usuario.username}}</span>
+        <br>
+        <span *ngIf="usuario.name!=null" class="precio">{{usuario.name}}</span>
+        <span *ngIf="usuario.name==null" class="precio">Sin Nombre</span>
+        <div *ngIf="usuario.profile_picture!=null" class="contenedor-foto">
+          <img src="{{usuario.profile_picture}}" alt="">
+        </div>
+        <div *ngIf="usuario.profile_picture==null || usuario.profile_picture==''" class="contenedor-foto">
+          <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile picture">
+        </div>
+        <p *ngIf="usuario.description!=null" class="descripcion">{{usuario.description}}</p>
+        <p *ngIf="usuario.description==null" class="descripcion">Sin Descripcion</p>
+      </div>
+    </div>
+  </div>
+</section>
+

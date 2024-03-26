@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altura mínima de la ventana visible */
+}
+
+.form-container {
+  flex: 1; /* El formulario ocupará todo el espacio vertical restante */
+  display: flex;
+  justify-content: center; /* Centra horizontalmente el contenido */
+  align-items: flex-start; /* Alinea el contenido hacia arriba */
+  margin-top: 50px; /* Ajusta el margen superior según sea necesario */
+}
+

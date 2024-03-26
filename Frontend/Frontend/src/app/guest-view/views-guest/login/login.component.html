@@ -1,29 +1,35 @@
-<div layout="row" >
-  <mat-card>
-    <mat-card-title align="center" style="background-color: #CFD8D7 ">
-      <mat-label class="mat-headline">Login</mat-label>
-      <mat-card-content>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <hr>
-          <div class="form-group">
-            <!-- Hare dos columnas una para el titulo y otra para el input usando angular material-->
-            <mat-label>Username: </mat-label>
-            <mat-form-field appearance="outline">
-              <mat-label>Username</mat-label>
-              <input formControlName="username" matInput placeholder="Ingrese Username" required autofocus>
-              <mat-icon matSuffix>account_circle</mat-icon>
-            </mat-form-field>
-            <br>
-            <mat-label>Contraseña: </mat-label>
-            <mat-form-field appearance="outline">
-              <mat-label>Contraseña</mat-label>
-              <input formControlName="password" matInput placeholder="Ingrese Contraseña" required>
-              <mat-icon matSuffix>password</mat-icon>
-            </mat-form-field>
-          </div>
-          <button mat-raised-button color="primary" type="submit">Enter</button>
-        </form>
-      </mat-card-content>
-    </mat-card-title>
-  </mat-card>
+<div class="container">
+  <!-- Aquí va tu menú -->
+
+  <!-- Formulario -->
+  <div class="form-container">
+    <mat-card>
+      <mat-card-title align="center" style="background-color: #CFD8D7 ">
+        <mat-label class="mat-headline">Login</mat-label>
+        <mat-card-content>
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <hr>
+            <div class="form-group">
+              <!-- Hare dos columnas una para el titulo y otra para el input usando angular material-->
+              <mat-label>Username: </mat-label>
+              <mat-form-field appearance="outline">
+                <mat-label>Username</mat-label>
+                <input formControlName="username" matInput placeholder="Ingrese Username" required autofocus>
+                <mat-icon matSuffix>account_circle</mat-icon>
+              </mat-form-field>
+              <br>
+              <mat-label>Contraseña: </mat-label>
+              <mat-form-field appearance="outline">
+                <mat-label>Contraseña</mat-label>
+                <input formControlName="password" matInput placeholder="Ingrese Contraseña" required>
+                <mat-icon matSuffix>password</mat-icon>
+              </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary" type="submit">Enter</button>
+          </form>
+        </mat-card-content>
+      </mat-card-title>
+    </mat-card>
+  </div>
 </div>
+
