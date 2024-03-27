@@ -16,7 +16,7 @@ import { MainComponent } from './guest-view/views-guest/main/main.component';
 import { RegisterComponent } from './guest-view/views-guest/register/register.component';
 import { LoginComponent } from './guest-view/views-guest/login/login.component';
 import {MatCardModule} from "@angular/material/card";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatGridListModule} from "@angular/material/grid-list";
 import { HomeAdminComponent } from './admin-views/home-admin/home-admin.component';
 import { HomeUserComponent } from './user-views/home-user/home-user.component';
@@ -31,6 +31,7 @@ import { PublishComponent } from './user-views/publish/publish.component';
 import { StoreComponent } from './user-views/store/store.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { RequestSellerComponent } from './admin-views/request-seller/request-seller.component';
+import { CategoryAddComponent } from './admin-views/category-add/category-add.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { RequestSellerComponent } from './admin-views/request-seller/request-sel
     RequestPublishComponent,
     PublishComponent,
     StoreComponent,
-    RequestSellerComponent
+    RequestSellerComponent,
+    CategoryAddComponent
   ],
     imports: [
         BrowserModule,
@@ -67,6 +69,7 @@ import { RequestSellerComponent } from './admin-views/request-seller/request-sel
         MatTableModule,
         MatSelectModule,
         MatTooltipModule,
+        FormsModule,
     ],
   providers: [TestService],
   bootstrap: [AppComponent]

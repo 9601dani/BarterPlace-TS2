@@ -28,7 +28,6 @@ export class GuestService {
   }
 
   public getBank(username:string){
-    console.log('estoy en el servicio')
     return this.HttpClient.get(`${this.APIUrl}/bank/${username}`);
   }
 }

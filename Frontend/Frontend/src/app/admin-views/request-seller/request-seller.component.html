@@ -1,26 +1,45 @@
-<!--titulo-->
-<div class="titulo" align="center">
-  <h1>Solicitudes de Usuarios</h1>
-</div>
-
-<section class="contenido">
-  <div class="mostrador" *ngFor="let usuario of users">
-    <div class="fila">
-      <div (click)="cuestionOfAccepted(usuario.username)" class="item">
-        <span class="precio">Username: {{usuario.username}}</span>
-        <br>
-        <span *ngIf="usuario.name!=null" class="precio">{{usuario.name}}</span>
-        <span *ngIf="usuario.name==null" class="precio">Sin Nombre</span>
-        <div *ngIf="usuario.profile_picture!=null" class="contenedor-foto">
-          <img src="{{usuario.profile_picture}}" alt="">
-        </div>
-        <div *ngIf="usuario.profile_picture==null || usuario.profile_picture==''" class="contenedor-foto">
-          <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile picture">
-        </div>
-        <p *ngIf="usuario.description!=null" class="descripcion">{{usuario.description}}</p>
-        <p *ngIf="usuario.description==null" class="descripcion">Sin Descripcion</p>
-      </div>
+<div class="container">
+  <!-- Titulo del componente -->
+  <div class="component-title" align="center">
+    <hr>
+    <!--titulo-->
+    <div class="titulo" align="center">
+      <h1>Solicitudes de Usuarios para ser Vendedores</h1>
     </div>
+    <hr>
   </div>
-</section>
+  <!-- Contenido del componente -->
+  <div class="component-container">
+    <section *ngIf="array_request_seller.length>=1" class="contenido">
+      <div class="mostrador" *ngFor="let usuario of users">
+        <div class="fila">
+          <div (click)="cuestionOfAccepted(usuario.username)" class="item">
+            <span class="precio">Username: {{usuario.username}}</span>
+            <br>
+            <span *ngIf="usuario.name!=null" class="precio">{{usuario.name}}</span>
+            <span *ngIf="usuario.name==null" class="precio">Sin Nombre</span>
+            <div *ngIf="usuario.profile_picture!=null" class="contenedor-foto">
+              <img src="{{usuario.profile_picture}}" alt="">
+            </div>
+            <div *ngIf="usuario.profile_picture==null || usuario.profile_picture==''" class="contenedor-foto">
+              <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile picture" style="width: 200px; height: auto;">
+            </div>
+            <p *ngIf="usuario.description!=null" class="descripcion">{{usuario.description}}</p>
+            <p *ngIf="usuario.description==null" class="descripcion">Sin Descripcion</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section *ngIf="array_request_seller.length<1" class="contenido">
+      <div class="mostrador">
+        <div class="fila">
+          <div class="item">
+            <span class="precio">No hay solicitudes de usuarios</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <br><br><br>
+</div>
 

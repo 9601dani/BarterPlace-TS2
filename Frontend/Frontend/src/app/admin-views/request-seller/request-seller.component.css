@@ -1,3 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altura mínima de la ventana visible */
+}
+
+.component-container {
+  flex: 1; /* El componente ocupará todo el espacio vertical restante */
+}
 /* Estilo base para el contenido */
 .contenido {
   display: flex;

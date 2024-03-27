@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altura mínima de la ventana visible */
+}
+
+.component-container {
+  flex: 1; /* El componente ocupará todo el espacio vertical restante */
+}
+.categoria-form {
+  display: flex;
+  flex-direction: column; /* Organiza los hijos verticalmente */
+  justify-content: space-around; /* Espacia los elementos uniformemente */
+  height: 50%; /* Asegura que el div ocupe todo el alto disponible del tile */
+  padding: 20px; /* Añade algo de espacio interno */
+}
+.formulario-3d {
+  /* Ajusta los valores según tus necesidades */
+  border: 1px solid #ddd; /* Borde para definir los límites del formulario */
+  background-color: #C5D9E2; /* Color de fondo del formulario */
+
+  padding: 20px; /* Espaciado interno para los elementos del formulario */
+  width: 400px; /* Ancho del formulario */
+  height: 150px; /* Alto del formulario */
+  margin: 20px; /* Margen exterior para separación de otros elementos */
+}
+
+

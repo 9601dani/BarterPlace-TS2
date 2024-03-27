@@ -33,8 +33,6 @@ export class UserService {
   }
 
   public respondentRequestSeller(username:string, status:string){
-    console.log(username);
-    console.log(status);
     return this.HttpClient.put(`${this.APIUrl}/request/sellers/${username}`, {status});
   }
 }

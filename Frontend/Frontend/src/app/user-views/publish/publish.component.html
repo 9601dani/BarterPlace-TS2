@@ -1,7 +1,133 @@
 <div class="container">
+  <!-- Titulo del componente -->
+  <div class="component-header" align="center">
+    <h2>Mis publicaciones</h2>
+    <div *ngIf="!new_publication">
+      <mat-icon style="cursor: pointer" matTooltip='Nueva Publicacion' (click)="nuevoPublication()" >add</mat-icon>
+    </div>
+    <hr>
+  </div>
   <!-- Contenido del componente -->
   <div class="component-container">
-    <p>publish works!</p>
+    <div *ngIf="!new_publication">
+      <section class="contenido">
+        <!-- Mostrador de publicaciones -->
+        <div class="mostrador" *ngFor="let publication of my_publications">
+          <div class="fila">
+            <div class="item">
+              <span>{{publication.title}}</span> <br>
+              <hr>
+              <span>{{publication.description}}</span> <br>
+              <div>
+
+                <img src='{{publication.foto[0]}}' alt="foto" style="width: 200px; height: auto;">
+                <div>
+                  <mat-icon (click)="nextImage()">keyboard_arrow_left</mat-icon>
+                  <mat-icon (click)="previousImage()">keyboard_arrow_right</mat-icon>
+                </div>
+              </div>
+              <hr>
+              <span>Q{{publication.cost}}</span> <br>
+              <div>
+                <mat-icon style="color: darkblue" (click)="editPublication(publication.id)" matTooltip='Editar'>edit</mat-icon>
+                <mat-icon style="color: red" (click)="deletePublication(publication.id)" matTooltip='Eliminar'>delete</mat-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <br><br><br><br><br>
+    </div>
+    <div *ngIf="new_publication">
+      <section style="display: flex; justify-content: center;">
+      <!-- Formulario de publicacion -->
+      <p style="display: flex; justify-content: space-between; align-items: center; font-size: x-large; width: 80%;">
+        <span>Registro Nueva Publicación</span>
+        <mat-icon style="cursor: pointer" matTooltip='Cerrar' (click)="closePublication()">close</mat-icon>
+      </p>
+    </section>
+      <!-- Formulario de publicacion -->
+      <br>
+      <form [formGroup]="form_new_publication" (ngSubmit)="onSubmitedPublication()" class="form-grpup" >
+        <mat-grid-list cols="3" rowHeight="125px">
+          <mat-grid-tile>
+            <mat-label style="font-size: larger; font-style: italic">Titulo :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Titulo</mat-label>
+              <input matInput placeholder="Titulo" formControlName="title">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile class="full-with" style="width: 80%;" appearance="fill">
+            <mat-label style="font-size: larger; font-style: italic">Descripción :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Descripción</mat-label>
+              <textarea matInput placeholder="Descripción" formControlName="description" rows="4" autosize></textarea>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-label style="font-size: larger; font-style: italic">Tipo :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Tipo</mat-label>
+              <mat-select formControlName="type" placeholder="Seleccione una categoría" (selectionChange)="onTipoSeleccionado($event)">
+                <mat-option *ngFor="let tipo of array_tipo_publicacion" [value]="tipo">
+                  {{ tipo }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!---Aqui sera el tipo de recompensa-->
+          <mat-grid-tile *ngIf="tipo_publicacion=='Venta'">
+            <mat-label style="font-size: larger; font-style: italic">Costo :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Costo</mat-label>
+              <input matInput placeholder="Costo" formControlName="cost">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile *ngIf="tipo_publicacion=='Voluntariado'">
+            <mat-label style="font-size: larger; font-style: italic">Recompensa :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Recompensa</mat-label>
+              <input matInput placeholder="Recompensa" formControlName="cost">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile *ngIf="tipo_publicacion=='Compra'">
+            <mat-label style="font-size: larger; font-style: italic">Limite Precio :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Limite Precio</mat-label>
+              <input matInput placeholder="Limite Precio" formControlName="cost">
+            </mat-form-field>
+          </mat-grid-tile>
+          <!---Aqui termina el tipo de recompensa-->
+          <mat-grid-tile>
+            <mat-label style="font-size: larger; font-style: italic">Categoria :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Categoria</mat-label>
+              <mat-select formControlName="category" placeholder="Seleccione una categoría">
+                <!-- Aquí puedes incluir tus opciones de categoría -->
+                <mat-option *ngFor="let category of categorias" [value]="category.id">
+                  {{ category.category_name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-label style="font-size: larger; font-style: italic">Foto :</mat-label>
+            <button mat-flat-button color="warn" type="button"
+                    (click)="fileInput.click()">Seleccionar Foto</button>
+            <input hidden type="file" #fileInput accept="image/jpeg image/png" (change)="onFileSelected($event)">
+          </mat-grid-tile>
+          <mat-grid-tile>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <button mat-raised-button color="primary" type="submit">Guardar</button>
+          </mat-grid-tile>
+          <mat-grid-tile *ngIf="imagen_seleccionada!=''">
+            <img [src]="imagen_seleccionada" alt="foto" style="width: 300px; height: auto;">
+          </mat-grid-tile>
+        </mat-grid-list>
+      </form>
+      <br><br><br><br><br>
+    </div>
   </div>
 </div>
 

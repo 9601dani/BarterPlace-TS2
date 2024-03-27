@@ -32,7 +32,18 @@ export class AdminService {
     return this.HttpClient.put(`${this.APIUrl}/admins`, user);
   }
   public updateImage(user: User){
-    console.log('entro al servicio de imagen'+ user);
     return this.HttpClient.put(`${this.APIUrl}/admins/image`, user);
+  }
+
+  public addCategory(category_name: string){
+    return this.HttpClient.post(`${this.APIUrl}/categories`,{category_name});
+  }
+
+  public getCategories(){
+    return this.HttpClient.get(`${this.APIUrl}/categories`);
+  }
+
+  public findCategory(categoryName: string){
+    return this.HttpClient.get(`${this.APIUrl}/categories/${categoryName}`);
   }
 }

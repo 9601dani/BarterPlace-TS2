@@ -42,6 +42,9 @@
   </mat-menu>
   <!-- menu de tareas de admin -->
   <mat-menu #menu_2="matMenu">
+    <button (click)="changePantalla('add-category')" mat-menu-item>Agregar Categorias
+      <mat-icon>add</mat-icon>
+    </button>
     <button (click)="changePantalla('report-users')" mat-menu-item>Ver Reporte de Usuarios
       <mat-icon>report_problem</mat-icon>
     </button>
@@ -72,6 +75,9 @@
       </div>
       <div *ngIf="this.getPantalla()=='request-seller'">
         <app-request-seller></app-request-seller>
+      </div>
+      <div *ngIf="this.getPantalla()=='add-category'">
+        <app-category-add></app-category-add>
       </div>
     </div>
 
