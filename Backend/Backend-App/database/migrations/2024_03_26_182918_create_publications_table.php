@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\PublicationType;
 
 return new class extends Migration
 {
@@ -13,7 +14,16 @@ return new class extends Migration
     {
         Schema::create('publications', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('title');
+            $table->longtext('description');
+            $table->date('date');
+            $table->enum('status', ['pending', 'active','inactive']);
+            $table->string('username');
+            $table->longtext('foto');
+            $table->integer('cost');
+            $table->foreignId(PublicationType::class)->constrained();
+            $table->string('category');
+
         });
     }
 

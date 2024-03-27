@@ -5,6 +5,8 @@ import {Category} from "../../../models/Category";
 import {AdminService} from "../../../../service/admin_service/admin.service";
 import Swal from "sweetalert2";
 import {MatSelectChange} from "@angular/material/select";
+import {Publication} from "../../../models/Publication";
+import {User} from "../../../models/User";
 
 @Component({
   selector: 'app-publish',
@@ -12,6 +14,7 @@ import {MatSelectChange} from "@angular/material/select";
   styleUrls: ['./publish.component.css']
 })
 export class PublishComponent implements OnInit{
+  public user:User= JSON.parse(localStorage.getItem('user') || '{}');
   public new_publication:boolean = false;
   public categorias: Category[] = [];
   array_tipo_publicacion: string[]= ['Venta', 'Voluntariado', 'Compra'];
@@ -108,14 +111,18 @@ export class PublishComponent implements OnInit{
 
   onSubmitedPublication(){
     if (this.form_new_publication.valid) {
-      let publication = {
-        title: this.form_new_publication.get('title')?.value,
-        description: this.form_new_publication.get('description')?.value,
-        foto: this.imagen_seleccionada,
-        cost: this.form_new_publication.get('cost')?.value,
-        type: this.form_new_publication.get('type')?.value,
-        category: this.form_new_publication.get('category')?.value
-      }
+      let publication = new Publication(
+        0,
+        this.form_new_publication.get('title')?.value,
+        this.form_new_publication.get('description')?.value,
+        this.formatearFechaParaMySQL(new Date()),
+        'Pending',
+        this.user.username,
+        [this.imagen_seleccionada],
+        this.form_new_publication.get('cost')?.value,
+        this.form_new_publication.get('type')?.value,
+        this.form_new_publication.get('category')?.value
+      );
       console.log(publication);
       //this.new_publication = false;
     }else{
@@ -157,6 +164,11 @@ export class PublishComponent implements OnInit{
     }
   }
 
-
+  formatearFechaParaMySQL(fecha: Date): string {
+    const año = fecha.getFullYear();
+    const mes = ("0" + (fecha.getMonth() + 1)).slice(-2); // Los meses van de 0 a 11, por lo que se suma 1
+    const dia = ("0" + fecha.getDate()).slice(-2); // Añade un cero adelante si es necesario y toma los últimos 2 dígitos
+    return `${año}-${mes}-${dia}`;
+  }
 
 }
