@@ -7,6 +7,36 @@
   </div>
   <!-- Contenido del componente -->
   <div class="component-container">
-    <p>request-publish works!</p>
+
+    <section class="contenido">
+      <!-- Mostrador de publicaciones -->
+      <div class="mostrador" *ngFor="let publication of my_publications">
+        <div class="fila">
+          <div class="item">
+            <span>{{publication.title}}</span> <br>
+            <hr>
+            <div style="overflow: auto">
+              <span>{{publication.description}}</span> <br>
+            </div>
+            <div>
+              <img src='{{publication.foto}}' alt="foto" style="width: 200px; height: auto;">
+            </div>
+            <hr>
+            <span style="font-size: larger"> <mat-icon>savings</mat-icon> {{publication.unit_price}}</span>
+            <span> | </span>
+            <span>{{publication.category}}</span>
+            <br>
+            <span>{{this.retornarTipoPublicacion(publication.publication_type_id)}}</span>
+            <span> | </span>
+            <span>{{publication.username}}</span>
+            <div>
+              <mat-icon style="color: forestgreen" (click)="aceptar(publication)" matTooltip='Aceptar'>done</mat-icon>
+              <mat-icon style="color: red" (click)="rechazar(publication)" matTooltip='Rechazar'>close</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <br><br><br><br><br>
   </div>
 </div>

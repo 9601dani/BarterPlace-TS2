@@ -9,7 +9,7 @@
   </div>
   <!-- Contenido del componente -->
   <div class="component-container">
-    <div *ngIf="!new_publication">
+    <div *ngIf="!new_publication && !edit_publication">
       <section class="contenido">
         <!-- Mostrador de publicaciones -->
         <div class="mostrador" *ngFor="let publication of my_publications">
@@ -17,20 +17,22 @@
             <div class="item">
               <span>{{publication.title}}</span> <br>
               <hr>
-              <span>{{publication.description}}</span> <br>
+              <div style="overflow: auto">
+                <span>{{publication.description}}</span> <br>
+              </div>
               <div>
-
-                <img src='{{publication.foto[0]}}' alt="foto" style="width: 200px; height: auto;">
-                <div>
-                  <mat-icon (click)="nextImage()">keyboard_arrow_left</mat-icon>
-                  <mat-icon (click)="previousImage()">keyboard_arrow_right</mat-icon>
-                </div>
+                <img src='{{publication.foto}}' alt="foto" style="width: 200px; height: auto;">
               </div>
               <hr>
-              <span>Q{{publication.cost}}</span> <br>
+              <span style="font-size: larger"> <mat-icon>savings</mat-icon> {{publication.unit_price}}</span>
+              <span> | </span>
+              <span> Estado: <strong>{{obtenerEstadoPublicacion(publication.status)}}</strong></span>
+              <br>
+              <span>Tipo Publicación: <strong>{{retornarTipoPublicacion(publication.publication_type_id)}}</strong> </span>
               <div>
-                <mat-icon style="color: darkblue" (click)="editPublication(publication.id)" matTooltip='Editar'>edit</mat-icon>
+                <mat-icon *ngIf="publication.status!='inactive'" style="color: darkblue" (click)="editPublication(publication)" matTooltip='Editar'>edit</mat-icon>
                 <mat-icon style="color: red" (click)="deletePublication(publication.id)" matTooltip='Eliminar'>delete</mat-icon>
+                <mat-icon *ngIf="publication.status=='rejected'" style="color: yellowgreen" (click)="reenviarPublicacion(publication.id)" matTooltip='Volver a Publicar'>send</mat-icon>
               </div>
             </div>
           </div>
@@ -48,7 +50,7 @@
     </section>
       <!-- Formulario de publicacion -->
       <br>
-      <form [formGroup]="form_new_publication" (ngSubmit)="onSubmitedPublication()" class="form-grpup" >
+      <form [formGroup]="form_new_publication" class="form-grpup" >
         <mat-grid-list cols="3" rowHeight="125px">
           <mat-grid-tile>
             <mat-label style="font-size: larger; font-style: italic">Titulo :</mat-label>
@@ -69,32 +71,46 @@
             <mat-form-field class="full-with" appearance="fill">
               <mat-label>Tipo</mat-label>
               <mat-select formControlName="type" placeholder="Seleccione una categoría" (selectionChange)="onTipoSeleccionado($event)">
-                <mat-option *ngFor="let tipo of array_tipo_publicacion" [value]="tipo">
-                  {{ tipo }}
+                <mat-option *ngFor="let tipo of array_tipo_publicacion" [value]="tipo.id">
+                  {{ tipo.type_name }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </mat-grid-tile>
           <!---Aqui sera el tipo de recompensa-->
-          <mat-grid-tile *ngIf="tipo_publicacion=='Venta'">
-            <mat-label style="font-size: larger; font-style: italic">Costo :</mat-label>
+          <mat-grid-tile *ngIf="tipo_publicacion=='1'">
+            <mat-label style="font-size: larger; font-style: italic">Precio Unidad :</mat-label>
             <mat-form-field class="full-with" appearance="fill">
-              <mat-label>Costo</mat-label>
-              <input matInput placeholder="Costo" formControlName="cost">
+              <mat-label>Precio Unidad</mat-label>
+              <input  matInput placeholder="Precio Unidad" formControlName="unit_price">
             </mat-form-field>
           </mat-grid-tile>
-          <mat-grid-tile *ngIf="tipo_publicacion=='Voluntariado'">
-            <mat-label style="font-size: larger; font-style: italic">Recompensa :</mat-label>
+          <mat-grid-tile *ngIf="tipo_publicacion=='1'">
+            <mat-label style="font-size: larger; font-style: italic">Unidades :</mat-label>
             <mat-form-field class="full-with" appearance="fill">
-              <mat-label>Recompensa</mat-label>
-              <input matInput placeholder="Recompensa" formControlName="cost">
+              <mat-label>Unidades</mat-label>
+              <input type="number"  matInput placeholder="Unidades" formControlName="quantity">
             </mat-form-field>
           </mat-grid-tile>
-          <mat-grid-tile *ngIf="tipo_publicacion=='Compra'">
+          <mat-grid-tile *ngIf="tipo_publicacion=='3'">
+            <mat-label style="font-size: larger; font-style: italic">Recompensa Por Usuario :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Recompensa Por Usuario</mat-label>
+              <input matInput placeholder="Recompensa Por Usuario" formControlName="unit_price">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile *ngIf="tipo_publicacion=='3'">
+            <mat-label style="font-size: larger; font-style: italic">Numero Voluntarios Max :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Numero Voluntarios Max</mat-label>
+              <input matInput placeholder="Numero Voluntarios Max" formControlName="quantity">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile *ngIf="tipo_publicacion=='2'">
             <mat-label style="font-size: larger; font-style: italic">Limite Precio :</mat-label>
             <mat-form-field class="full-with" appearance="fill">
               <mat-label>Limite Precio</mat-label>
-              <input matInput placeholder="Limite Precio" formControlName="cost">
+              <input matInput placeholder="Limite Precio" formControlName="unit_price">
             </mat-form-field>
           </mat-grid-tile>
           <!---Aqui termina el tipo de recompensa-->
@@ -114,15 +130,16 @@
             <mat-label style="font-size: larger; font-style: italic">Foto :</mat-label>
             <button mat-flat-button color="warn" type="button"
                     (click)="fileInput.click()">Seleccionar Foto</button>
-            <input hidden type="file" #fileInput accept="image/jpeg image/png" (change)="onFileSelected($event)">
+            <input hidden type="file" #fileInput accept="image/jpeg,image/png" (change)="onFileSelected($event)">
           </mat-grid-tile>
           <mat-grid-tile>
           </mat-grid-tile>
           <mat-grid-tile>
-            <button mat-raised-button color="primary" type="submit">Guardar</button>
+            <button *ngIf="!edit_publication" mat-raised-button color="primary" (click)="onSubmitedPublication()">Guardar Publicación</button>
+            <button *ngIf="edit_publication" mat-raised-button color="primary" (click)="guardarEdicion()">Guardar Edicion</button>
           </mat-grid-tile>
           <mat-grid-tile *ngIf="imagen_seleccionada!=''">
-            <img [src]="imagen_seleccionada" alt="foto" style="width: 300px; height: auto;">
+            <img [src]="imagen_seleccionada" alt="foto" style="width: 150px; height: auto;">
           </mat-grid-tile>
         </mat-grid-list>
       </form>

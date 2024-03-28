@@ -16,16 +16,16 @@
 
     <hr>
     <div>
-      <mat-icon matTooltip='Moneda Virtual'>
-        money
-      </mat-icon>
-      {{this.bank_user.money}}
-    </div>
-    <div>
       <mat-icon matTooltip='Moneda Real'>
         account_balance
       </mat-icon>
-      Q{{this.bank_user.aplication_currency+this.bank_user.volunteer_currency}}
+      Q{{this.bank_user.money}}
+    </div>
+    <div>
+      <mat-icon matTooltip='Moneda Aplicacion'>
+        savings
+      </mat-icon>
+      {{this.bank_user.aplication_currency+this.bank_user.volunteer_currency}}
     </div>
     <button mat-icon-button [matMenuTriggerFor]="menu_1" class="example-icon">
       <div *ngIf="user.profile_picture==null">

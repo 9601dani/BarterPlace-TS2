@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\RequestSellerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PublicationTypeController;
+use App\Http\Controllers\PublicationController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -21,6 +23,17 @@ Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/auth', [UserController::class, 'auth']);
 Route::get('/bank/{username}', [BankController::class, 'show']);
+
+// ROUTAS DE PUBLICACIONES
+Route::get('/publications/types', [PublicationTypeController::class, 'index']);
+Route::post('/publications', [PublicationController::class, 'store']);
+Route::get('/publications', [PublicationController::class, 'index']);
+Route::put('/publications/{id}', [PublicationController::class, 'update']);
+Route::get('/publications/{id}', [PublicationController::class, 'show']);
+Route::get('/publicationsP', [PublicationController::class, 'publicationsP']);
+Route::put('/publicationsS/{id}', [PublicationController::class, 'updateStatus']);
+Route::put('/publicationsReSend/{id}', [PublicationController::class, 'reenviarPublication']);
+
 
 // ROUTAS DE ADMINISTRADORES
 Route::get('/admins', [UserController::class, 'getAllAdmins']);

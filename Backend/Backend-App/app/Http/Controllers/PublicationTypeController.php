@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\PublicationType;
 
 class PublicationTypeController extends Controller
 {
@@ -11,7 +12,10 @@ class PublicationTypeController extends Controller
      */
     public function index()
     {
-        //
+        // Get all publication types
+        return PublicationType::query()
+        ->orderBy('id', 'asc')
+        ->get();
     }
 
     /**

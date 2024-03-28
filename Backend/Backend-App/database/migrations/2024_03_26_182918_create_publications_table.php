@@ -17,13 +17,17 @@ return new class extends Migration
             $table->string('title');
             $table->longtext('description');
             $table->date('date');
-            $table->enum('status', ['pending', 'active','inactive']);
+            $table->enum('status', ['pending', 'active','inactive', 'completed','rejected']);
             $table->string('username');
             $table->longtext('foto');
-            $table->integer('cost');
-            $table->foreignId(PublicationType::class)->constrained();
+            $table->integer('total_cost');
+            $table->unsignedBigInteger('publication_type_id');
             $table->string('category');
-
+            $table->integer('unit_price');
+            $table->integer('quantity');
+            $table->foreign('category')->references('category_name')->on('categories');
+            $table->foreign('username')->references('username')->on('clients');
+            $table->foreign('publication_type_id')->references('id')->on('publication_types');
         });
     }
 

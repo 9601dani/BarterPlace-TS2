@@ -7,6 +7,8 @@ import Swal from "sweetalert2";
 import {MatSelectChange} from "@angular/material/select";
 import {Publication} from "../../../models/Publication";
 import {User} from "../../../models/User";
+import {PublicationType} from "../../../models/PublicationType";
+import {GuestService} from "../../../../service/guest_service/guest.service";
 
 @Component({
   selector: 'app-publish',
@@ -16,11 +18,13 @@ import {User} from "../../../models/User";
 export class PublishComponent implements OnInit{
   public user:User= JSON.parse(localStorage.getItem('user') || '{}');
   public new_publication:boolean = false;
+  public edit_publication:boolean = false;
   public categorias: Category[] = [];
-  array_tipo_publicacion: string[]= ['Venta', 'Voluntariado', 'Compra'];
-  tipo_publicacion: string = 'Venta';
+  array_tipo_publicacion!: PublicationType[];
+  tipo_publicacion: string = '1';
   public imagen_seleccionada: string = '';
-  public my_publications: any[] = [
+  public publication_a_editar!: Publication;
+  public my_publications: Publication[] = [
     {
       id: 1,
       title: "Publication 1",
@@ -28,10 +32,12 @@ export class PublishComponent implements OnInit{
       date: "2021-01-01",
       status: "Published",
       username: "User 1",
-      foto: ["https://www.w3schools.com/howto/img_avatar.png"],
-      cost: 100,
-      type: "Venta",
-      category: "Category 1"
+      foto: "https://www.w3schools.com/howto/img_avatar.png",
+      total_cost: 100,
+      publication_type_id: 1,
+      category: "3",
+      unit_price: 100,
+      quantity: 1
     },
     {
       id: 2,
@@ -40,32 +46,20 @@ export class PublishComponent implements OnInit{
       date: "2021-01-02",
       status: "Published",
       username: "User 2",
-      foto: ["https://www.w3schools.com/howto/img_avatar2.png"],
-      likes: 20,
-      dislikes: 3,
-      cost: 200,
-      type: "Volunter",
-      category: "Category 2"
-    },
-    {
-      id: 3,
-      title: "Publication 3",
-      description: "Description 3",
-      date: "2021-01-03",
-      status: "Published",
-      username: "User 3",
-      foto:["https://www.w3schools.com/howto/img_avatar.png"],
-      likes: 30,
-      dislikes: 4,
-      cost: 300,
-      type: "Venta",
-      category: "Category 3"
+      foto: "https://www.w3schools.com/howto/img_avatar2.png",
+      total_cost: 200,
+      publication_type_id: 2,
+      category: "2",
+      unit_price: 200,
+      quantity: 1
     }
   ];
   public form_new_publication!:FormGroup;
-    constructor(
+  public form_edit_publication!:FormGroup;
+  constructor(
       private Service: UserService,
-      private ServiceAdmin: AdminService
+      private ServiceAdmin: AdminService,
+      private ServiceGuest: GuestService
     ) {}
 
     ngOnInit(): void {
@@ -73,11 +67,14 @@ export class PublishComponent implements OnInit{
         title: [null, Validators.required],
         description: [null, Validators.required],
         foto: [null],
-        cost: [null, Validators.required],
+        unit_price: [0, Validators.required],
+        quantity: [1, Validators.required],
         type: [null, Validators.required],
         category: [null, Validators.required]
       });
       this.obtenerCategorias();
+      this.obtenerTiposPublicacion();
+      this.obtenerMisPublicaciones();
     }
 
     selectPublication(id_publication: number){
@@ -93,8 +90,31 @@ export class PublishComponent implements OnInit{
     this.currentIndex = (this.currentIndex === this.my_publications.length - 1) ? 0 : this.currentIndex + 1;
   }
 
-  editPublication(id_publication: number){
-    console.log("Publication edited: ", id_publication);
+  editPublication(publication: Publication){
+    console.log("Publication edited: ", publication);
+    this.edit_publication = true;
+    this.new_publication = true;
+    this.publication_a_editar = publication;
+    this.form_new_publication.get('title')?.setValue(publication.title);
+    this.form_new_publication.get('description')?.setValue(publication.description);
+    this.form_new_publication.get('unit_price')?.setValue(publication.unit_price);
+    this.form_new_publication.get('quantity')?.setValue(publication.quantity);
+    this.form_new_publication.get('type')?.setValue(publication.publication_type_id);
+    this.form_new_publication.get('category')?.setValue(this.retornarCategoriaId(publication.category));
+    this.imagen_seleccionada = publication.foto;
+  }
+
+  guardarEdicion(){
+    console.log("Publication edited: ", this.publication_a_editar);
+  }
+
+  retornarCategoriaId(category_name: string): number {
+    for (let i = 0; i < this.categorias.length; i++) {
+      if (this.categorias[i].category_name == category_name) {
+        return this.categorias[i].id;
+      }
+    }
+    return 0;
   }
 
   deletePublication(id_publication: number){
@@ -106,25 +126,53 @@ export class PublishComponent implements OnInit{
   }
 
   closePublication(){
+    this.edit_publication = false;
     this.new_publication = false;
+  }
+  closeditPublication(){
+    this.edit_publication = false;
   }
 
   onSubmitedPublication(){
     if (this.form_new_publication.valid) {
-      let publication = new Publication(
-        0,
-        this.form_new_publication.get('title')?.value,
-        this.form_new_publication.get('description')?.value,
-        this.formatearFechaParaMySQL(new Date()),
-        'Pending',
-        this.user.username,
-        [this.imagen_seleccionada],
-        this.form_new_publication.get('cost')?.value,
-        this.form_new_publication.get('type')?.value,
-        this.form_new_publication.get('category')?.value
-      );
-      console.log(publication);
-      //this.new_publication = false;
+      let publication = this.comprobarType(this.form_new_publication.get('type')?.value);
+      if(this.comprobarDinero(publication)) {
+        console.log(publication);
+        this.Service.addPublication(publication).subscribe((data: any) => {
+          if (data != null) {
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'Publicacion creada con exito!',
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              this.actualizarBank();
+              this.new_publication = false;
+              this.form_new_publication.reset();
+              this.imagen_seleccionada = '';
+            });
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: 'Error al crear la publicacion',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              this.new_publication = false;
+              this.form_new_publication.reset();
+              this.imagen_seleccionada = '';
+            });
+          }
+        });
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text: 'No tienes suficiente dinero para publicar',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+
     }else{
       Swal.fire({
         title: 'Error!',
@@ -150,6 +198,21 @@ export class PublishComponent implements OnInit{
     });
   }
 
+  public obtenerTiposPublicacion(){
+    this.Service.getPublicationsType().subscribe((data: any) => {
+      if(data!=null){
+        this.array_tipo_publicacion = data;
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text: 'Error al obtener los tipos de publicacion',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+    });
+  }
+
   onTipoSeleccionado(event: MatSelectChange): void {
     const tipoSeleccionado = event.value;
     this.tipo_publicacion = tipoSeleccionado;
@@ -171,4 +234,146 @@ export class PublishComponent implements OnInit{
     return `${año}-${mes}-${dia}`;
   }
 
+  comprobarDinero(publication:Publication): boolean {
+    if(publication.publication_type_id==1 || publication.publication_type_id==2){
+      return true;
+    }
+    let bank= JSON.parse(localStorage.getItem('bank') || '{}');
+    if(bank.aplication_currency >= publication.total_cost){
+      return true;
+    }
+    return false;
+  }
+
+  comprobarType(type:number):Publication {
+    if(type==1){
+      return this.generateVenta();
+    }else if (type==2){
+      return this.generateCompra();
+    }else{
+      return this.generateVolunter();
+    }
+
+  }
+
+  generateVenta():Publication {
+    return new Publication(0, this.form_new_publication.get('title')?.value,
+      this.form_new_publication.get('description')?.value, this.formatearFechaParaMySQL(new Date()),
+      'pending', this.user.username, this.imagen_seleccionada,
+      this.form_new_publication.get('unit_price')?.value * this.form_new_publication.get('quantity')?.value,
+      this.array_tipo_publicacion[0].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
+      this.form_new_publication.get('unit_price')?.value, this.form_new_publication.get('quantity')?.value);
+  }
+
+  generateCompra():Publication {
+    return new Publication(0, this.form_new_publication.get('title')?.value,
+      this.form_new_publication.get('description')?.value, this.formatearFechaParaMySQL(new Date()),
+      'pending', this.user.username, this.imagen_seleccionada,
+      this.form_new_publication.get('unit_price')?.value,
+      this.array_tipo_publicacion[1].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
+      this.form_new_publication.get('unit_price')?.value,1);
+  }
+
+  generateVolunter():Publication {
+    return new Publication(0, this.form_new_publication.get('title')?.value,
+      this.form_new_publication.get('description')?.value, this.formatearFechaParaMySQL(new Date()),
+      'pending', this.user.username, this.imagen_seleccionada,
+      this.form_new_publication.get('unit_price')?.value * this.form_new_publication.get('quantity')?.value,
+      this.array_tipo_publicacion[2].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
+      this.form_new_publication.get('unit_price')?.value, this.form_new_publication.get('quantity')?.value);
+  }
+
+  actualizarBank(){
+    this.ServiceGuest.getBank(this.user.username).subscribe((data: any) => {
+      if(data!=null){
+        Swal.fire({
+          title: 'Perfecto!',
+          text: 'Cuenta bancaria cargada con exito!',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          localStorage.setItem('bank', JSON.stringify(data));
+          window.location.reload();
+        });
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text: 'Error al cargar la cuenta bancaria!',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+    });
+  }
+
+  regresarNameCategory(id_category: number): string {
+    for (let i = 0; i < this.categorias.length; i++) {
+      if (this.categorias[i].id == id_category) {
+        return this.categorias[i].category_name;
+      }
+    }
+    return '';
+  }
+
+  obtenerMisPublicaciones(){
+    this.Service.getMyPublications(this.user.username).subscribe((data: any) => {
+      if(data!=null){
+        this.my_publications = data;
+        console.log(this.my_publications);
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text: 'Error al obtener las publicaciones',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+    });
+  }
+  obtenerEstadoPublicacion(estado: string): string {
+    if (estado == 'active') {
+      return 'Aceptada';
+    } else if (estado == 'inactive') {
+      return 'Inactiva';
+    } else if(estado == 'pending') {
+      return 'Pendiente';
+    }else if (estado == 'rejected') {
+      return 'Rechazada';
+    }else{
+      return 'Completa';
+    }
+  }
+
+  reenviarPublicacion(publication_id: number){
+    console.log("Publicacion reenviada: ", publication_id);
+    this.Service.reenviarPublication(publication_id).subscribe((data: any) => {
+      if(data!=null){
+        Swal.fire({
+          title: 'Perfecto!',
+          text: 'Publicacion reenviada con exito!',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          this.obtenerMisPublicaciones();
+        });
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text: 'Error al reenviar la publicacion',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+    });
+  }
+  retornarTipoPublicacion(id: number) {
+    switch (id) {
+      case 1:
+        return "Venta";
+      case 2:
+        return "Compra";
+      default:
+        return "Voluntariado";
+    }
+  }
 }

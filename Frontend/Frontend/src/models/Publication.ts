@@ -5,25 +5,17 @@ export class Publication {
   date!: string;
   status!: string;
   username!: string;
-  foto!: string[];
-  likes!: number;
-  dislikes!: number;
-  cost!: number;
-  type!: string;
+  foto!: string;
+  total_cost!: number;
+  publication_type_id!: number;
   category!: string;
+  unit_price!: number;
+  quantity!: number;
 
-  constructor(
-    id: number,
-    title: string,
-    description: string,
-    date: string,
-    status: string,
-    username: string,
-    foto: string[],
-    cost: number,
-    type: string,
-    category: string
-  ) {
+
+  constructor(id: number, title: string, description: string, date: string, status: string,
+              username: string, foto: string, total_cost: number, publication_type_id: number,
+              category: string, unit_price: number, quantity: number){
     this.id = id;
     this.title = title;
     this.description = description;
@@ -31,8 +23,10 @@ export class Publication {
     this.status = status;
     this.username = username;
     this.foto = foto;
-    this.cost = cost;
-    this.type = type;
+    this.total_cost = total_cost;
+    this.publication_type_id = publication_type_id;
     this.category = category;
+    this.unit_price = unit_price;
+    this.quantity = quantity;
   }
 }

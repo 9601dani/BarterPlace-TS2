@@ -16,9 +16,11 @@ class Publication extends Model
         'status',
         'username',
         'foto',
-        'cost',
+        'total_cost',
         'publication_type_id',
-        'category'
+        'category',
+        'unit_price',
+        'quantity'
     ];
     public $timestamps = false;
 }
