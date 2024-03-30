@@ -32,6 +32,7 @@ import { StoreComponent } from './user-views/store/store.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { RequestSellerComponent } from './admin-views/request-seller/request-seller.component';
 import { CategoryAddComponent } from './admin-views/category-add/category-add.component';
+import { CollectMoneyComponent } from './user-views/collect-money/collect-money.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { CategoryAddComponent } from './admin-views/category-add/category-add.co
     PublishComponent,
     StoreComponent,
     RequestSellerComponent,
-    CategoryAddComponent
+    CategoryAddComponent,
+    CollectMoneyComponent
   ],
     imports: [
         BrowserModule,

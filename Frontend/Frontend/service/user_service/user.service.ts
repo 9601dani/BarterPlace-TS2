@@ -60,4 +60,14 @@ export class UserService {
   public reenviarPublication(id:number){
     return this.HttpClient.put(`${this.APIUrl}/publicationsReSend/${id}`, {});
   }
+
+  public updatePublication(publicacion:Publication){
+    return this.HttpClient.put(`${this.APIUrl}/publications/${publicacion.id}`, publicacion);
+  }
+
+  public updateAplicationCurrency (username:string,aplication_currency:number){
+    return this.HttpClient.put(`${this.APIUrl}/bankApliCurrency/${username}`, {aplication_currency});
+  }
+
+
 }

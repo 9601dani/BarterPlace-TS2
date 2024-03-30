@@ -55,10 +55,11 @@ class BankController extends Controller
         //
     }
 
-    public function updateAplicationCurrency(string $username, int $discount)
+    public function updateAplicationCurrency(Request $request, string $username)
     {
         $bank = Bank::query()->where('username', $username)->first();
-        $bank->aplication_currency = $bank->aplication_currency - $discount;
+        $bank->aplication_currency = $request->aplication_currency;
         $bank->save();
+        return $bank;
     }
 }

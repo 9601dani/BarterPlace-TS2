@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altura mínima de la ventana visible */
+}
+
+.component-container {
+  display: grid; /* Asegúrate de que este contenedor use CSS Grid */
+  grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
+  grid-gap: 20px; /* Espaciado entre filas y columnas */
+  flex: 1; /* El componente ocupará todo el espacio vertical restante */
+  text-align: center; /* Centra el contenido */
+}
+.component-container > div {
+  border: 2px solid #7AA095; /* Cambia #FF5733 por el color deseado */
+  /* Otras propiedades de estilo para las celdas del grid */
+  padding: 10px; /* Espaciado interno para que el contenido no toque los bordes */
+  border-radius: 5px; /* Bordes redondeados para un efecto estético */
+}

@@ -64,7 +64,10 @@ class PublicationController extends Controller
     public function show(string $id)
     {
         //
-        return Publication::query()->where('username', $id)->get();
+        return Publication::query()
+        ->where('username', $id)
+        //->where('status','!=', 'inactive')
+        ->get();
     }
 
     /**
@@ -95,6 +98,7 @@ class PublicationController extends Controller
         $publication = Publication::find($id);
         $publication->status = $request->status;
         $publication->save();
+        return $publication;
     }
 
     /**
@@ -117,5 +121,14 @@ class PublicationController extends Controller
         $publication->save();
         return $publication;
     }
+
+    public function inactivePublication(integer $id)
+    {
+        $publication = Publication::find($id);
+        $publication->status = 'inactive';
+        $publication->save();
+        return $publication;
+    }
+
 
 }

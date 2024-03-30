@@ -33,6 +33,7 @@
                 <mat-icon *ngIf="publication.status!='inactive'" style="color: darkblue" (click)="editPublication(publication)" matTooltip='Editar'>edit</mat-icon>
                 <mat-icon style="color: red" (click)="deletePublication(publication.id)" matTooltip='Eliminar'>delete</mat-icon>
                 <mat-icon *ngIf="publication.status=='rejected'" style="color: yellowgreen" (click)="reenviarPublicacion(publication.id)" matTooltip='Volver a Publicar'>send</mat-icon>
+                <mat-icon *ngIf="publication.status=='inactive'" style='color:yellowgreen' (click)="activarPublicacion(publication.id)"matTooltip="Reactivar">reply</mat-icon>
               </div>
             </div>
           </div>

@@ -23,6 +23,7 @@ Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/auth', [UserController::class, 'auth']);
 Route::get('/bank/{username}', [BankController::class, 'show']);
+Route::put('/bankApliCurrency/{username}', [BankController::class, 'updateAplicationCurrency']);
 
 // ROUTAS DE PUBLICACIONES
 Route::get('/publications/types', [PublicationTypeController::class, 'index']);
@@ -33,6 +34,7 @@ Route::get('/publications/{id}', [PublicationController::class, 'show']);
 Route::get('/publicationsP', [PublicationController::class, 'publicationsP']);
 Route::put('/publicationsS/{id}', [PublicationController::class, 'updateStatus']);
 Route::put('/publicationsReSend/{id}', [PublicationController::class, 'reenviarPublication']);
+Route::put('/publicationsInactive/{id}', [PublicationController::class, 'inactivePublication']);
 
 
 // ROUTAS DE ADMINISTRADORES

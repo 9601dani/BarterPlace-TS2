@@ -24,6 +24,7 @@ export class PublishComponent implements OnInit{
   tipo_publicacion: string = '1';
   public imagen_seleccionada: string = '';
   public publication_a_editar!: Publication;
+  public publicacion_editada!: Publication;
   public my_publications: Publication[] = [
     {
       id: 1,
@@ -91,7 +92,6 @@ export class PublishComponent implements OnInit{
   }
 
   editPublication(publication: Publication){
-    console.log("Publication edited: ", publication);
     this.edit_publication = true;
     this.new_publication = true;
     this.publication_a_editar = publication;
@@ -102,10 +102,159 @@ export class PublishComponent implements OnInit{
     this.form_new_publication.get('type')?.setValue(publication.publication_type_id);
     this.form_new_publication.get('category')?.setValue(this.retornarCategoriaId(publication.category));
     this.imagen_seleccionada = publication.foto;
+    this.tipo_publicacion = publication.publication_type_id.toString();
   }
 
   guardarEdicion(){
-    console.log("Publication edited: ", this.publication_a_editar);
+    if (this.form_new_publication.valid) {
+      this.publicacion_editada = this.comprobarType(this.form_new_publication.get('type')?.value);
+      this.publicacion_editada.id = this.publication_a_editar.id;
+      if(this.comprobarDineroEdicion(this.publication_a_editar,this.publicacion_editada)) {
+        this.Service.updatePublication(this.publicacion_editada).subscribe((data: any) => {
+          if (data != null) {
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'Publicacion editada con exito!',
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              this.actualizarBank();
+              this.edit_publication = false;
+              this.form_new_publication.reset();
+              this.imagen_seleccionada = '';
+            });
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: 'Error al editar la publicacion',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+              this.edit_publication = false;
+              this.form_new_publication.reset();
+              this.imagen_seleccionada = '';
+            });
+          }
+        });
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text: 'No tienes suficiente dinero para publicar',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+    }
+  }
+
+  comprobarDineroEdicion(publication_ant:Publication, publicacion_now:Publication): boolean {
+    console.log('publicacion ant:');
+    console.log(publication_ant);
+    console.log('publicacion now:');
+    console.log(publicacion_now);
+    if(publication_ant.publication_type_id==1 || publication_ant.publication_type_id==3){
+      if(publicacion_now.publication_type_id ==2){
+        //TODO: Se devuelve el dinero total de la publicacion anterior al usuario
+        let bank= JSON.parse(localStorage.getItem('bank') || '{}');
+        bank.aplication_currency += publication_ant.total_cost;
+        this.Service.updateAplicationCurrency(this.user.username,bank.aplication_currency).subscribe((data: any) => {
+          if(data!=null){
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'Dinero devuelto con exito!',
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            });
+          }else{
+            Swal.fire({
+              title: 'Error!',
+              text: 'Error al devolver el dinero',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          }
+        });
+        return true;
+      }else{
+        //TODO: Aqui va la logica para ver si el nuevo costo es mayor al anterior y ver si se le devuelve la diferencia al usuario
+        let nuevo_total = publicacion_now.total_cost-publication_ant.total_cost;
+        if(nuevo_total>0){
+          let bank= JSON.parse(localStorage.getItem('bank') || '{}');
+          bank.aplication_currency -= nuevo_total;
+          this.Service.updateAplicationCurrency(this.user.username,bank.aplication_currency).subscribe((data: any) => {
+            if(data!=null){
+              Swal.fire({
+                title: 'Perfecto!',
+                text: 'Dinero devuelto con exito!',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              });
+            }else{
+              Swal.fire({
+                title: 'Error!',
+                text: 'Error al devolver el dinero',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+              });
+            }
+          });
+        }else if(nuevo_total<0){
+          let bank= JSON.parse(localStorage.getItem('bank') || '{}');
+          if(bank.aplication_currency >= Math.abs(nuevo_total)){
+            bank.aplication_currency -= nuevo_total;
+            this.Service.updateAplicationCurrency(this.user.username, bank.aplication_currency).subscribe((data: any) => {
+              if (data != null) {
+                Swal.fire({
+                  title: 'Perfecto!',
+                  text: 'Se ha descontado el nuevo total!',
+                  icon: 'success',
+                  confirmButtonText: 'Ok'
+                });
+              } else {
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Error al devolver el dinero',
+                  icon: 'error',
+                  confirmButtonText: 'Ok'
+                });
+              }
+            });
+          }
+        }else{
+          return true;
+        }
+
+        return true;
+      }
+    }else if(publication_ant.publication_type_id==2){
+      if(publicacion_now.publication_type_id ==1 || publicacion_now.publication_type_id ==3){
+        //Aqui va la logica para devolver el dinero total de la publicacion anterior al usuario
+        let bank= JSON.parse(localStorage.getItem('bank') || '{}');
+        bank.aplication_currency -= publicacion_now.total_cost;
+        console.log('bank: '+ bank.aplication_currency);
+        this.Service.updateAplicationCurrency(this.user.username,bank.aplication_currency).subscribe((data: any) => {
+          if(data!=null){
+            Swal.fire({
+              title: 'Perfecto!',
+              text: 'Dinero devuelto con exito!',
+              icon: 'success',
+              confirmButtonText: 'Ok'
+            });
+          }else{
+            Swal.fire({
+              title: 'Error!',
+              text: 'Error al devolver el dinero',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          }
+        });
+        return true;
+      }else{
+        return true;
+      }
+    }
+    return false;
   }
 
   retornarCategoriaId(category_name: string): number {
@@ -118,8 +267,73 @@ export class PublishComponent implements OnInit{
   }
 
   deletePublication(id_publication: number){
-    console.log("Publication deleted: ", id_publication);
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: "No podras revertir esta accion!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.Service.updateStatusPublication(id_publication, 'inactive').subscribe((data: any) => {
+          if(data!=null){
+            Swal.fire(
+              'Eliminado!',
+              'Tu publicacion ha sido eliminada. id: '+data.title.toUpperCase(),
+              'success'
+            ).then((result) => {
+              //volvere el dinero al usuario si es venta o voluntariado
+              if(data.publication_type_id==1 || data.publication_type_id==3){
+                let bank= JSON.parse(localStorage.getItem('bank') || '{}');
+                bank.aplication_currency += data.total_cost;
+                this.Service.updateAplicationCurrency(this.user.username,bank.aplication_currency).subscribe((data: any) => {
+                  if(data!=null){
+                    Swal.fire({
+                      title: 'Perfecto!',
+                      text: 'Dinero devuelto con exito!',
+                      icon: 'success',
+                      confirmButtonText: 'Ok'
+                    }).then((result) => {
+                      this.obtenerMisPublicaciones();
+                      this.actualizarBank();
+                    });
+                  }else{
+                    Swal.fire({
+                      title: 'Error!',
+                      text: 'Error al devolver el dinero',
+                      icon: 'error',
+                      confirmButtonText: 'Ok'
+                    });
+                  }
+                });
+              }else{
+                Swal.fire({
+                  title: 'Perfecto!',
+                  text: 'Publicacion eliminada con exito!',
+                  icon: 'success',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                  this.obtenerMisPublicaciones();
+
+                });
+              }
+            });
+          }else{
+            Swal.fire({
+              title: 'Error!',
+              text: 'Error al eliminar la publicacion',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            });
+          }
+        });
+      }
+    });
   }
+
+
 
   nuevoPublication(){
     this.new_publication = true;
@@ -137,7 +351,6 @@ export class PublishComponent implements OnInit{
     if (this.form_new_publication.valid) {
       let publication = this.comprobarType(this.form_new_publication.get('type')?.value);
       if(this.comprobarDinero(publication)) {
-        console.log(publication);
         this.Service.addPublication(publication).subscribe((data: any) => {
           if (data != null) {
             Swal.fire({
@@ -319,7 +532,6 @@ export class PublishComponent implements OnInit{
     this.Service.getMyPublications(this.user.username).subscribe((data: any) => {
       if(data!=null){
         this.my_publications = data;
-        console.log(this.my_publications);
       }else{
         Swal.fire({
           title: 'Error!',
@@ -345,7 +557,6 @@ export class PublishComponent implements OnInit{
   }
 
   reenviarPublicacion(publication_id: number){
-    console.log("Publicacion reenviada: ", publication_id);
     this.Service.reenviarPublication(publication_id).subscribe((data: any) => {
       if(data!=null){
         Swal.fire({
@@ -375,5 +586,53 @@ export class PublishComponent implements OnInit{
       default:
         return "Voluntariado";
     }
+  }
+
+  activarPublicacion(id_publication: number){
+    this.Service.updateStatusPublication(id_publication, 'pending').subscribe((data: any) => {
+      if(data!=null){
+        Swal.fire({
+          title: 'Perfecto!',
+          text: 'Publicacion activada con exito!, espera a que sea aceptada por un administrador',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          this.obtenerMisPublicaciones();
+          //Actucalizar el banco
+          if(data.publication_type_id==1 || data.publication_type_id==3){
+            let bank= JSON.parse(localStorage.getItem('bank') || '{}');
+            bank.aplication_currency -= data.total_cost;
+            this.Service.updateAplicationCurrency(this.user.username,bank.aplication_currency).subscribe((data: any) => {
+              if(data!=null){
+                Swal.fire({
+                  title: 'Perfecto!',
+                  text: 'Dinero descontado con exito!',
+                  icon: 'success',
+                  confirmButtonText: 'Ok'
+                }).then(
+                  (result) => {
+                    this.actualizarBank();
+                  }
+                );
+              }else{
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Error al descontar el dinero',
+                  icon: 'error',
+                  confirmButtonText: 'Ok'
+                });
+              }
+            });
+          }
+        });
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text: 'Error al activar la publicacion',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+    });
   }
 }

@@ -40,6 +40,9 @@
 
   </mat-toolbar>
   <mat-menu #menu_1="matMenu">
+    <button (click)="changePantalla('collect-money')" mat-menu-item>Mi Monedero
+      <mat-icon>paid</mat-icon>
+    </button>
     <button (click)="changePantalla('')" mat-menu-item>Ver Perfil
       <mat-icon>account_box</mat-icon>
     </button>
@@ -56,6 +59,9 @@
   </div>
   <div *ngIf="this.getPantalla()=='store'">
     <app-store></app-store>
+  </div>
+  <div *ngIf="this.getPantalla()=='collect-money'">
+    <app-collect-money></app-collect-money>
   </div>
 
 
