@@ -10,13 +10,186 @@
   </div>
   <!-- Contenido del componente -->
   <div class="component-container">
-      <div style="font-size: large"> Recarga Mediante una tarjeta:
-
+    <div class="left-container">
+      <div align="center">
+        <hr>
+        <h2>Añade Tarjeta o Cuenta</h2>
+        <!-- Aqui ira un boton para ver si añade tarjeta o cuenta-->
+        <mat-radio-group [(ngModel)]="opcion_seleccionada" aria-label="Selecciona una Opcion">
+          <mat-radio-button value="1">Añadir Tarjeta</mat-radio-button>
+          <mat-radio-button value="2">Añadir Cuenta</mat-radio-button>
+        </mat-radio-group>
+        <hr>
+        <div>
+          <h4>Rellena los campos:</h4>
+          <form [formGroup]="form_add_tarjet" *ngIf="opcion_seleccionada=='1'">
+            <mat-grid-list cols = "2" rowHeight = "4:1">
+              <mat-grid-tile>
+                <mat-label>Nombre:</mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="Nombre de la Tarjeta *" formControlName="name">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-label>Numero de tarjeta</mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="Numero de Tarjeta*" formControlName="number">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-label>Fecha de Vencimiento</mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="XX/XX*" formControlName="date_expiration">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-label>Codigo de Seguridad</mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="Codigo de Seguridad*" formControlName="cod_seg">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <button *ngIf="!edit_card" mat-raised-button color="primary"
+                        (click)="addTarjet()">Añadir Tarjeta</button>
+                <button *ngIf="edit_card" mat-raised-button color="primary"
+                        (click)="saveEditTarjeta()">Actualizar Tarjeta</button>
+                <button *ngIf="edit_card" mat-raised-button color="warn"
+                        (click)="cancelEditTarjeta()">Cancelar</button>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </form>
+          <form [formGroup]="form_add_account" *ngIf="opcion_seleccionada=='2'">
+            <mat-grid-list cols = "2" rowHeight = "4:1">
+              <mat-grid-tile>
+                <mat-label>Nombre:</mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="Nombre de la Cuenta *" formControlName="name">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                 <mat-label>Numero de Cuenta</mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="Numero de Cuenta*" formControlName="number">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-label>Banco</mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="Banco*" formControlName="bank">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-label>Tipo de Cuenta</mat-label>
+                <mat-form-field>
+                  <mat-select formControlName="type" >
+                    <mat-option value="Monetaria">Monetaria</mat-option>
+                    <mat-option value="Ahorro">Ahorros</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <button *ngIf="!edit_account" mat-raised-button color="primary"
+                        (click)="addAccount()">Añadir Cuenta</button>
+                <button *ngIf="edit_account" mat-raised-button color="primary"
+                        (click)="saveEditAccount()">Actualizar Cuenta</button>
+                <button *ngIf="edit_account" mat-raised-button color="warn"
+                        (click)="cancelEditAccount()">Cancelar</button>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </form>
+        </div>
       </div>
-      <div style="font-size: large"> Te ofrecemos los siguientes paquetes de monedas:
-
-
+      <div>
+        <hr>
+        <h2 align="center">Compra de combos</h2>
+        <hr>
+        <mat-card class="mat-elevation-z3" style="background-color: #D0DDD7" *ngFor="let combo of combos_para_comprar">
+          <mat-card-header>
+            <mat-card-title> <mat-icon>monetization_on</mat-icon> {{ combo.name }}</mat-card-title>
+            <mat-card-subtitle>{{ combo.price }}Q</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p style="font-size: larger">Cantidad de Monedas: {{ combo.coins }}
+            <mat-icon>savings</mat-icon>
+            </p>
+            <p style="font-size: larger">Precio: {{ combo.price }}Q</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <div style="cursor: pointer">
+              <mat-icon (click)="buyPackMoney(combo)"  style="color: green">shopping_cart</mat-icon>
+            </div>
+          </mat-card-actions>
+        </mat-card>
       </div>
+    </div>
+    <div>
+      <h2> Tarjetas y Cuenta de Banco</h2>
+      <mat-icon (click)="changeTarjetOrAccount('tarjet')"  matTooltip="Mis Tarjetas" style="cursor: pointer"> credit_card </mat-icon>
+      <mat-icon (click)="changeTarjetOrAccount('account')"  matTooltip='Cuenta de Banco' style="cursor: pointer"> local_atm </mat-icon>
+      <hr>
+      <div *ngIf="tarjet_or_account=='tarjet'">
+        <h4>Tus Tarjetas:</h4>
+        <div *ngIf="tarjets.length==0">
+          <h4>No tienes tarjetas registradas aun</h4>
+        </div>
+        <div *ngIf="tarjets.length>0" class="tarjeta-container">
+          <mat-card class="mat-elevation-z3" style="background-color: #D0DDD7" *ngFor="let tarjet of tarjets">
+            <mat-card-header>
+              <mat-card-title> <mat-icon>wallet</mat-icon> {{ tarjet.name }}</mat-card-title>
+              <mat-card-subtitle>{{ formatCardNumber(tarjet.number) }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p style="font-size: larger">Fecha de Vencimiento: {{ tarjet.expiration }}</p>
+              <p style="font-size: larger">Código de Seguridad: {{ tarjet.cvv }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <div style="cursor: pointer">
+                <mat-icon style="cursor: pointer" (click)="deleteTarjeta(tarjet)" style="color: red">delete</mat-icon>
+              </div>
+              <div style="cursor: pointer">
+                <mat-icon style="cursor: pointer" (click)="recargarMoneyTarjet(tarjet)" matTooltip='Usar Tarjeta'
+                          style="color: green">check_circle</mat-icon>
+              </div>
+              <div style="cursor: pointer">
+                <mat-icon (click)="editTarjeta(tarjet)" matTooltip='Editar Tarjeta' style="color: blue">
+                  edit</mat-icon>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+      <div *ngIf="tarjet_or_account=='account'">
+        <h4>Tus Cuentas de Banco:</h4>
+        <div *ngIf="accounts.length==0">
+          <h4>No tienes cuentas de banco registradas aun</h4>
+        </div>
+        <div *ngIf="accounts.length>0" class="tarjeta-container">
+          <mat-card class="mat-elevation-z3" style="background-color: #D0DDD7" *ngFor="let account of accounts">
+            <mat-card-header>
+              <mat-card-title> <mat-icon>account_balance</mat-icon> {{ account.name }}</mat-card-title>
+              <mat-card-subtitle>{{ formatCardNumber(account.number) }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p style="font-size: larger">Banco: {{ account.bank }}</p>
+              <p style="font-size: larger">Tipo Cuenta: {{ account.type }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <div  style="cursor: pointer">
+                <mat-icon (click)="deleteAccount(account)" style="color: red">delete</mat-icon>
+              </div>
+              <div style="cursor: pointer">
+                <mat-icon (click)="recargarMoneyAccount(account)" matTooltip='Usar Cuenta' style="color: green">
+                  check_circle</mat-icon>
+              </div>
+              <div style="cursor: pointer">
+                <mat-icon (click)="editAccount(account)" matTooltip='Editar Cuenta' style="color: blue">
+                  edit</mat-icon>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+    </div>
   </div>
   <br><br><br><br><br><br>
+</div>
 </div>

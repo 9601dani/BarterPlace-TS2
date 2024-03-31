@@ -4,6 +4,7 @@ import {User} from "../../../models/User";
 import {UserService} from "../../../../service/user_service/user.service";
 import {Bank} from "../../../models/Bank";
 import Swal from "sweetalert2";
+import {GuestService} from "../../../../service/guest_service/guest.service";
 
 @Component({
   selector: 'app-home-user',
@@ -15,7 +16,8 @@ export class HomeUserComponent implements OnInit{
   public bank_user!:Bank;
   constructor(
     private router: Router,
-    private Service:UserService
+    private Service:UserService,
+    private GuestService:GuestService
   ) {
     this.bank_user = JSON.parse(localStorage.getItem('bank') || '{}');
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -23,6 +25,14 @@ export class HomeUserComponent implements OnInit{
 
   ngOnInit(): void {
     this.validarSesion();
+    this.GuestService.getBank(this.user.username).subscribe((data)=>{
+      if(data!=null){
+        localStorage.setItem('bank', JSON.stringify(data));
+        this.bank_user = JSON.parse(localStorage.getItem('bank') || '{}');
+      }
+    });
+    this.changePantalla(this.Service.getPantalla());
+    console.log(this.Service.getPantalla());
   }
 
   public cerrarSesion(){

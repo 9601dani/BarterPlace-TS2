@@ -1,0 +1,95 @@
+<div class="container">
+  <!-- Titulo del componente -->
+  <div class="component-title">
+    <hr>
+    <h1 align="center">Paquetes de monedas!
+    <mat-icon>savings</mat-icon>
+    </h1>
+    <h3 align="center">Bienvenido, aqui podras administrar los combos de monedas que estaran disponibles</h3>
+    <hr>
+  </div>
+  <!-- Contenido del componente -->
+  <div class="component-container">
+    <section class="main-container">
+      <!-- Contenedor Izquierdo -->
+      <div class="left-container">
+        <div *ngIf="combos_para_comprar.length>0">
+          <h2 align="center">Combos Actuales
+            <mat-icon>list</mat-icon>
+          </h2>
+          <mat-card class="mat-elevation-z3, tarjeta" style="background-color: #D0DDD7"
+                    *ngFor="let combo of combos_para_comprar">
+            <mat-card-header>
+              <mat-card-title> <mat-icon>monetization_on</mat-icon> {{ combo.name }}</mat-card-title>
+              <mat-card-subtitle>{{ combo.price }}Q</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p style="font-size: larger">Cantidad de Monedas: {{ combo.coins }}
+                <mat-icon>savings</mat-icon>
+              </p>
+              <p style="font-size: larger">Precio: {{ combo.price }}Q</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <div style="cursor: pointer">
+                <mat-icon (click)="editarCombo(combo)"  style="color: blue">edit</mat-icon>
+              </div>
+              <div style="cursor: pointer">
+                <mat-icon (click)="deleteCombo(combo)" style="color: red">delete</mat-icon>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+      <div *ngIf="combos_para_comprar.length==0">
+        <h2><strong>Actualmente no hay combos</strong></h2>
+      </div>
+      <div class="right-container">
+        <div>
+          <h2 align="center">Crear Combo
+            <mat-icon>add_circle</mat-icon>
+          </h2>
+          <form [formGroup]="form_combo">
+            <mat-grid-list cols = "2" rowHeight = "3:1">
+              <mat-grid-tile>
+                <mat-label>Nombre:</mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="Nombre del combo *" formControlName="name">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-label>Precio en Quetzales Q</mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="Precio*" formControlName="price">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-label>Descripcion</mat-label>
+                <mat-form-field>
+                  <textarea matInput placeholder="Descripcion"
+                            formControlName="description"></textarea>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-label>BarterCoins
+                  <mat-icon>savings</mat-icon>
+                </mat-label>
+                <mat-form-field>
+                  <input matInput placeholder="Numero de Coins*" formControlName="coins">
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <button *ngIf="add_or_editar=='Añadir'" mat-raised-button
+                        color="primary" (click)="add_combo()">Añadir Combo</button>
+                <button *ngIf="add_or_editar=='Editar'" mat-raised-button
+                        color="primary" (click)="save_edit_combo()">Actualizar Combo</button>
+                <button *ngIf="add_or_editar=='Editar'" mat-raised-button
+                        color="warn" (click)="limpiaForm()">Cancelar</button>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+  <br><br><br><br><br><br><br>
+</div>

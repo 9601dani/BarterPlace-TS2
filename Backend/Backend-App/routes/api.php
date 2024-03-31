@@ -8,6 +8,12 @@ use App\Http\Controllers\RequestSellerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PublicationTypeController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\PackMoneyController;
+use App\Http\Controllers\TarjetController;
+use App\Http\Controllers\AccountBankController;
+use App\Http\Controllers\RecordRechargeController;
+use App\Http\Controllers\RecordBuyPackController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -24,6 +30,18 @@ Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/auth', [UserController::class, 'auth']);
 Route::get('/bank/{username}', [BankController::class, 'show']);
 Route::put('/bankApliCurrency/{username}', [BankController::class, 'updateAplicationCurrency']);
+Route::post('/tarjet', [TarjetController::class, 'store']);
+Route::get('/tarjet/{username}', [TarjetController::class, 'index']);
+Route::put('/tarjet/{id}', [TarjetController::class, 'update']);
+Route::delete('/tarjet/{id}', [TarjetController::class, 'destroy']);
+Route::post('/account_bank', [AccountBankController::class, 'store']);
+Route::get('/account_bank/{username}', [AccountBankController::class, 'index']);
+Route::put('/account_bank/{username}', [AccountBankController::class, 'update']);
+Route::delete('/account_bank/{id}', [AccountBankController::class, 'destroy']);
+Route::post('/record_recharge', [RecordRechargeController::class, 'store']);
+Route::get('/record_recharge/{username}', [RecordRechargeController::class, 'index']);
+Route::post('/record_buy_pack', [RecordBuyPackController::class, 'store']);
+
 
 // ROUTAS DE PUBLICACIONES
 Route::get('/publications/types', [PublicationTypeController::class, 'index']);
@@ -49,4 +67,8 @@ Route::put('/request/sellers/{username}', [RequestSellerController::class, 'upda
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{name}', [CategoryController::class, 'show']);
+Route::get('/packmoney', [PackMoneyController::class, 'index']);
+Route::post('/packmoney', [PackMoneyController::class, 'store']);
+Route::put('/packmoney/{id}', [PackMoneyController::class, 'update']);
+Route::delete('/packmoney/{id}', [PackMoneyController::class, 'destroy']);
 

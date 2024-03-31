@@ -67,9 +67,9 @@ export class PublishComponent implements OnInit{
       this.form_new_publication = new FormBuilder().group({
         title: [null, Validators.required],
         description: [null, Validators.required],
-        foto: [null],
-        unit_price: [0, Validators.required],
-        quantity: [1, Validators.required],
+        foto: [''],
+        unit_price: [0, [Validators.required,Validators.pattern('[0-9]+')]],
+        quantity: [1, [Validators.required,Validators.pattern('[0-9]+')]],
         type: [null, Validators.required],
         category: [null, Validators.required]
       });
@@ -348,6 +348,15 @@ export class PublishComponent implements OnInit{
   }
 
   onSubmitedPublication(){
+    if(this.imagen_seleccionada == ''){
+      Swal.fire({
+        title: 'Error!',
+        text: 'Por favor seleccione una imagen',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      });
+      return;
+    }
     if (this.form_new_publication.valid) {
       let publication = this.comprobarType(this.form_new_publication.get('type')?.value);
       if(this.comprobarDinero(publication)) {

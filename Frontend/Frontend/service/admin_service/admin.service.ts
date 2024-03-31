@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../../src/models/User";
+import {PackMoney} from "../../src/models/PackMoney";
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,21 @@ export class AdminService {
 
   public findCategory(categoryName: string){
     return this.HttpClient.get(`${this.APIUrl}/categories/${categoryName}`);
+  }
+
+  public getPackageMoney(){
+    return this.HttpClient.get(`${this.APIUrl}/packmoney`);
+  }
+
+  public addPackageMoney(packmoney: PackMoney){
+    return this.HttpClient.post(`${this.APIUrl}/packmoney`, packmoney);
+  }
+
+  public updatePackageMoney(packmoney: PackMoney){
+    return this.HttpClient.put(`${this.APIUrl}/packmoney/${packmoney.id}`, packmoney);
+  }
+
+  public deletePackageMoney(id: number){
+    return this.HttpClient.delete(`${this.APIUrl}/packmoney/${id}`);
   }
 }

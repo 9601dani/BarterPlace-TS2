@@ -33,6 +33,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import { RequestSellerComponent } from './admin-views/request-seller/request-seller.component';
 import { CategoryAddComponent } from './admin-views/category-add/category-add.component';
 import { CollectMoneyComponent } from './user-views/collect-money/collect-money.component';
+import {MatRadioModule} from "@angular/material/radio";
+import { PackageMoneyAddComponent } from './admin-views/package-money-add/package-money-add.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,8 @@ import { CollectMoneyComponent } from './user-views/collect-money/collect-money.
     StoreComponent,
     RequestSellerComponent,
     CategoryAddComponent,
-    CollectMoneyComponent
+    CollectMoneyComponent,
+    PackageMoneyAddComponent
   ],
     imports: [
         BrowserModule,
@@ -72,6 +75,7 @@ import { CollectMoneyComponent } from './user-views/collect-money/collect-money.
         MatSelectModule,
         MatTooltipModule,
         FormsModule,
+        MatRadioModule,
     ],
   providers: [TestService],
   bootstrap: [AppComponent]

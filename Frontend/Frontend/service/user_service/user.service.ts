@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {RequestSeller} from "../../src/models/RequestSeller";
 import {Publication} from "../../src/models/Publication";
+import {Tarjet} from "../../src/models/Tarjet";
+import {AccountBank} from "../../src/models/AccountBank";
+import {RecordRecharge} from "../../src/models/RecordRecharge";
+import {RecordBuyPack} from "../../src/models/RecordBuyPack";
 
 @Injectable({
   providedIn: 'root'
@@ -69,5 +73,47 @@ export class UserService {
     return this.HttpClient.put(`${this.APIUrl}/bankApliCurrency/${username}`, {aplication_currency});
   }
 
+  public addTarjet(tarjet:Tarjet){
+    return this.HttpClient.post(`${this.APIUrl}/tarjet`, tarjet);
+  }
 
+  public getTarjets(username:string){
+    return this.HttpClient.get(`${this.APIUrl}/tarjet/${username}`);
+  }
+
+  public updateTarjet(tarjet:Tarjet){
+    return this.HttpClient.put(`${this.APIUrl}/tarjet/${tarjet.id}`, tarjet);
+  }
+
+  public deleteTarjet(id:number){
+    return this.HttpClient.delete(`${this.APIUrl}/tarjet/${id}`);
+  }
+
+  public getMyAccountBank(username:string){
+    return this.HttpClient.get(`${this.APIUrl}/account_bank/${username}`);
+  }
+
+  public addAccountBank(account:AccountBank){
+    return this.HttpClient.post(`${this.APIUrl}/account_bank`, account);
+  }
+
+  public updateAccountBank(account:AccountBank){
+    return this.HttpClient.put(`${this.APIUrl}/account_bank/${account.id}`, account);
+  }
+
+  public deleteAccountBank(id:number){
+    return this.HttpClient.delete(`${this.APIUrl}/account_bank/${id}`);
+  }
+
+  public addRecordRecharge(recordRecharge:RecordRecharge){
+    return this.HttpClient.post(`${this.APIUrl}/record_recharge`, recordRecharge);
+  }
+
+  public getMyRecordRecharge(username:string){
+    return this.HttpClient.get(`${this.APIUrl}/record_recharge/${username}`);
+  }
+
+  public addRecordPackMoney(recordPackMoney:RecordBuyPack){
+    return this.HttpClient.post(`${this.APIUrl}/record_buy_pack`, recordPackMoney);
+  }
 }

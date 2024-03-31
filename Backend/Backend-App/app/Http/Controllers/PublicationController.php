@@ -53,7 +53,7 @@ class PublicationController extends Controller
         /**descontare del bank si es de tipo voluntariado o venta */
         if($publication->publication_type_id == 1 || $publication->publication_type_id == 3){
             $bank = new BankController;
-            $bank->updateAplicationCurrency($request->username, $request->total_cost);
+            $bank->updateAplicationCurrency2($request->username, $publication->total_cost);
         }    
         return $publication;
     }

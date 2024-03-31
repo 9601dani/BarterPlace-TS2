@@ -62,4 +62,27 @@ class BankController extends Controller
         $bank->save();
         return $bank;
     }
+
+    public function updateAplicationCurrency2(string $username, string $total_cost)
+    {
+        $bank = Bank::query()->where('username', $username)->first();
+        $bank->aplication_currency -= $total_cost;
+        $bank->save();
+    }
+
+    public function updateRealMoney(string $username, string $amount)
+    {
+        $bank = Bank::query()->where('username', $username)->first();
+        $bank->money += $amount;
+        $bank->save();
+    }
+
+    public function updateBuyPack(string $username, string $price, string $coins)
+    {
+        $bank = Bank::query()->where('username', $username)->first();
+        $bank->money -= $price;
+        $bank->aplication_currency += $coins;
+        $bank->save();
+    }
+    
 }

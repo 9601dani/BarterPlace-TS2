@@ -5,15 +5,66 @@
 }
 
 .component-container {
-  display: grid; /* Asegúrate de que este contenedor use CSS Grid */
+  display: grid;
   grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
-  grid-gap: 20px; /* Espaciado entre filas y columnas */
-  flex: 1; /* El componente ocupará todo el espacio vertical restante */
-  text-align: center; /* Centra el contenido */
+  grid-gap: 20px;
 }
-.component-container > div {
-  border: 2px solid #7AA095; /* Cambia #FF5733 por el color deseado */
-  /* Otras propiedades de estilo para las celdas del grid */
-  padding: 10px; /* Espaciado interno para que el contenido no toque los bordes */
-  border-radius: 5px; /* Bordes redondeados para un efecto estético */
+
+.left-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr; /* Dos filas de igual tamaño */
+  grid-gap: 20px;
 }
+
+.component-container > div,
+.left-container > div {
+  border: 2px solid #7AA095;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.tarjeta-container {
+  border: 2px solid #D0DDD7;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin: 20px; /* Asegura un espaciado exterior; ajusta según sea necesario */
+  background-color: #fff;
+}
+
+
+.mat-card {
+  background-color: #D0DDD7;
+  border-radius: 5px; /* Ligeramente redondeado para las tarjetas internas */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra más suave para cada tarjeta */
+  margin-outside: 1000px 0; /* Aumenta este valor si deseas más espacio entre tarjetas */
+}
+
+
+.mat-card-header {
+  background-color: #B0C4B1;
+  color: #fff;
+  border-top-left-radius: 4px; /* Asegurarse de que los bordes superiores estén redondeados */
+  border-top-right-radius: 4px;
+}
+
+.mat-card-title,
+.mat-card-subtitle {
+  color: #fff;
+}
+
+.mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+button.mat-button {
+  color: red; /* Rojo para la acción de eliminar, pero más integrado */
+}
+
+mat-icon {
+  vertical-align: bottom;
+}
+
