@@ -7,34 +7,34 @@
   </div>
   <!-- Contenido del componente -->
   <div class="component-container">
-
     <section class="contenido">
       <!-- Mostrador de publicaciones -->
-      <div class="mostrador" *ngFor="let publication of my_publications">
-        <div class="fila">
-          <div class="item">
-            <span>{{publication.title}}</span> <br>
-            <hr>
-            <div style="overflow: auto">
-              <span>{{publication.description}}</span> <br>
-            </div>
-            <div>
-              <img src='{{publication.foto}}' alt="foto" style="width: 200px; height: auto;">
-            </div>
-            <hr>
-            <span style="font-size: larger"> <mat-icon>savings</mat-icon> {{publication.unit_price}}</span>
-            <span> | </span>
-            <span>{{publication.category}}</span>
-            <br>
+      <div class="publication-card-container">
+        <mat-card class = 'publication-card' *ngFor="let publication of my_publications">
+          <mat-card-header>
+            <mat-card-title> Nombre: {{publication.title}}</mat-card-title>
+            <mat-card-subtitle>{{publication.username}}</mat-card-subtitle>
+          </mat-card-header>
+          <img class='publication-image' mat-card-image src='{{publication.foto}}'>
+          <mat-card-content class="publication-content">
+            <p>Unidades: {{publication.quantity}} </p>
+            <p class="publication-price-content">
+              <mat-icon class="publication-money-icon">savings</mat-icon>
+              {{publication.unit_price}} c/u
+            </p>
+            <mat-divider></mat-divider>
+            <p>{{publication.description}} </p>
+          </mat-card-content>
+          <mat-card-actions>
             <span>{{this.retornarTipoPublicacion(publication.publication_type_id)}}</span>
             <span> | </span>
             <span>{{publication.username}}</span>
             <div>
-              <mat-icon style="color: forestgreen" (click)="aceptar(publication)" matTooltip='Aceptar'>done</mat-icon>
-              <mat-icon style="color: red" (click)="rechazar(publication)" matTooltip='Rechazar'>close</mat-icon>
+              <mat-icon style="color: forestgreen; cursor: pointer" (click)="aceptar(publication)" matTooltip='Aceptar'>done</mat-icon>
+              <mat-icon style="color: red; cursor: pointer" (click)="rechazar(publication)" matTooltip='Rechazar'>close</mat-icon>
             </div>
-          </div>
-        </div>
+          </mat-card-actions>
+        </mat-card>
       </div>
     </section>
     <br><br><br><br><br>

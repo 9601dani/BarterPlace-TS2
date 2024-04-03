@@ -41,6 +41,7 @@ Route::delete('/account_bank/{id}', [AccountBankController::class, 'destroy']);
 Route::post('/record_recharge', [RecordRechargeController::class, 'store']);
 Route::get('/record_recharge/{username}', [RecordRechargeController::class, 'index']);
 Route::post('/record_buy_pack', [RecordBuyPackController::class, 'store']);
+Route::get('/record_buy_pack/{username}', [RecordBuyPackController::class, 'index']);
 
 
 // ROUTAS DE PUBLICACIONES
@@ -53,7 +54,9 @@ Route::get('/publicationsP', [PublicationController::class, 'publicationsP']);
 Route::put('/publicationsS/{id}', [PublicationController::class, 'updateStatus']);
 Route::put('/publicationsReSend/{id}', [PublicationController::class, 'reenviarPublication']);
 Route::put('/publicationsInactive/{id}', [PublicationController::class, 'inactivePublication']);
-
+Route::get('/publicationsNotUser/{username}', [PublicationController::class, 'getPublicationsMain']);
+//ESTA ES PARA VISTA MAIN GUEST POR ESO LIMIT DE 25
+Route::get('/puByCate/{category}', [PublicationController::class, 'publicationsByCategory']);
 
 // ROUTAS DE ADMINISTRADORES
 Route::get('/admins', [UserController::class, 'getAllAdmins']);

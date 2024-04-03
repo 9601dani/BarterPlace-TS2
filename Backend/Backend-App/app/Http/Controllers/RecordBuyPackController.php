@@ -11,10 +11,15 @@ class RecordBuyPackController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        $myRecordBuyPack = RecordBuyPack::query()
+        ->where('username', $request->username)
+        ->get();
+        return $myRecordBuyPack;
     }
+    
 
     /**
      * Store a newly created resource in storage.

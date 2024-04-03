@@ -17,6 +17,7 @@
           <h2 align="center">Combos Actuales
             <mat-icon>list</mat-icon>
           </h2>
+          <hr>
           <mat-card class="mat-elevation-z3, tarjeta" style="background-color: #D0DDD7"
                     *ngFor="let combo of combos_para_comprar">
             <mat-card-header>
@@ -47,6 +48,7 @@
         <div>
           <h2 align="center">Crear Combo
             <mat-icon>add_circle</mat-icon>
+            <hr>
           </h2>
           <form [formGroup]="form_combo">
             <mat-grid-list cols = "2" rowHeight = "3:1">

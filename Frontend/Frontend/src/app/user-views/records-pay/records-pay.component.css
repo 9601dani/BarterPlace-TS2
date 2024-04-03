@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altura mínima de la ventana visible */
+}
+
+.component-container {
+  flex: 1; /* El componente ocupará todo el espacio vertical restante */
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
+  grid-gap: 20px; /* Espacio entre los contenedores */
+  padding: 20px; /* Espacio alrededor de los contenedores */
+}
+
+.left-container, .right-container {
+  display: grid;
+  grid-template-rows: 1fr 1fr; /* Dos filas de igual tamaño para el contenedor izquierdo */
+  grid-gap: 20px;
+}
+
+.component-container > div,
+.left-container > div,
+.right-container > div {
+  border: 2px solid #7AA095;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* src/app/mi-componente/mi-componente.component.css */
+.tarjeta {
+  margin-bottom: 20px; /* Ajusta este valor según necesites */
+}
+.mat-table-container {
+  overflow-x: auto;
+  white-space: nowrap; /* Evita que el contenido de la tabla se ajuste automáticamente */
+}
+
+.mat-table {
+  min-width: 120%; /* Ancho mínimo de la tabla */
+}
+
+

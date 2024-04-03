@@ -1,46 +1,59 @@
+<script src="publish.component.ts"></script>
 <div class="container">
   <!-- Titulo del componente -->
   <div class="component-header" align="center">
     <h2>Mis publicaciones</h2>
     <div *ngIf="!new_publication">
       <mat-icon style="cursor: pointer" matTooltip='Nueva Publicacion' (click)="nuevoPublication()" >add</mat-icon>
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle (click)="getAllMyPublications()" value="Todas">Todas</mat-button-toggle>
+        <mat-button-toggle (click)="getPubliActive()" value="Aceptadas">Aceptadas</mat-button-toggle>
+        <mat-button-toggle (click)="getPubliPending()" value="Pendiente">Pendiente</mat-button-toggle>
+        <mat-button-toggle (click)="getPubliInactive()" value="Rechazadas">Rechazadas</mat-button-toggle>
+        <mat-button-toggle (click)="getPublicVentas()" value="Venta">Ventas</mat-button-toggle>
+        <mat-button-toggle (click)="getPublicCompras()" value="Compra">Compra</mat-button-toggle>
+        <mat-button-toggle (click)="getPublicVoluntariado()" value="Voluntariado">Voluntariado</mat-button-toggle>
+        <mat-button-toggle (click)="getPublicServicios()" value="Servicio">Servicio</mat-button-toggle>
+      </mat-button-toggle-group>
     </div>
     <hr>
   </div>
   <!-- Contenido del componente -->
-  <div class="component-container">
-    <div *ngIf="!new_publication && !edit_publication">
-      <section class="contenido">
-        <!-- Mostrador de publicaciones -->
-        <div class="mostrador" *ngFor="let publication of my_publications">
-          <div class="fila">
-            <div class="item">
-              <span>{{publication.title}}</span> <br>
-              <hr>
-              <div style="overflow: auto">
-                <span>{{publication.description}}</span> <br>
-              </div>
-              <div>
-                <img src='{{publication.foto}}' alt="foto" style="width: 200px; height: auto;">
-              </div>
-              <hr>
-              <span style="font-size: larger"> <mat-icon>savings</mat-icon> {{publication.unit_price}}</span>
-              <span> | </span>
-              <span> Estado: <strong>{{obtenerEstadoPublicacion(publication.status)}}</strong></span>
-              <br>
-              <span>Tipo Publicación: <strong>{{retornarTipoPublicacion(publication.publication_type_id)}}</strong> </span>
-              <div>
-                <mat-icon *ngIf="publication.status!='inactive'" style="color: darkblue" (click)="editPublication(publication)" matTooltip='Editar'>edit</mat-icon>
-                <mat-icon style="color: red" (click)="deletePublication(publication.id)" matTooltip='Eliminar'>delete</mat-icon>
-                <mat-icon *ngIf="publication.status=='rejected'" style="color: yellowgreen" (click)="reenviarPublicacion(publication.id)" matTooltip='Volver a Publicar'>send</mat-icon>
-                <mat-icon *ngIf="publication.status=='inactive'" style='color:yellowgreen' (click)="activarPublicacion(publication.id)"matTooltip="Reactivar">reply</mat-icon>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <br><br><br><br><br>
+  <div *ngIf="!new_publication && !edit_publication" class="publication-card-container">
+    <mat-card class="publication-card" *ngFor="let publication of my_publications">
+      <mat-card-header>
+        <mat-card-title>{{publication.title}}</mat-card-title>
+        <mat-card-subtitle>{{publication.description}}</mat-card-subtitle>
+      </mat-card-header>
+      <img  class="publication-image" mat-card-image src="{{publication.foto}}" alt="Foto de la publicación">
+      <mat-card-content class="publication-content">
+        <hr>
+        <p>
+          <strong>Unidades:</strong> {{publication.quantity       }}->
+          <strong>Precio Unitario: </strong> {{publication.unit_price}} <mat-icon>savings</mat-icon> <br>
+          <strong>Estado:</strong> {{obtenerEstadoPublicacion(publication.status)}} <br>
+          <strong>Tipo de publicación:</strong> {{retornarTipoPublicacion(publication.publication_type_id)}}<br>
+          <strong>Categoria:</strong> {{(publication.category)}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <mat-icon *ngIf="publication.status!='inactive'" style="color: darkblue; cursor: pointer"
+                  (click)="editPublication(publication)" matTooltip='Editar'>edit</mat-icon>
+        <mat-icon style="color: red; cursor: pointer" (click)="deletePublication(publication.id)"
+                  matTooltip='Eliminar'>delete</mat-icon>
+        <mat-icon *ngIf="publication.status=='rejected'" style="color: yellowgreen; cursor: pointer"
+                  (click)="reenviarPublicacion(publication.id)" matTooltip='Volver a Publicar'>send</mat-icon>
+        <mat-icon *ngIf="publication.status=='inactive'" style='color:yellowgreen; cursor: pointer'
+                  (click)="activarPublicacion(publication.id)"matTooltip="Reactivar">reply</mat-icon>
+      </mat-card-actions>
+    </mat-card>
+    <div *ngIf="my_publications.length==0" align="center">
+      <h2>No hay publicaciones para el filtro seleccionado
+      <mat-icon>mood</mat-icon>
+      </h2>
     </div>
+    <br><br><br><br>
+  </div>
     <div *ngIf="new_publication">
       <section style="display: flex; justify-content: center;">
       <!-- Formulario de publicacion -->
@@ -114,6 +127,13 @@
               <input matInput placeholder="Limite Precio" formControlName="unit_price">
             </mat-form-field>
           </mat-grid-tile>
+          <mat-grid-tile *ngIf="tipo_publicacion=='4'">
+            <mat-label style="font-size: larger; font-style: italic">Precio :</mat-label>
+            <mat-form-field class="full-with" appearance="fill">
+              <mat-label>Precio</mat-label>
+              <input matInput placeholder="Precio" formControlName="unit_price">
+            </mat-form-field>
+          </mat-grid-tile>
           <!---Aqui termina el tipo de recompensa-->
           <mat-grid-tile>
             <mat-label style="font-size: larger; font-style: italic">Categoria :</mat-label>
@@ -147,6 +167,6 @@
       <br><br><br><br><br>
     </div>
   </div>
-</div>
+<br><br><br>
 
 

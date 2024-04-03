@@ -35,6 +35,10 @@ import { CategoryAddComponent } from './admin-views/category-add/category-add.co
 import { CollectMoneyComponent } from './user-views/collect-money/collect-money.component';
 import {MatRadioModule} from "@angular/material/radio";
 import { PackageMoneyAddComponent } from './admin-views/package-money-add/package-money-add.component';
+import { RecordsPayComponent } from './user-views/records-pay/records-pay.component';
+import {MatSortModule} from "@angular/material/sort";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 @NgModule({
   declarations: [
@@ -55,7 +59,8 @@ import { PackageMoneyAddComponent } from './admin-views/package-money-add/packag
     RequestSellerComponent,
     CategoryAddComponent,
     CollectMoneyComponent,
-    PackageMoneyAddComponent
+    PackageMoneyAddComponent,
+    RecordsPayComponent
   ],
     imports: [
         BrowserModule,
@@ -76,6 +81,9 @@ import { PackageMoneyAddComponent } from './admin-views/package-money-add/packag
         MatTooltipModule,
         FormsModule,
         MatRadioModule,
+        MatSortModule,
+        MatDividerModule,
+        MatButtonToggleModule,
     ],
   providers: [TestService],
   bootstrap: [AppComponent]

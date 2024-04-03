@@ -45,6 +45,14 @@ export class UserService {
     return this.HttpClient.get(`${this.APIUrl}/publications/types`);
   }
 
+
+  public getAllPublications(){
+    return this.HttpClient.get<Publication[]>(`${this.APIUrl}/publications`);
+  }
+
+  public getAllPublicationsNoUser(username:string){
+    return this.HttpClient.get<Publication[]>(`${this.APIUrl}/publicationsNotUser/${username}`);
+  }
   public addPublication(publicacion:Publication){
     return this.HttpClient.post(`${this.APIUrl}/publications`, publicacion);
   }
@@ -115,5 +123,9 @@ export class UserService {
 
   public addRecordPackMoney(recordPackMoney:RecordBuyPack){
     return this.HttpClient.post(`${this.APIUrl}/record_buy_pack`, recordPackMoney);
+  }
+
+  public getMyRecordPackMoney(username:string){
+    return this.HttpClient.get(`${this.APIUrl}/record_buy_pack/${username}`);
   }
 }

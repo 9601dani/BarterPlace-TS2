@@ -25,6 +25,7 @@ export class PublishComponent implements OnInit{
   public imagen_seleccionada: string = '';
   public publication_a_editar!: Publication;
   public publicacion_editada!: Publication;
+  public my_publications_aux: Publication[] = [];
   public my_publications: Publication[] = [
     {
       id: 1,
@@ -153,7 +154,7 @@ export class PublishComponent implements OnInit{
     console.log('publicacion now:');
     console.log(publicacion_now);
     if(publication_ant.publication_type_id==1 || publication_ant.publication_type_id==3){
-      if(publicacion_now.publication_type_id ==2){
+      if(publicacion_now.publication_type_id ==2 || publicacion_now.publication_type_id ==4){
         //TODO: Se devuelve el dinero total de la publicacion anterior al usuario
         let bank= JSON.parse(localStorage.getItem('bank') || '{}');
         bank.aplication_currency += publication_ant.total_cost;
@@ -226,7 +227,7 @@ export class PublishComponent implements OnInit{
 
         return true;
       }
-    }else if(publication_ant.publication_type_id==2){
+    }else if(publication_ant.publication_type_id==2 || publication_ant.publication_type_id==4){
       if(publicacion_now.publication_type_id ==1 || publicacion_now.publication_type_id ==3){
         //Aqui va la logica para devolver el dinero total de la publicacion anterior al usuario
         let bank= JSON.parse(localStorage.getItem('bank') || '{}');
@@ -316,7 +317,6 @@ export class PublishComponent implements OnInit{
                   confirmButtonText: 'Ok'
                 }).then((result) => {
                   this.obtenerMisPublicaciones();
-
                 });
               }
             });
@@ -457,7 +457,7 @@ export class PublishComponent implements OnInit{
   }
 
   comprobarDinero(publication:Publication): boolean {
-    if(publication.publication_type_id==1 || publication.publication_type_id==2){
+    if(publication.publication_type_id==1 || publication.publication_type_id==2 || publication.publication_type_id==4){
       return true;
     }
     let bank= JSON.parse(localStorage.getItem('bank') || '{}');
@@ -472,6 +472,8 @@ export class PublishComponent implements OnInit{
       return this.generateVenta();
     }else if (type==2){
       return this.generateCompra();
+    }else if(type==4){
+      return this.generateServicio();
     }else{
       return this.generateVolunter();
     }
@@ -493,6 +495,15 @@ export class PublishComponent implements OnInit{
       'pending', this.user.username, this.imagen_seleccionada,
       this.form_new_publication.get('unit_price')?.value,
       this.array_tipo_publicacion[1].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
+      this.form_new_publication.get('unit_price')?.value,1);
+  }
+
+  generateServicio():Publication {
+    return new Publication(0, this.form_new_publication.get('title')?.value,
+      this.form_new_publication.get('description')?.value, this.formatearFechaParaMySQL(new Date()),
+      'pending', this.user.username, this.imagen_seleccionada,
+      this.form_new_publication.get('unit_price')?.value,
+      this.array_tipo_publicacion[3].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
       this.form_new_publication.get('unit_price')?.value,1);
   }
 
@@ -531,6 +542,7 @@ export class PublishComponent implements OnInit{
   regresarNameCategory(id_category: number): string {
     for (let i = 0; i < this.categorias.length; i++) {
       if (this.categorias[i].id == id_category) {
+        console.log('categoria retornando: '+this.categorias[i].category_name);
         return this.categorias[i].category_name;
       }
     }
@@ -541,6 +553,7 @@ export class PublishComponent implements OnInit{
     this.Service.getMyPublications(this.user.username).subscribe((data: any) => {
       if(data!=null){
         this.my_publications = data;
+        this.my_publications_aux = data;
       }else{
         Swal.fire({
           title: 'Error!',
@@ -592,6 +605,8 @@ export class PublishComponent implements OnInit{
         return "Venta";
       case 2:
         return "Compra";
+      case 4:
+        return "Servicio";
       default:
         return "Voluntariado";
     }
@@ -644,4 +659,108 @@ export class PublishComponent implements OnInit{
       }
     });
   }
+
+  getPubliPending(){
+    let publications_aux= this.my_publications_aux.filter(publication => publication.status == 'pending');
+    if(publications_aux!=null){
+      this.my_publications = publications_aux
+    }else{
+      Swal.fire({
+        title: 'Done!',
+        text: 'No hay publicaciones pendientes',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
+      }
+  }
+
+  getPubliActive(){
+    let publications_aux= this.my_publications_aux.filter(publication => publication.status == 'active');
+    if(publications_aux!=null){
+      this.my_publications = publications_aux;
+    }else{
+      Swal.fire({
+        title: 'Done!',
+        text: 'No hay publicaciones activas',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
+      }
+  }
+
+  getPubliInactive(){
+    let publications_aux=this.my_publications_aux.filter(publication => publication.status == 'rejected');
+    if(publications_aux!=null){
+      this.my_publications = publications_aux;
+    }else{
+      Swal.fire({
+        title: 'Done!',
+        text: 'No hay publicaciones inactivas',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
+      }
+  }
+
+  getAllMyPublications(){
+    this.my_publications = this.my_publications_aux;
+  }
+
+  getPublicVentas(){
+    let publications_aux=this.my_publications_aux.filter(publication => publication.publication_type_id == 1);
+    if(publications_aux!=null){
+      this.my_publications = publications_aux;
+    }else{
+      Swal.fire({
+        title: 'Done!',
+        text: 'No hay publicaciones de venta',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
+      }
+  }
+
+  getPublicCompras(){
+    let publications_aux=this.my_publications_aux.filter(publication => publication.publication_type_id == 2);
+    if(publications_aux!=null){
+      this.my_publications = publications_aux;
+    }else{
+      Swal.fire({
+        title: 'Done!',
+        text: 'No hay publicaciones de compra',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
+      }
+  }
+
+  getPublicVoluntariado(){
+    let publications_aux=this.my_publications_aux.filter(publication => publication.publication_type_id == 3);
+    if(publications_aux!=null){
+      this.my_publications = publications_aux;
+    }else{
+      Swal.fire({
+        title: 'Done!',
+        text: 'No hay publicaciones de voluntariado',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
+      }
+  }
+
+  getPublicServicios(){
+    let publications_aux=this.my_publications_aux.filter(publication => publication.publication_type_id == 4);
+    if(publications_aux!=null){
+      this.my_publications = publications_aux;
+    }else{
+      Swal.fire({
+        title: 'Done!',
+        text: 'No hay publicaciones de servicios',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
+      }
+  }
+
+
 }

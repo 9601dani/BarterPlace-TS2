@@ -43,6 +43,9 @@
     <button (click)="changePantalla('collect-money')" mat-menu-item>Mi Monedero
       <mat-icon>paid</mat-icon>
     </button>
+    <button (click)="changePantalla('records-pay')" mat-menu-item>Historial Wallet
+      <mat-icon>history</mat-icon>
+    </button>
     <button (click)="changePantalla('')" mat-menu-item>Ver Perfil
       <mat-icon>account_box</mat-icon>
     </button>
@@ -62,6 +65,9 @@
   </div>
   <div *ngIf="this.getPantalla()=='collect-money'">
     <app-collect-money></app-collect-money>
+  </div>
+  <div *ngIf="this.getPantalla()=='records-pay'">
+    <app-records-pay></app-records-pay>
   </div>
 
 

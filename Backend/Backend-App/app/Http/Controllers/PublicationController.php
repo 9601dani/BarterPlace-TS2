@@ -13,7 +13,9 @@ class PublicationController extends Controller
     public function index()
     {
         //
-        return Publication::all();
+        return Publication::query()
+        -> where('status', 'active')
+        ->get();
     }
 
     /**
@@ -122,12 +124,29 @@ class PublicationController extends Controller
         return $publication;
     }
 
-    public function inactivePublication(integer $id)
+    public function inactivePublication(int $id)
     {
         $publication = Publication::find($id);
         $publication->status = 'inactive';
         $publication->save();
         return $publication;
+    }
+
+    public function getPublicationsMain(string $username)
+    {
+        return Publication::query()
+        ->where('status', 'active')
+        ->where('username', '!=', $username)
+        ->get();
+    }
+
+    public function publicationsByCategory(string $category)
+    {
+        return Publication::query()
+        ->where('status', 'active')
+        ->where('category', $category)
+        ->limit(25)
+        ->get();
     }
 
 

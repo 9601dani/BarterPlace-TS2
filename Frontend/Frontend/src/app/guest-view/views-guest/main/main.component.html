@@ -1,19 +1,62 @@
-<div class="titulo" align="center">
-  <h1>Publicaciones</h1>
-</div>
-<section class="contenido">
-  <div class="mostrador">
-    <div class="fila">
-      <div class="item">
-        <span class="precio">Venta de Terreno </span>
-        <br>
-        <span class="precio">Q2500</span>
-        <p class="descripcion">Terreno de 15X15 ubicado en la esperanza</p>
-        <div class="contenedor-foto">
-          <img src="https://www.barymont.com/pepepromedio/blog/wp-content/uploads/2020/01/venta-de-terrenos.jpg" alt="profile picture" style="width: 200px; height: auto;">
-        </div>
-      </div>
+<div class="container">
+  <!-- Titulo del componente -->
+  <div class="component-title">
+    <hr>
+    <h1 class="titulo">Publicaciones
+      <mat-icon (click)="changePantalla()" matTooltip='Crear Mi Publicacion' class="icono" >add</mat-icon>
+    </h1>
+    <hr>
+    <!-- Filtro de publicaciones, por las categorias -->
+    <div class="filtro">
+      <mat-form-field class="example-full-width">
+        <mat-label>Categorias</mat-label>
+        <mat-select [(value)]="categorie_selected">
+          <mat-option *ngFor="let category of categories" [value]="category.category_name">
+            {{category.category_name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-icon (click)="findCategory()" class="icono" matTooltip="Buscar por categoria" matSuffix>search</mat-icon>
+    <!-- Filtro de publicaciones, por nombre-->
+      <mat-form-field class="example-full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="name_find">
+      </mat-form-field>
+      <mat-icon (click)="findName()" class="icono" matTooltip="Buscar por nombre"
+      matSuffix>search</mat-icon>
+      <mat-icon (click)="findAll()" class="icono" matTooltip="Mostrar todas las publicaciones"
+                matSuffix>refresh</mat-icon>
     </div>
+    <hr>
   </div>
-</section>
-
+  <!-- Contenido del componente -->
+  <div class="publication-card-container">
+  <mat-card class = 'publication-card' *ngFor="let publication of publications">
+    <mat-card-header>
+      <mat-card-title> Nombre: {{publication.title}}</mat-card-title>
+      <mat-card-subtitle>{{publication.username}}</mat-card-subtitle>
+    </mat-card-header>
+    <img class='publication-image' mat-card-image src='{{publication.foto}}'>
+    <mat-card-content class="publication-content">
+      <p>Unidades: {{publication.quantity}} </p>
+      <p class="publication-price-content">
+        <mat-icon class="publication-money-icon">savings</mat-icon>
+        {{publication.unit_price}} c/u
+      </p>
+      <mat-divider></mat-divider>
+      <p>{{publication.description}} </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <mat-icon *ngIf="publication.publication_type_id==1" (click)="changePantalla()"
+                  matTooltip="Comprar" style="color: green; cursor: pointer;">shopping_cart</mat-icon>
+        <mat-icon *ngIf="publication.publication_type_id==2" (click)="changePantalla()"
+                  matTooltip="Ofertar" style="color: green; cursor: pointer;">attach_money</mat-icon>
+        <mat-icon *ngIf="publication.publication_type_id==3" (click)="changePantalla()"
+                  matTooltip="Ir al Voluntariado" style="color: green; cursor: pointer;">volunteer_activism</mat-icon>
+        <mat-icon *ngIf="publication.publication_type_id==4" (click)="changePantalla()"
+                  matTooltip="Contactar" style="color: green; cursor: pointer;">supervisor_account</mat-icon>
+    </mat-card-actions>
+  </mat-card>
+  </div>
+</div>
+<br><br><br>

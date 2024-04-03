@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../../src/models/User";
+import {Publication} from "../../src/models/Publication";
 @Injectable({
   providedIn: 'root'
 })
@@ -29,5 +30,9 @@ export class GuestService {
 
   public getBank(username:string){
     return this.HttpClient.get(`${this.APIUrl}/bank/${username}`);
+  }
+
+  public getPubliByCategory(category:string){
+    return this.HttpClient.get<Publication[]>(`${this.APIUrl}/puByCate/${category}`);
   }
 }
