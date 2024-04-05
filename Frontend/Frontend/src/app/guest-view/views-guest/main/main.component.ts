@@ -113,11 +113,8 @@ export class MainComponent implements OnInit{
 
     findName(){
       if(this.name_find != ''){
-        this.publications = this.publication_aux;
-        let aux = this.publications;
-        aux = aux.filter((publication) => publication.title.includes(this.name_find));
-        if(aux.length > 0){
-          this.publications = aux;
+        this.publications = this.publication_aux.filter((publication) => publication.title.includes(this.name_find));
+        if(this.publications.length > 0){
         }else{
           Swal.fire({
             icon: 'error',

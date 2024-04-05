@@ -46,6 +46,9 @@
     <button (click)="changePantalla('records-pay')" mat-menu-item>Historial Wallet
       <mat-icon>history</mat-icon>
     </button>
+    <button (click)="changePantalla('records-buyed')" mat-menu-item>Historial Compras
+      <mat-icon>schedule</mat-icon>
+    </button>
     <button (click)="changePantalla('')" mat-menu-item>Ver Perfil
       <mat-icon>account_box</mat-icon>
     </button>
@@ -68,6 +71,9 @@
   </div>
   <div *ngIf="this.getPantalla()=='records-pay'">
     <app-records-pay></app-records-pay>
+  </div>
+  <div *ngIf="this.getPantalla()=='records-buyed'">
+    <app-records-buyed></app-records-buyed>
   </div>
 
 

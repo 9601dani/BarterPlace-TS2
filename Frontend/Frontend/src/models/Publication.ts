@@ -11,11 +11,12 @@ export class Publication {
   category!: string;
   unit_price!: number;
   quantity!: number;
+  quantity_stock!: number;
 
 
   constructor(id: number, title: string, description: string, date: string, status: string,
               username: string, foto: string, total_cost: number, publication_type_id: number,
-              category: string, unit_price: number, quantity: number){
+              category: string, unit_price: number, quantity: number, quantity_stock: number){
     this.id = id;
     this.title = title;
     this.description = description;
@@ -28,5 +29,6 @@ export class Publication {
     this.category = category;
     this.unit_price = unit_price;
     this.quantity = quantity;
+    this.quantity_stock = quantity_stock;
   }
 }

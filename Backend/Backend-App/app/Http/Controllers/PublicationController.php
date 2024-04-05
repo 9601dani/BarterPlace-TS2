@@ -50,10 +50,11 @@ class PublicationController extends Controller
         $publication->category = $request->category;
         $publication->unit_price = $request->unit_price;
         $publication->quantity = $request->quantity;
+        $publication->quantity_stock = $request->quantity;
         $publication->save();
 
         /**descontare del bank si es de tipo voluntariado o venta */
-        if($publication->publication_type_id == 1 || $publication->publication_type_id == 3){
+        if($publication->publication_type_id == 3){
             $bank = new BankController;
             $bank->updateAplicationCurrency2($request->username, $publication->total_cost);
         }    
@@ -90,6 +91,7 @@ class PublicationController extends Controller
         $publication->category = $request->category;
         $publication->unit_price = $request->unit_price;
         $publication->quantity = $request->quantity;
+        $publication->quantity_stock = $request->quantity_stock;
         $publication->save();
         return $publication;
         
@@ -100,6 +102,11 @@ class PublicationController extends Controller
         $publication = Publication::find($id);
         $publication->status = $request->status;
         $publication->save();
+
+        if($request->status == 'rejected'){
+            $bank = new BankController;
+            $bank->updateAplicationCurrency3($publication->username, $publication->total_cost);
+        }
         return $publication;
     }
 
@@ -121,6 +128,10 @@ class PublicationController extends Controller
         $publication = Publication::find($id);
         $publication->status = 'pending';
         $publication->save();
+        if($publication->publication_type_id == 3){
+            $bank = new BankController;
+            $bank->updateAplicationCurrency2($publication->username, $publication->total_cost);
+        }
         return $publication;
     }
 
@@ -147,6 +158,14 @@ class PublicationController extends Controller
         ->where('category', $category)
         ->limit(25)
         ->get();
+    }
+
+    public function comprobarNumeroPublicaciones(string $username)
+    {
+        return Publication::query()
+        ->where('username', $username)
+        ->where('status', 'active')
+        ->count();
     }
 
 

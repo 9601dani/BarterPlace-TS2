@@ -26,7 +26,8 @@ export class RequestPublishComponent implements OnInit {
       publication_type_id: 1,
       category: "Deportes",
       unit_price: 100,
-      quantity: 1
+      quantity: 1,
+      quantity_stock: 1
     },
     {
       id: 2,
@@ -40,7 +41,8 @@ export class RequestPublishComponent implements OnInit {
       publication_type_id: 2,
       category: "Bebés",
       unit_price: 200,
-      quantity: 1
+      quantity: 1,
+      quantity_stock: 1
     }
   ];
   constructor(
@@ -99,6 +101,7 @@ export class RequestPublishComponent implements OnInit {
             title: 'Oops...',
             text: 'No hay publicaciones pendientes',
           });
+          this.my_publications = [];
         }else{
           this.my_publications = data;
         }

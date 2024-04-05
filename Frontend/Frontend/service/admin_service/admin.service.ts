@@ -9,10 +9,20 @@ import {PackMoney} from "../../src/models/PackMoney";
 export class AdminService {
   private readonly APIUrl:string='http://localhost:8000/api';
   private pantalla: string = '';
+  private _globalVariableLimitMinPublication: number = 10;
+
 
   constructor(
     private  HttpClient: HttpClient
   ) { }
+
+  public getGlobalVariableLimitMinPublication(){
+    return this._globalVariableLimitMinPublication;
+  }
+
+  public setGlobalVariableLimitMinPublication(limit: number){
+    this._globalVariableLimitMinPublication = limit;
+  }
 
   public getPantalla(){
     return this.pantalla;
@@ -63,4 +73,9 @@ export class AdminService {
   public deletePackageMoney(id: number){
     return this.HttpClient.delete(`${this.APIUrl}/packmoney/${id}`);
   }
+
+  public getPublicationsUser(username: string){
+    return this.HttpClient.get(`${this.APIUrl}/publicationsUser/${username}`);
+  }
+
 }

@@ -39,6 +39,7 @@ import { RecordsPayComponent } from './user-views/records-pay/records-pay.compon
 import {MatSortModule} from "@angular/material/sort";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import { RecordsBuyedComponent } from './user-views/records-buyed/records-buyed.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     CategoryAddComponent,
     CollectMoneyComponent,
     PackageMoneyAddComponent,
-    RecordsPayComponent
+    RecordsPayComponent,
+    RecordsBuyedComponent
   ],
     imports: [
         BrowserModule,

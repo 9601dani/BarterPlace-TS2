@@ -6,6 +6,7 @@ import {Tarjet} from "../../src/models/Tarjet";
 import {AccountBank} from "../../src/models/AccountBank";
 import {RecordRecharge} from "../../src/models/RecordRecharge";
 import {RecordBuyPack} from "../../src/models/RecordBuyPack";
+import {PublicationCopy} from "../../src/models/PublicationCopy";
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,9 @@ export class UserService {
     return this.HttpClient.get(`${this.APIUrl}/publications/types`);
   }
 
+  getNumberPublicationsUser(username:string){
+    return this.HttpClient.get(`${this.APIUrl}/publicationsUser/${username}`);
+  }
 
   public getAllPublications(){
     return this.HttpClient.get<Publication[]>(`${this.APIUrl}/publications`);
@@ -127,5 +131,20 @@ export class UserService {
 
   public getMyRecordPackMoney(username:string){
     return this.HttpClient.get(`${this.APIUrl}/record_buy_pack/${username}`);
+  }
+
+  /*FROM SELL*/
+
+  public comprarProducto(publicacion_a_vender: PublicationCopy){
+    console.log('El producto a vender es: ', publicacion_a_vender);
+    return this.HttpClient.post(`${this.APIUrl}/sellPublication`, publicacion_a_vender);
+  }
+
+  public venderProducto(publicacion_vendida: Publication){
+    return this.HttpClient.post(`${this.APIUrl}/sellPublication`, publicacion_vendida);
+  }
+
+  getPublicationsBuyed(username:string){
+    return this.HttpClient.get<PublicationCopy[]>(`${this.APIUrl}/publicationsBuyed/${username}`);
   }
 }

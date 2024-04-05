@@ -16,6 +16,7 @@ import {GuestService} from "../../../../service/guest_service/guest.service";
   styleUrls: ['./publish.component.css']
 })
 export class PublishComponent implements OnInit{
+  public number_publications_activate: number = 0;
   public user:User= JSON.parse(localStorage.getItem('user') || '{}');
   public new_publication:boolean = false;
   public edit_publication:boolean = false;
@@ -39,7 +40,8 @@ export class PublishComponent implements OnInit{
       publication_type_id: 1,
       category: "3",
       unit_price: 100,
-      quantity: 1
+      quantity: 1,
+      quantity_stock: 1
     },
     {
       id: 2,
@@ -53,7 +55,8 @@ export class PublishComponent implements OnInit{
       publication_type_id: 2,
       category: "2",
       unit_price: 200,
-      quantity: 1
+      quantity: 1,
+      quantity_stock: 1
     }
   ];
   public form_new_publication!:FormGroup;
@@ -77,6 +80,7 @@ export class PublishComponent implements OnInit{
       this.obtenerCategorias();
       this.obtenerTiposPublicacion();
       this.obtenerMisPublicaciones();
+      this.obtenerPublicacionesActivasCompletadas();
     }
 
     selectPublication(id_publication: number){
@@ -108,9 +112,28 @@ export class PublishComponent implements OnInit{
 
   guardarEdicion(){
     if (this.form_new_publication.valid) {
-      this.publicacion_editada = this.comprobarType(this.form_new_publication.get('type')?.value);
+      this.publicacion_editada = this.comprobarTypeEdit(this.form_new_publication.get('type')?.value);
       this.publicacion_editada.id = this.publication_a_editar.id;
       if(this.comprobarDineroEdicion(this.publication_a_editar,this.publicacion_editada)) {
+        //TODO: comprobando si la cantidad de la publicacion editada es igual a la anterior
+        if(this.publicacion_editada.quantity== this.publication_a_editar.quantity){
+          this.publicacion_editada.quantity_stock = this.publication_a_editar.quantity_stock;
+        }else if(this.publicacion_editada.quantity > this.publication_a_editar.quantity){
+          let diferencia = this.publicacion_editada.quantity - this.publication_a_editar.quantity;
+          this.publicacion_editada.quantity_stock += diferencia;
+        }else{
+          let diferencia = this.publication_a_editar.quantity - this.publicacion_editada.quantity;
+          this.publicacion_editada.quantity_stock -= diferencia;
+        }
+
+        //TODO: ver si requiere permiso o no
+
+        if(this.ServiceAdmin.getGlobalVariableLimitMinPublication() <= this.number_publications_activate){
+          this.publicacion_editada.status = 'active';
+        }else{
+          this.publicacion_editada.status = 'pending';
+        }
+
         this.Service.updatePublication(this.publicacion_editada).subscribe((data: any) => {
           if (data != null) {
             Swal.fire({
@@ -153,8 +176,8 @@ export class PublishComponent implements OnInit{
     console.log(publication_ant);
     console.log('publicacion now:');
     console.log(publicacion_now);
-    if(publication_ant.publication_type_id==1 || publication_ant.publication_type_id==3){
-      if(publicacion_now.publication_type_id ==2 || publicacion_now.publication_type_id ==4){
+    if(publication_ant.publication_type_id==3){
+      if(publicacion_now.publication_type_id ==2 || publicacion_now.publication_type_id ==4 || publicacion_now.publication_type_id ==1){
         //TODO: Se devuelve el dinero total de la publicacion anterior al usuario
         let bank= JSON.parse(localStorage.getItem('bank') || '{}');
         bank.aplication_currency += publication_ant.total_cost;
@@ -227,10 +250,13 @@ export class PublishComponent implements OnInit{
 
         return true;
       }
-    }else if(publication_ant.publication_type_id==2 || publication_ant.publication_type_id==4){
-      if(publicacion_now.publication_type_id ==1 || publicacion_now.publication_type_id ==3){
+    }else if(publication_ant.publication_type_id==2 || publication_ant.publication_type_id==4 || publication_ant.publication_type_id==1){
+      if(publicacion_now.publication_type_id ==3){
         //Aqui va la logica para devolver el dinero total de la publicacion anterior al usuario
         let bank= JSON.parse(localStorage.getItem('bank') || '{}');
+        if(bank.aplication_currency < publicacion_now.total_cost){
+            return false;
+        }
         bank.aplication_currency -= publicacion_now.total_cost;
         console.log('bank: '+ bank.aplication_currency);
         this.Service.updateAplicationCurrency(this.user.username,bank.aplication_currency).subscribe((data: any) => {
@@ -286,7 +312,7 @@ export class PublishComponent implements OnInit{
               'success'
             ).then((result) => {
               //volvere el dinero al usuario si es venta o voluntariado
-              if(data.publication_type_id==1 || data.publication_type_id==3){
+              if(data.publication_type_id==3){
                 let bank= JSON.parse(localStorage.getItem('bank') || '{}');
                 bank.aplication_currency += data.total_cost;
                 this.Service.updateAplicationCurrency(this.user.username,bank.aplication_currency).subscribe((data: any) => {
@@ -360,6 +386,11 @@ export class PublishComponent implements OnInit{
     if (this.form_new_publication.valid) {
       let publication = this.comprobarType(this.form_new_publication.get('type')?.value);
       if(this.comprobarDinero(publication)) {
+        if(this.ServiceAdmin.getGlobalVariableLimitMinPublication() <= this.number_publications_activate){
+          publication.status = 'active';
+        }else{
+          publication.status = 'pending';
+        }
         this.Service.addPublication(publication).subscribe((data: any) => {
           if (data != null) {
             Swal.fire({
@@ -460,6 +491,7 @@ export class PublishComponent implements OnInit{
     if(publication.publication_type_id==1 || publication.publication_type_id==2 || publication.publication_type_id==4){
       return true;
     }
+    console.log('Descontare');
     let bank= JSON.parse(localStorage.getItem('bank') || '{}');
     if(bank.aplication_currency >= publication.total_cost){
       return true;
@@ -468,16 +500,27 @@ export class PublishComponent implements OnInit{
   }
 
   comprobarType(type:number):Publication {
-    if(type==1){
+    if (type == 1) {
       return this.generateVenta();
+    } else if (type == 2) {
+      return this.generateCompra();
+    } else if (type == 4) {
+      return this.generateServicio();
+    } else {
+      return this.generateVolunter();
+    }
+  }
+
+    comprobarTypeEdit(type:number):Publication {
+    if(type==1){
+      return this.generateVenta2();
     }else if (type==2){
       return this.generateCompra();
     }else if(type==4){
       return this.generateServicio();
     }else{
-      return this.generateVolunter();
+      return this.generateVolunter2();
     }
-
   }
 
   generateVenta():Publication {
@@ -486,7 +529,17 @@ export class PublishComponent implements OnInit{
       'pending', this.user.username, this.imagen_seleccionada,
       this.form_new_publication.get('unit_price')?.value * this.form_new_publication.get('quantity')?.value,
       this.array_tipo_publicacion[0].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
-      this.form_new_publication.get('unit_price')?.value, this.form_new_publication.get('quantity')?.value);
+      this.form_new_publication.get('unit_price')?.value, this.form_new_publication.get('quantity')?.value,
+      this.form_new_publication.get('quantity')?.value);
+  }
+  generateVenta2():Publication {
+    return new Publication(0, this.form_new_publication.get('title')?.value,
+      this.form_new_publication.get('description')?.value, this.formatearFechaParaMySQL(new Date()),
+      'pending', this.user.username, this.imagen_seleccionada,
+      this.form_new_publication.get('unit_price')?.value * this.form_new_publication.get('quantity')?.value,
+      this.array_tipo_publicacion[0].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
+      this.form_new_publication.get('unit_price')?.value, this.form_new_publication.get('quantity')?.value,
+      this.publication_a_editar.quantity_stock);
   }
 
   generateCompra():Publication {
@@ -495,7 +548,7 @@ export class PublishComponent implements OnInit{
       'pending', this.user.username, this.imagen_seleccionada,
       this.form_new_publication.get('unit_price')?.value,
       this.array_tipo_publicacion[1].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
-      this.form_new_publication.get('unit_price')?.value,1);
+      this.form_new_publication.get('unit_price')?.value,1,1);
   }
 
   generateServicio():Publication {
@@ -504,8 +557,9 @@ export class PublishComponent implements OnInit{
       'pending', this.user.username, this.imagen_seleccionada,
       this.form_new_publication.get('unit_price')?.value,
       this.array_tipo_publicacion[3].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
-      this.form_new_publication.get('unit_price')?.value,1);
+      this.form_new_publication.get('unit_price')?.value,1,1);
   }
+
 
   generateVolunter():Publication {
     return new Publication(0, this.form_new_publication.get('title')?.value,
@@ -513,7 +567,17 @@ export class PublishComponent implements OnInit{
       'pending', this.user.username, this.imagen_seleccionada,
       this.form_new_publication.get('unit_price')?.value * this.form_new_publication.get('quantity')?.value,
       this.array_tipo_publicacion[2].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
-      this.form_new_publication.get('unit_price')?.value, this.form_new_publication.get('quantity')?.value);
+      this.form_new_publication.get('unit_price')?.value, this.form_new_publication.get('quantity')?.value,
+      this.form_new_publication.get('quantity')?.value);
+  }
+  generateVolunter2():Publication {
+    return new Publication(0, this.form_new_publication.get('title')?.value,
+      this.form_new_publication.get('description')?.value, this.formatearFechaParaMySQL(new Date()),
+      'pending', this.user.username, this.imagen_seleccionada,
+      this.form_new_publication.get('unit_price')?.value * this.form_new_publication.get('quantity')?.value,
+      this.array_tipo_publicacion[2].id, this.regresarNameCategory(this.form_new_publication.get('category')?.value),
+      this.form_new_publication.get('unit_price')?.value, this.form_new_publication.get('quantity')?.value,
+      this.publication_a_editar.quantity_stock);
   }
 
   actualizarBank(){
@@ -579,6 +643,18 @@ export class PublishComponent implements OnInit{
   }
 
   reenviarPublicacion(publication_id: number){
+    let publication_reenviar = this.my_publications_aux.find(publication => publication.id == publication_id);
+    if(publication_reenviar!=null){
+      if(!this.comprobarDinero(publication_reenviar)){
+        Swal.fire({
+          title: 'Error!',
+          text: 'No tienes suficiente dinero para reenviar la publicacion',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+        return;
+      }
+    }
     this.Service.reenviarPublication(publication_id).subscribe((data: any) => {
       if(data!=null){
         Swal.fire({
@@ -588,6 +664,9 @@ export class PublishComponent implements OnInit{
           confirmButtonText: 'Ok'
         }).then((result) => {
           this.obtenerMisPublicaciones();
+          if(publication_reenviar?.publication_type_id==3){
+            this.actualizarBank();
+          }
         });
       }else{
         Swal.fire({
@@ -762,5 +841,37 @@ export class PublishComponent implements OnInit{
       }
   }
 
+  getPubliComplete(){
+    let publications_aux=this.my_publications_aux.filter(publication => publication.status == 'completed');
+    if(publications_aux!=null){
+      this.my_publications = publications_aux;
+    }else{
+      Swal.fire({
+        title: 'Done!',
+        text: 'No hay publicaciones completadas',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
+      }
+  }
+
+  publicationCompleted(publication: Publication){
+    Swal.fire({
+      title: 'La publicacion ha sido completada!',
+      text: 'La publicacion ha sido completada con exito, si deseas publicar mas sobre este articulo deberas crear otro evento!',
+      icon: 'success',
+      confirmButtonText: 'Ok'
+    });
+  }
+
+  obtenerPublicacionesActivasCompletadas(){
+    this.ServiceAdmin.getPublicationsUser(this.user.username).subscribe((data: any) => {
+      if(data!=null){
+        this.number_publications_activate = data;
+      }else{
+        this.number_publications_activate = 0;
+      }
+    });
+  }
 
 }

@@ -48,7 +48,7 @@
       </mat-card-header>
       <img class='publication-image' mat-card-image src='{{publication.foto}}'>
       <mat-card-content class="publication-content">
-        <p>Unidades: {{publication.quantity}} </p>
+        <p>Unidades Disponibles: {{publication.quantity_stock}} </p>
         <p class="publication-price-content">
           <mat-icon class="publication-money-icon">savings</mat-icon>
           {{publication.unit_price}} c/u
@@ -57,14 +57,16 @@
         <p>{{publication.description}} </p>
       </mat-card-content>
       <mat-card-actions>
-        <mat-icon *ngIf="publication.publication_type_id==1"
+        <mat-icon  (click)="comprarPublication(publication)" *ngIf="publication.publication_type_id==1"
                   matTooltip="Comprar" style="color: green; cursor: pointer;">shopping_cart</mat-icon>
-        <mat-icon *ngIf="publication.publication_type_id==2"
+        <mat-icon (click)="ofertarPublication(publication)" *ngIf="publication.publication_type_id==2"
                   matTooltip="Ofertar" style="color: green; cursor: pointer;">attach_money</mat-icon>
-        <mat-icon *ngIf="publication.publication_type_id==3"
-                  matTooltip="Ir al Voluntariado" style="color: green; cursor: pointer;">volunteer_activism</mat-icon>
-        <mat-icon *ngIf="publication.publication_type_id==4"
+        <mat-icon (click)="voluntariarPublication(publication)" *ngIf="publication.publication_type_id==3"
+                  matTooltip="Postularme" style="color: green; cursor: pointer;">volunteer_activism</mat-icon>
+        <mat-icon (click)="contactarPublication(publication)" *ngIf="publication.publication_type_id==4"
                   matTooltip="Contactar" style="color: green; cursor: pointer;">supervisor_account</mat-icon>
+        <mat-icon (click)="reportarPublication(publication)" matTooltip="Reportar"
+                  style="color: red; cursor: pointer;">report</mat-icon>
       </mat-card-actions>
     </mat-card>
   </div>
@@ -74,3 +76,4 @@
     </h1>
   </div>
 </div>
+<br><br><br>

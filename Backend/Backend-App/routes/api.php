@@ -13,6 +13,7 @@ use App\Http\Controllers\TarjetController;
 use App\Http\Controllers\AccountBankController;
 use App\Http\Controllers\RecordRechargeController;
 use App\Http\Controllers\RecordBuyPackController;
+use App\Http\Controllers\PublicationCopyController;
 
 
 Route::get('/user', function (Request $request) {
@@ -55,6 +56,7 @@ Route::put('/publicationsS/{id}', [PublicationController::class, 'updateStatus']
 Route::put('/publicationsReSend/{id}', [PublicationController::class, 'reenviarPublication']);
 Route::put('/publicationsInactive/{id}', [PublicationController::class, 'inactivePublication']);
 Route::get('/publicationsNotUser/{username}', [PublicationController::class, 'getPublicationsMain']);
+Route::get('/publicationsUser/{username}', [PublicationController::class, 'comprobarNumeroPublicaciones']);
 //ESTA ES PARA VISTA MAIN GUEST POR ESO LIMIT DE 25
 Route::get('/puByCate/{category}', [PublicationController::class, 'publicationsByCategory']);
 
@@ -74,4 +76,8 @@ Route::get('/packmoney', [PackMoneyController::class, 'index']);
 Route::post('/packmoney', [PackMoneyController::class, 'store']);
 Route::put('/packmoney/{id}', [PackMoneyController::class, 'update']);
 Route::delete('/packmoney/{id}', [PackMoneyController::class, 'destroy']);
+
+//RUTAS PARA LA VENTA DE PRODUCTOS
+Route::post('/sellPublication',[PublicationCopyController::class, 'store']);
+Route::get('/publicationsBuyed/{username_buyer}',[PublicationCopyController::class, 'index']);
 
