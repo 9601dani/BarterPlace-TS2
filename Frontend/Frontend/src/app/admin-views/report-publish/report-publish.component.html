@@ -1,0 +1,45 @@
+<div class="container">
+  <!-- Titulo del componente -->
+  <div class="component-title">
+    <hr>
+    <h1 align="center">Reporte de Publicaciones
+    <mat-icon class="component-title-icon">report</mat-icon>
+    </h1>
+    <p align="center">En esta sección se muestran todas las publicaciones que han sido reportadas por los usuarios.</p>
+    <hr>
+  </div>
+  <!-- Contenido del componente -->
+  <div *ngIf="reportes.length>0" class="publication-card-container">
+    <mat-card class = 'publication-card' *ngFor="let reporte of reportes">
+      <mat-card-header>
+        <mat-card-title> ID Reporte: {{reporte.id}}</mat-card-title>
+        <mat-card-subtitle>Reporte del usuario: {{reporte.username_report}} <br>
+        ID Publicacion: {{reporte.publication_id}}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <img class='publication-image' mat-card-image src='{{reporte.foto}}'>
+      <mat-card-content class="publication-content">
+        <p>Titulo : {{reporte.title}} </p>
+        <p class="publication-price-content">
+          <mat-icon class="publication-money-icon">savings</mat-icon>
+          {{reporte.unit_price}} c/u
+        </p>
+        <p>Publicado Por : {{reporte.username_publication}}</p>
+        <mat-divider></mat-divider>
+        <p>{{reporte.description}} </p>
+      </mat-card-content>
+      <mat-card-actions>
+       <mat-icon (click)="bloquearPublicacion(reporte)" matTooltip="Bloquear publicación"
+                  style="color: red; cursor: pointer;">report</mat-icon>
+        <mat-icon (click)="rechazarReporte(reporte)" matTooltip="Rechazar Reporte"
+                  style="color: yellowgreen; cursor: pointer;">close</mat-icon>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div *ngIf="reportes.length==0">
+    <h1 align="center">No hay reportes de publicaciones
+    <mat-icon class="component-title-icon">sentiment_very_satisfied</mat-icon>
+    </h1>
+  </div>
+</div>
+

@@ -164,9 +164,16 @@ class PublicationController extends Controller
     {
         return Publication::query()
         ->where('username', $username)
-        ->where('status', 'active')
+        ->whereIn('status', ['active', 'completed'])
         ->count();
     }
 
+    public function blockPublication(string $id)
+    {
+        $publication = Publication::find($id);
+        $publication->status = 'bloqueada';
+        $publication->save();
+        return $publication;
+    }
 
 }

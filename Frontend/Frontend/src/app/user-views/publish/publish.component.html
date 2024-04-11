@@ -11,6 +11,7 @@
         <mat-button-toggle (click)="getPubliActive()" value="Aceptadas">Aceptadas</mat-button-toggle>
         <mat-button-toggle (click)="getPubliPending()" value="Pendiente">Pendiente</mat-button-toggle>
         <mat-button-toggle (click)="getPubliInactive()" value="Rechazadas">Rechazadas</mat-button-toggle>
+        <mat-button-toggle (click)="getBloqueadas()" value="Bloqueadas">Bloqueadas</mat-button-toggle>
         <mat-button-toggle (click)="getPublicVentas()" value="Venta">Ventas</mat-button-toggle>
         <mat-button-toggle (click)="getPublicCompras()" value="Compra">Compra</mat-button-toggle>
         <mat-button-toggle (click)="getPublicVoluntariado()" value="Voluntariado">Voluntariado</mat-button-toggle>
@@ -39,16 +40,18 @@
         </p>
       </mat-card-content>
       <mat-card-actions>
-        <mat-icon *ngIf="publication.status!='inactive' && publication.status !='completed'" style="color: darkblue; cursor: pointer"
-                  (click)="editPublication(publication)" matTooltip='Editar'>edit</mat-icon>
-        <mat-icon *ngIf="publication.status !='completed'" style="color: red; cursor: pointer" (click)="deletePublication(publication.id)"
-                  matTooltip='Eliminar'>delete</mat-icon>
+        <mat-icon *ngIf="publication.status!='inactive' && publication.status !='completed' && publication.status!='bloqueada'"
+                  style="color: darkblue; cursor: pointer" (click)="editPublication(publication)" matTooltip='Editar'>edit</mat-icon>
+        <mat-icon *ngIf="publication.status !='completed' && publication.status!='bloqueada'"
+                  style="color: red; cursor: pointer" (click)="deletePublication(publication.id)" matTooltip='Eliminar'>delete</mat-icon>
         <mat-icon *ngIf="publication.status=='rejected'" style="color: yellowgreen; cursor: pointer"
                   (click)="reenviarPublicacion(publication.id)" matTooltip='Volver a Publicar'>send</mat-icon>
         <mat-icon *ngIf="publication.status=='inactive'" style='color:yellowgreen; cursor: pointer'
                   (click)="activarPublicacion(publication.id)"matTooltip="Reactivar">reply</mat-icon>
         <mat-icon (click)="publicationCompleted(publication)" *ngIf="publication.status=='completed'" style='color:yellowgreen; cursor:pointer'
                   matTooltip="Publicación completada">done_all</mat-icon>
+        <mat-icon (click)="publicationBlock(publication)" *ngIf="publication.status=='bloqueada'" style='color:yellowgreen; cursor:pointer'
+                  matTooltip="Publicación Bloqueada">block</mat-icon>
       </mat-card-actions>
     </mat-card>
     <div *ngIf="my_publications.length==0" align="center">

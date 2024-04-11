@@ -855,6 +855,20 @@ export class PublishComponent implements OnInit{
       }
   }
 
+  getBloqueadas(){
+    let publications_aux=this.my_publications_aux.filter(publication => publication.status == 'bloqueada');
+    if(publications_aux!=null){
+      this.my_publications = publications_aux;
+    }else{
+      Swal.fire({
+        title: 'Done!',
+        text: 'No hay publicaciones bloqueadas',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
+      }
+  }
+
   publicationCompleted(publication: Publication){
     Swal.fire({
       title: 'La publicacion ha sido completada!',
@@ -870,6 +884,26 @@ export class PublishComponent implements OnInit{
         this.number_publications_activate = data;
       }else{
         this.number_publications_activate = 0;
+      }
+    });
+  }
+
+  publicationBlock(publication: Publication){
+    this.Service.getInfoPublicBloked(publication.id).subscribe((data: any) => {
+      if(data!=null){
+        let reporte;
+        if(data.length>0){
+          reporte = data[0];
+        }else{
+          reporte = data;
+        }
+        Swal.fire({
+          title: 'Error!',
+          text: 'El administrador ha bloqueado tu publicacion con nombre '+publication.title.toUpperCase()+', \n debido ' +
+            'a que \" '+reporte.comment+' \"\npor lo cual no podras volver a subir esta publicacion',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
       }
     });
   }

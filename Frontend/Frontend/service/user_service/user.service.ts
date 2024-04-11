@@ -7,6 +7,7 @@ import {AccountBank} from "../../src/models/AccountBank";
 import {RecordRecharge} from "../../src/models/RecordRecharge";
 import {RecordBuyPack} from "../../src/models/RecordBuyPack";
 import {PublicationCopy} from "../../src/models/PublicationCopy";
+import {ReportPublication} from "../../src/models/ReportPublication";
 
 @Injectable({
   providedIn: 'root'
@@ -146,5 +147,13 @@ export class UserService {
 
   getPublicationsBuyed(username:string){
     return this.HttpClient.get<PublicationCopy[]>(`${this.APIUrl}/publicationsBuyed/${username}`);
+  }
+
+  reportPublication(report:ReportPublication){
+    return this.HttpClient.post(`${this.APIUrl}/reportPublication`, report);
+  }
+
+  getInfoPublicBloked(id_publication:number){
+    return this.HttpClient.get(`${this.APIUrl}/publicationsInfoBlock/${id_publication}`);
   }
 }

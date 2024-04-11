@@ -4,6 +4,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import Swal from "sweetalert2";
 import {User} from "../../../../models/User";
 import {Router} from "@angular/router";
+import {AdminService} from "../../../../../service/admin_service/admin.service";
+import {UserService} from "../../../../../service/user_service/user.service";
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,9 @@ export class LoginComponent implements OnInit{
 
   constructor(
     private Service: GuestService,
-    private router: Router
+    private router: Router,
+    private ServiceAdmin: AdminService,
+    private ServiceUser: UserService
   ) {}
   public loginForm!: FormGroup;
   ngOnInit(): void {
@@ -43,6 +47,8 @@ export class LoginComponent implements OnInit{
               if(data!=null){
                 localStorage.setItem('bank', JSON.stringify(data));
                 this.router.navigate(['/user']);;
+                this.ServiceUser.setPantalla('')
+                this.ServiceAdmin.setPantalla('')
               }else{
                 Swal.fire({
                   title: 'Error!',

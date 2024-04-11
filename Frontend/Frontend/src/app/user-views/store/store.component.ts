@@ -8,6 +8,7 @@ import {User} from "../../../models/User";
 import {Bank} from "../../../models/Bank";
 import {PublicationCopy} from "../../../models/PublicationCopy";
 import {GuestService} from "../../../../service/guest_service/guest.service";
+import {ReportPublication} from "../../../models/ReportPublication";
 
 @Component({
   selector: 'app-store',
@@ -321,6 +322,48 @@ export class StoreComponent implements OnInit {
   }
 
   reportarPublication(publication: Publication){
-    console.log('Quiero reportar la publicacion: ', publication);
+    Swal.fire({
+      title: 'Por que deseas reportar esta publicacion?',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Reportar',
+      showLoaderOnConfirm: true,
+      preConfirm: (reason) => {
+        if(reason.length > 0){
+          /*LLAMAR SERVICIO Y SEGUIR VIENDO LA LOGICA*/
+          let n_report = new ReportPublication(
+            0,
+            publication.id,
+            publication.title,
+            publication.description,
+            publication.foto,
+            publication.category,
+            publication.unit_price,
+            publication.username,
+            reason,
+            this.formatearFechaParaMySQL(new Date()),
+            'active',
+            this.user.username
+          )
+          this.Service.reportPublication(n_report).subscribe((data: any) => {
+            if(data){
+              Swal.fire({
+                title: 'Reportado!',
+                text: 'La publicacion ha sido reportada',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              });
+            }
+          });
+        }else{
+          Swal.showValidationMessage(
+            `Debes ingresar una razon para reportar la publicacion`
+          );
+        }
+      }
+    });
   }
 }

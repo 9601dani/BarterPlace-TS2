@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altura mínima de la ventana visible */
+}
+
+.component-container {
+  flex: 1; /* El componente ocupará todo el espacio vertical restante */
+}
+.chat-container {
+  display: grid;
+  grid-template-columns: 20% 80%; /* Ajusta el ancho de las columnas según necesites */
+  grid-gap: 20px;
+  padding: 20px;
+}
+.chat-list, .messages-container {
+  border: 1px solid #ccc; /* Agrega un borde de 1px sólido de color gris */
+  padding: 10px; /* Agrega un espacio interno para que los elementos no estén pegados al borde */
+}
+.chat-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s; /* Agrega una transición suave para el cambio de color de fondo */
+}
+.chat-item:hover {
+  background-color: #B5C9C3; /* Cambia el color de fondo al pasar el cursor sobre el elemento */
+}
+
+.messages-container {
+  overflow-y: auto;
+  max-height: 500px;
+  display: flex; /* Utiliza flexbox para alinear los mensajes */
+  flex-direction: column; /* Coloca los mensajes en columna */
+}
+
+.message {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #9CAFB7;
+  margin-bottom: 10px; /* Agrega un margen entre los mensajes */
+}
+
+.sender-message {
+  background-color: #e6f2ff;
+  align-self: flex-start; /* Alinea los mensajes enviados a la izquierda */
+}
+
+.recipient-message {
+  background-color: #ccffcc;
+  align-self: flex-end; /* Alinea los mensajes recibidos a la derecha */
+}
+

@@ -14,6 +14,7 @@ use App\Http\Controllers\AccountBankController;
 use App\Http\Controllers\RecordRechargeController;
 use App\Http\Controllers\RecordBuyPackController;
 use App\Http\Controllers\PublicationCopyController;
+use App\Http\Controllers\ReportPublicationController;
 
 
 Route::get('/user', function (Request $request) {
@@ -57,6 +58,11 @@ Route::put('/publicationsReSend/{id}', [PublicationController::class, 'reenviarP
 Route::put('/publicationsInactive/{id}', [PublicationController::class, 'inactivePublication']);
 Route::get('/publicationsNotUser/{username}', [PublicationController::class, 'getPublicationsMain']);
 Route::get('/publicationsUser/{username}', [PublicationController::class, 'comprobarNumeroPublicaciones']);
+Route::post('/reportPublication', [ReportPublicationController::class, 'store']);
+Route::get('/reportPublication', [ReportPublicationController::class, 'index']);
+Route::put('/reportPublicationUpdate/{id}', [ReportPublicationController::class, 'changeStatus']);
+Route::put('/publicationsBlock/{id}', [ReportPublicationController::class, 'bloquearPublication']);
+Route::get('/publicationsInfoBlock/{id}', [ReportPublicationController::class, 'infoBloqueoPublication']);
 //ESTA ES PARA VISTA MAIN GUEST POR ESO LIMIT DE 25
 Route::get('/puByCate/{category}', [PublicationController::class, 'publicationsByCategory']);
 

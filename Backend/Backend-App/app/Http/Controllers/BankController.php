@@ -90,5 +90,11 @@ class BankController extends Controller
         $bank->aplication_currency += $coins;
         $bank->save();
     }
+
+    public function returnMoneyIfBlocked(string $username, string $currency){
+        $bank = Bank::query()->where('username', $username)->first();
+        $bank->aplication_currency += $currency_return;
+        $bank->save();
+    }
     
 }

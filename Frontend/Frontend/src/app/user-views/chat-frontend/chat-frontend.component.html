@@ -1,0 +1,40 @@
+<div class="container">
+  <!-- Titulo del componente -->
+  <div class="component-title">
+    <hr>
+    <h1 align="center">Bienvenido a tu mensajeria
+    <mat-icon>chat</mat-icon>
+    </h1>
+    <p align="center">En esta sección podrás comunicarte con los publicadores para realizar</p>
+    <p align="center">tranferencias, consultar precios y mucho mas!</p>
+    <hr>
+  </div>
+  <!-- Contenido del componente -->
+  <div class="chat-container">
+    <!-- Lista de chats -->
+    <div class="chat-list">
+      <div *ngFor="let chat of chats" (click)="selectChat(chat)" [ngClass]="{ 'selected': selectedChat?.id === chat.id }" class="chat-item">
+        <h3>{{ chat.name }}</h3>
+        <p>{{ getLastMessage(chat) }}</p>
+      </div>
+    </div>
+    <!-- Mensajes del chat seleccionado -->
+    <div class="messages-container">
+      <div *ngFor="let message of selectedChat?.messages" class="message" [ngClass]="{ 'sender-message': message.username == currentUser.username, 'recipient-message': message.username !== currentUser.username }">
+        <strong>{{ message.username }}</strong><br>
+        {{ message.text }}
+      </div>
+      <div class="message-form" *ngIf="selectedChat">
+        <mat-form-field appearance="fill" class="message-input">
+          <input matInput type="text" [(ngModel)]="newMessage" placeholder="Escribe un mensaje...">
+          <mat-icon matTooltip="Enviar Tranferencia" matSuffix>paid</mat-icon> <!-- Icono para el campo de entrada -->
+        </mat-form-field>
+        <button mat-icon-button (click)="sendMessage()" aria-label="Enviar mensaje">
+          <mat-icon>send</mat-icon> <!-- Icono para el botón de enviar -->
+        </button>
+      </div>
+    </div>
+    <!-- Formulario para enviar mensajes -->
+  </div>
+</div>
+

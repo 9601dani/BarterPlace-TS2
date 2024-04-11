@@ -40,6 +40,8 @@ import {MatSortModule} from "@angular/material/sort";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import { RecordsBuyedComponent } from './user-views/records-buyed/records-buyed.component';
+import { ReportPublishComponent } from './admin-views/report-publish/report-publish.component';
+import { ChatFrontendComponent } from './user-views/chat-frontend/chat-frontend.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,9 @@ import { RecordsBuyedComponent } from './user-views/records-buyed/records-buyed.
     CollectMoneyComponent,
     PackageMoneyAddComponent,
     RecordsPayComponent,
-    RecordsBuyedComponent
+    RecordsBuyedComponent,
+    ReportPublishComponent,
+    ChatFrontendComponent
   ],
     imports: [
         BrowserModule,

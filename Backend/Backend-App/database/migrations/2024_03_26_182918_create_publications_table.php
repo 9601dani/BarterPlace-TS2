@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->longtext('description');
             $table->date('date');
-            $table->enum('status', ['pending', 'active','inactive', 'completed','rejected']);
+            $table->enum('status', ['pending', 'active','inactive', 'completed','rejected','bloqueada']);
             $table->string('username');
             $table->longtext('foto');
             $table->integer('total_cost');

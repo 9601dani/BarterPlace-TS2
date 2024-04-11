@@ -57,6 +57,9 @@
     <button (click)="changePantalla('request-seller')" mat-menu-item>Ver Solicitudes de Vendedores
       <mat-icon>bug_report</mat-icon>
     </button>
+    <button (click)="changePantalla('report-publish')" mat-menu-item>Ver Reporte Publicaciones
+      <mat-icon>report</mat-icon>
+    </button>
   </mat-menu>
 
       <!-- Admin Views -->
@@ -84,6 +87,9 @@
       </div>
       <div *ngIf="this.getPantalla()=='add-package-money'">
         <app-package-money-add></app-package-money-add>
+      </div>
+      <div *ngIf="this.getPantalla()=='report-publish'">
+        <app-report-publish></app-report-publish>
       </div>
     </div>
 

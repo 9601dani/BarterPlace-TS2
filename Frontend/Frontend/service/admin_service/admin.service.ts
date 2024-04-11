@@ -78,4 +78,15 @@ export class AdminService {
     return this.HttpClient.get(`${this.APIUrl}/publicationsUser/${username}`);
   }
 
+  public getReportPublications(){
+    return this.HttpClient.get(`${this.APIUrl}/reportPublication`);
+  }
+
+  public reportPublicationUpdate(id: number, status: string){
+    return this.HttpClient.put(`${this.APIUrl}/reportPublicationUpdate/${id}`, {status});
+  }
+
+  public bloquearPublicacion(id: number){
+return this.HttpClient.put(`${this.APIUrl}/publicationsBlock/${id}`, {});
+  }
 }

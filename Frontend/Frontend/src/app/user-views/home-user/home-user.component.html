@@ -40,6 +40,9 @@
 
   </mat-toolbar>
   <mat-menu #menu_1="matMenu">
+     <button (click)="changePantalla('messages')" mat-menu-item>Mensajeria
+      <mat-icon>chat</mat-icon>
+    </button>
     <button (click)="changePantalla('collect-money')" mat-menu-item>Mi Monedero
       <mat-icon>paid</mat-icon>
     </button>
@@ -74,6 +77,9 @@
   </div>
   <div *ngIf="this.getPantalla()=='records-buyed'">
     <app-records-buyed></app-records-buyed>
+  </div>
+  <div *ngIf="this.getPantalla()=='messages'">
+    <app-chat-frontend></app-chat-frontend>
   </div>
 
 
