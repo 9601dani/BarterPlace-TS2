@@ -44,10 +44,32 @@
 .sender-message {
   background-color: #e6f2ff;
   align-self: flex-start; /* Alinea los mensajes enviados a la izquierda */
+  max-width: 50%; /* Limita el ancho del mensaje para que no ocupe toda la pantalla */
+  height: auto; /* Ajusta la altura automáticamente según el contenido */
 }
 
 .recipient-message {
   background-color: #ccffcc;
   align-self: flex-end; /* Alinea los mensajes recibidos a la derecha */
+  max-width: 50%;
+  height: auto;
 }
+
+.message-input {
+  display: flex;
+  border-top: 1px solid #ccc;
+  max-width: 50%;
+  height: auto;
+}
+
+.message-input input {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  max-width: 100%; /* Limita el ancho máximo */
+  overflow-x: auto; /* Habilita la barra de desplazamiento horizontal si es necesario */
+}
+
+
+
+
+
 

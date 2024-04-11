@@ -78,10 +78,10 @@ export class MainComponent implements OnInit{
   }
 
   findCategory(){
+    this.name_find = '';
     if(this.categorie_selected != ''){
       this.GuestService.getPubliByCategory(this.categorie_selected).subscribe((data: Publication[]) => {
         if(data.length > 0){
-          this.publication_aux= this.publications;
           this.publications = data;
         }else{
           Swal.fire({
@@ -112,6 +112,7 @@ export class MainComponent implements OnInit{
     }
 
     findName(){
+      this.categorie_selected = '';
       if(this.name_find != ''){
         this.publications = this.publication_aux.filter((publication) => publication.title.includes(this.name_find));
         if(this.publications.length > 0){

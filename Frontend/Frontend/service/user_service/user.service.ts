@@ -8,6 +8,7 @@ import {RecordRecharge} from "../../src/models/RecordRecharge";
 import {RecordBuyPack} from "../../src/models/RecordBuyPack";
 import {PublicationCopy} from "../../src/models/PublicationCopy";
 import {ReportPublication} from "../../src/models/ReportPublication";
+import {Chat} from "../../src/models/Chat";
 
 @Injectable({
   providedIn: 'root'
@@ -155,5 +156,25 @@ export class UserService {
 
   getInfoPublicBloked(id_publication:number){
     return this.HttpClient.get(`${this.APIUrl}/publicationsInfoBlock/${id_publication}`);
+  }
+
+  getChatUser(username:string){
+    return this.HttpClient.get(`${this.APIUrl}/chats/${username}`);
+  }
+
+  saveNewChat(chat:Chat){
+    return this.HttpClient.post(`${this.APIUrl}/chats`, chat);
+  }
+
+  getChatMessages(id_chat:number){
+    return this.HttpClient.get(`${this.APIUrl}/messages/${id_chat}`);
+  }
+
+  saveNewMessage(message:any){
+    return this.HttpClient.post(`${this.APIUrl}/messages`, message);
+  }
+
+  verificarChat(username_sender:string, username_receiver:string){
+    return this.HttpClient.post(`${this.APIUrl}/chatsS`, {username_sender, username_receiver});
   }
 }

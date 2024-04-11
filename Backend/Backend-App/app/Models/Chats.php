@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Messages extends Model
+class Chats extends Model
 {
     protected $primaryKey = 'id';
     use HasFactory;
     protected $fillable = [
-        'text',
-        'username',
-        'date_time',
-        'chat_id',
+        'name',
+        'username_receiver',
+        'username_sender',
     ];
     public $timestamps = false;
 }

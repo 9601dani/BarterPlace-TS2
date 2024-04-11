@@ -15,6 +15,8 @@ use App\Http\Controllers\RecordRechargeController;
 use App\Http\Controllers\RecordBuyPackController;
 use App\Http\Controllers\PublicationCopyController;
 use App\Http\Controllers\ReportPublicationController;
+use App\Http\Controllers\ChatsController;
+use App\Http\Controllers\MessagesController;
 
 
 Route::get('/user', function (Request $request) {
@@ -87,3 +89,8 @@ Route::delete('/packmoney/{id}', [PackMoneyController::class, 'destroy']);
 Route::post('/sellPublication',[PublicationCopyController::class, 'store']);
 Route::get('/publicationsBuyed/{username_buyer}',[PublicationCopyController::class, 'index']);
 
+Route::get('/chats/{username}', [ChatsController::class, 'show']);
+Route::post('/chatsS', [ChatsController::class, 'verExistenciaChat']);
+Route::post('/chats', [ChatsController::class, 'store']);
+Route::get('/messages/{chat_id}', [MessagesController::class, 'show']);
+Route::post('/messages', [MessagesController::class, 'store']);
