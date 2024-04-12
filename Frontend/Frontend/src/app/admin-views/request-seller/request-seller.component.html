@@ -10,26 +10,30 @@
   </div>
   <!-- Contenido del componente -->
   <div class="component-container">
-    <section *ngIf="array_request_seller.length>=1" class="contenido">
-      <div class="mostrador" *ngFor="let usuario of users">
-        <div class="fila">
-          <div (click)="cuestionOfAccepted(usuario.username)" class="item">
-            <span class="precio">Username: {{usuario.username}}</span>
-            <br>
-            <span *ngIf="usuario.name!=null" class="precio">{{usuario.name}}</span>
-            <span *ngIf="usuario.name==null" class="precio">Sin Nombre</span>
-            <div *ngIf="usuario.profile_picture!=null" class="contenedor-foto">
-              <img src="{{usuario.profile_picture}}" alt="">
-            </div>
-            <div *ngIf="usuario.profile_picture==null || usuario.profile_picture==''" class="contenedor-foto">
-              <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile picture" style="width: 200px; height: auto;">
-            </div>
-            <p *ngIf="usuario.description!=null" class="descripcion">{{usuario.description}}</p>
-            <p *ngIf="usuario.description==null" class="descripcion">Sin Descripcion</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div *ngIf="array_request_seller.length>=1" class="publication-card-container">
+      <mat-card (click)="cuestionOfAccepted(usuario.username)" style="cursor: pointer"
+                class = 'publication-card' *ngFor="let usuario of users">
+        <mat-card-header>
+          <mat-card-title> Username: {{usuario.username}}</mat-card-title>
+          <mat-card-subtitle *ngIf="usuario.name!=null">{{usuario.name}}</mat-card-subtitle>
+          <mat-card-subtitle style="color:red" *ngIf="usuario.name==null">Sin nombre</mat-card-subtitle>
+        </mat-card-header>
+        <img *ngIf="usuario.profile_picture!=null" class='publication-image'
+             mat-card-image src='{{usuario.profile_picture}}'>
+        <img *ngIf="usuario.profile_picture==null" class='publication-image'
+              mat-card-image src='https://www.w3schools.com/howto/img_avatar.png'>
+        <mat-card-content class="publication-content">
+          <mat-divider></mat-divider>
+          <p style="font-size: large" *ngIf="usuario.description!=null">Descripcion <br><br>{{usuario.description}} </p>
+          <p style="font-size: x-large" *ngIf="usuario.description==null">Sin descripción
+            <mat-icon style="color:red">warning</mat-icon>
+          </p>
+          <mat-divider></mat-divider>
+          <p style="font-size: large" *ngIf="usuario.email!=null">Correo<br>{{usuario.email}} </p>
+          <p style="font-size: x-large" *ngIf="usuario.email==null">Sin correo</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
     <section *ngIf="array_request_seller.length<1" class="contenido">
       <div class="mostrador">
         <div class="fila">

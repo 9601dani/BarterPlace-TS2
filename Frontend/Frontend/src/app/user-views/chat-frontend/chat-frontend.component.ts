@@ -167,4 +167,8 @@ export class ChatFrontendComponent implements OnInit{
       return chat.username_receiver;
     }
   }
+
+  hacerTransferencia(){
+    console.log('Transferencia')
+  }
 }

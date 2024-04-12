@@ -13,6 +13,8 @@ import {UserService} from "../../../../../service/user_service/user.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit{
+// En el componente TypeScript
+  showPassword: boolean = false;
 
   constructor(
     private Service: GuestService,

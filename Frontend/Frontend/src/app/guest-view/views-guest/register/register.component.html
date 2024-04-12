@@ -25,8 +25,8 @@
                 <mat-label>Contraseña: </mat-label>
                 <mat-form-field appearance="outline">
                   <mat-label>Contraseña</mat-label>
-                  <input formControlName="password" matInput placeholder="Ingrese Contraseña" required>
-                  <mat-icon matSuffix>password</mat-icon>
+                  <input formControlName="password" matInput [type]="showPassword ? 'text' : 'password'" placeholder="Ingrese Contraseña" required>
+                  <mat-icon style="cursor: pointer" matSuffix (click)="showPassword = !showPassword">{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </mat-form-field>
                 <br>
                 <mat-label>Correo: </mat-label>

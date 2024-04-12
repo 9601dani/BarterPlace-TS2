@@ -30,7 +30,7 @@
         <mat-form-field appearance="fill" class="message-input">
           <input matInput type="text" [(ngModel)]="newMessage" placeholder="Escribe un mensaje...">
           <mat-icon (click)="sendMessage()" style="cursor: pointer" matTooltip="Enviar" matSuffix>send</mat-icon>
-          <mat-icon style="cursor: pointer" matTooltip="Enviar Tranferencia" matSuffix>paid</mat-icon>
+          <mat-icon (click)="hacerTransferencia()" style="cursor: pointer" matTooltip="Enviar Tranferencia" matSuffix>paid</mat-icon>
         </mat-form-field>
       </div>
     </div>

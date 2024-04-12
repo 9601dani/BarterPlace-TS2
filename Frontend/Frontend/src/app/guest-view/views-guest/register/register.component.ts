@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit{
+  // En el componente TypeScript
+  showPassword: boolean = false;
   constructor(
     private Service: GuestService
   ) {}
