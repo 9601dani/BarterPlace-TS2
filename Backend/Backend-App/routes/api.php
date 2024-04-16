@@ -17,6 +17,7 @@ use App\Http\Controllers\PublicationCopyController;
 use App\Http\Controllers\ReportPublicationController;
 use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\TransferController;
 
 
 Route::get('/user', function (Request $request) {
@@ -94,3 +95,8 @@ Route::post('/chatsS', [ChatsController::class, 'verExistenciaChat']);
 Route::post('/chats', [ChatsController::class, 'store']);
 Route::get('/messages/{chat_id}', [MessagesController::class, 'show']);
 Route::post('/messages', [MessagesController::class, 'store']);
+
+//RUTAS PARA TRANSFERENCIAS
+Route::post('/transfer', [TransferController::class, 'store']);
+Route::get('/transfer/{username}', [TransferController::class, 'show']);
+Route::get('/transferS/{username}', [TransferController::class, 'index']);

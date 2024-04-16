@@ -16,6 +16,7 @@ import {Chat} from "../../src/models/Chat";
 export class UserService {
   private readonly APIUrl:string='http://localhost:8000/api';
   private pantalla: string = '';
+  private current_aplication_money: number = 0;
   constructor(
     private HttpClient: HttpClient
   ) { }
@@ -26,6 +27,14 @@ export class UserService {
 
   public getPantalla(){
     return this.pantalla;
+  }
+
+  public setCurrentAplicationMoney(current_aplication_money: number){
+    this.current_aplication_money = current_aplication_money;
+  }
+
+  public getCurrentAplicationMoney(){
+    return this.current_aplication_money;
   }
 
   public sendRequestSeller(username:string){
@@ -176,5 +185,17 @@ export class UserService {
 
   verificarChat(username_sender:string, username_receiver:string){
     return this.HttpClient.post(`${this.APIUrl}/chatsS`, {username_sender, username_receiver});
+  }
+
+  transferir(username_sender:string, username_receiver:string, amount:number,date:string){
+    return this.HttpClient.post(`${this.APIUrl}/transfer`, {username_sender, username_receiver, amount,date });
+  }
+
+  getHistoryTranfer(username:string){
+    return this.HttpClient.get(`${this.APIUrl}/transfer/${username}`);
+  }
+
+  getHistoryTranfer2(username:string){
+    return this.HttpClient.get(`${this.APIUrl}/transferS/${username}`);
   }
 }

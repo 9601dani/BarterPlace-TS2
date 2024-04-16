@@ -169,6 +169,80 @@ export class ChatFrontendComponent implements OnInit{
   }
 
   hacerTransferencia(){
-    console.log('Transferencia')
+    //aqui vere quien esta enviando y quien recibiendo la transferencia sabiendo que hay un chat seleccionado
+    let usuario_enviando = '';
+    let usuario_recibiendo = '';
+    if(this.selectedChat.username_receiver === this.currentUser.username){
+      usuario_enviando = this.currentUser.username;
+      usuario_recibiendo = this.selectedChat.username_sender;
+    } else {
+      usuario_enviando = this.currentUser.username;
+      usuario_recibiendo = this.selectedChat.username_receiver;
+    }
+    console.log('Usuario enviando: '+usuario_enviando);
+    console.log('Usuario recibiendo: '+usuario_recibiendo);
+    Swal.fire({
+      title: 'Transferencia',
+      input: 'number',
+      inputLabel: 'Monto a transferir',
+      inputPlaceholder: 'Monto',
+      showCancelButton: true,
+      confirmButtonText: 'Transferir',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: (monto) => {
+        //verifico que sea un numero entero
+        console.log('Monto: '+monto)
+        if(Number.isInteger(monto) || monto <= 0){
+          Swal.showValidationMessage('Monto invalido');
+        }else{
+          //verifico que tenga el monto suficiente
+          let bank = JSON.parse(localStorage.getItem('bank') || '{}');
+          if( bank.aplication_currency < monto){
+            Swal.showValidationMessage('No tienes suficiente dinero');
+          }else{
+            //envio mensaje de transferencia
+            const date = new Date();
+            const formattedDate = date.toISOString().split('.')[0].replace('T', ' ');
+            const newMessage = {
+              id: this.selectedChat.messages.length + 1,
+              text: '******** Transferencia de '+usuario_enviando+' a '+usuario_recibiendo+' por '+monto +'********',
+              username: this.currentUser.username,
+              date_time: formattedDate,
+              chat_id: this.selectedChat.id
+            }
+            this.selectedChat.messages.push(newMessage);
+            //mando a guardar el mensaje
+            this.UserService.saveNewMessage(newMessage).subscribe((data: any) => {
+              if(data){
+                console.log('Mensaje guardado');
+                //Hago la fecha actual en formato dd-mm-yyyy
+                const date = new Date();
+                const formattedDate = date.toISOString().split('.')[0].replace('T', ' ');
+                //mando a guardar la transferencia
+                this.UserService.transferir(usuario_enviando, usuario_recibiendo, monto, formattedDate).subscribe((data: any) => {
+                  if(data) {
+                    console.log('Transferencia exitosa');
+                    //actualizo el bank
+                    bank.aplication_currency = bank.aplication_currency - monto;
+                    localStorage.setItem('bank', JSON.stringify(bank));
+                    Swal.fire('Transferencia exitosa').then((result) => {
+                    this.jalarBankYActualizarVariableDeServicio();
+                    });
+                  }
+                });
+              }else{
+                console.log('Error al guardar el mensaje');
+              }
+            });
+          }
+        }
+      }
+    });
+  }
+
+  jalarBankYActualizarVariableDeServicio(){
+      let bank = JSON.parse(localStorage.getItem('bank') || '{}');
+      this.UserService.setCurrentAplicationMoney(bank.volunteer_currency+bank.aplication_currency);
   }
 }

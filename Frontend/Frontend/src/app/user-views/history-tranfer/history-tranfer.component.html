@@ -1,0 +1,85 @@
+<div class="container">
+  <!-- Titulo del componente -->
+  <div class="component-title">
+    <hr>
+    <h1 align="center">Bienvenido al Historial Transferencias
+    <mat-icon>history</mat-icon>
+    </h1>
+    <p align="center">Aqui podras ver las tranferencias que has hecho a lo largo del tiempo</p>
+    <p align="center">y las que has recibido</p>
+    <hr>
+  </div>
+  <!-- Contenido del componente -->
+  <div class="component-container">
+    <!-- src/app/app.component.html -->
+    <section class="main-container">
+      <!-- Contenedor Izquierdo -->
+      <div class="left-container">
+        <div class="mat-table-container">
+          <h2 align="center" style="font-size: large">Historial de Tranferencias Hechas
+            <mat-table [dataSource]="historyTranfer" class="mat-elevation-z8" matSort>
+              <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef> No. Trans. </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="username_receive">
+                <mat-header-cell *matHeaderCellDef> Usuario Beneficiado </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{(element.username_receiver)}} </mat-cell>
+              </ng-container>
+              <!-- Id Column -->
+              <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Cantidad </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
+                <mat-icon>savings</mat-icon>
+              </ng-container>
+              <!-- Name Column -->
+              <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{getFormartDate(element.date)}}
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </h2>
+          <h2>
+            Total de Dinero Transferido: {{total_transferidos}} <mat-icon>savings</mat-icon>
+          </h2>
+        </div>
+      </div>
+      <div class="right-container">
+        <div>
+          <h2 align="center" style="font-size: large">Historial Tranferencias Recibididas
+            <mat-table [dataSource]="historyTranfer2" class="mat-elevation-z8" matSort>
+              <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef> No. Trans. </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="username_sender">
+                <mat-header-cell *matHeaderCellDef> De Usuario </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.username_sender}} </mat-cell>
+              </ng-container>
+              <!-- Id Column -->
+              <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Cantidad </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
+                <mat-icon>savings</mat-icon>
+              </ng-container>
+              <!-- Name Column -->
+              <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{getFormartDate(element.date)}}
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
+            </mat-table>
+          </h2>
+          <h2>
+            Total de Coins Recibidas: {{this.total_recibidos}} <mat-icon>savings</mat-icon>
+          </h2>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -29,6 +29,7 @@ export class HomeUserComponent implements OnInit{
       if(data!=null){
         localStorage.setItem('bank', JSON.stringify(data));
         this.bank_user = JSON.parse(localStorage.getItem('bank') || '{}');
+        this.Service.setCurrentAplicationMoney(this.bank_user.volunteer_currency+this.bank_user.aplication_currency);
       }
     });
     this.changePantalla(this.Service.getPantalla());
@@ -81,6 +82,10 @@ export class HomeUserComponent implements OnInit{
         }
       });
     }
+  }
+
+  getMoney(){
+    return this.Service.getCurrentAplicationMoney();
   }
 
 

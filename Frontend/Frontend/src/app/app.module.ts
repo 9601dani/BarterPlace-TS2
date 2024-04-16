@@ -42,6 +42,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import { RecordsBuyedComponent } from './user-views/records-buyed/records-buyed.component';
 import { ReportPublishComponent } from './admin-views/report-publish/report-publish.component';
 import { ChatFrontendComponent } from './user-views/chat-frontend/chat-frontend.component';
+import { HistoryTranferComponent } from './user-views/history-tranfer/history-tranfer.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { ChatFrontendComponent } from './user-views/chat-frontend/chat-frontend.
     RecordsPayComponent,
     RecordsBuyedComponent,
     ReportPublishComponent,
-    ChatFrontendComponent
+    ChatFrontendComponent,
+    HistoryTranferComponent
   ],
     imports: [
         BrowserModule,

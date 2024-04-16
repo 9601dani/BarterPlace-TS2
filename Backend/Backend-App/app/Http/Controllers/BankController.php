@@ -96,5 +96,16 @@ class BankController extends Controller
         $bank->aplication_currency += $currency_return;
         $bank->save();
     }
+
+    public function transferUsers(string $username_sender, string $username_receiver, string $amount)
+    {
+        $bank_sender = Bank::query()->where('username', $username_sender)->first();
+        $bank_receiver = Bank::query()->where('username', $username_receiver)->first();
+        $bank_sender->aplication_currency -= $amount;
+        $bank_receiver->aplication_currency += $amount;
+        $bank_sender->save();
+        $bank_receiver->save();
+        return $bank_sender;
+    }
     
 }

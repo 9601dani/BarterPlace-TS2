@@ -332,10 +332,10 @@ export class CollectMoneyComponent implements OnInit{
                if(data!=null) {
                  //seteo el bank al localstorage
                  localStorage.setItem('bank', JSON.stringify(data));
+                 this.jalarBankYActualizarVariableDeServicio();
                }
              });
            }).then((result) => {
-             window.location.reload();
            });
           }else{
             Swal.fire({
@@ -387,10 +387,10 @@ export class CollectMoneyComponent implements OnInit{
                 if(data!=null) {
                 //seteo el bank al localstorage
                   localStorage.setItem('bank', JSON.stringify(data));
+                  this.jalarBankYActualizarVariableDeServicio();
                 }
               });
             }).then((result) => {
-              window.location.reload();
             });
           }else{
             Swal.fire({
@@ -566,10 +566,11 @@ export class CollectMoneyComponent implements OnInit{
                 if(data!=null) {
                   //seteo el bank al localstorage
                   localStorage.setItem('bank', JSON.stringify(data));
+                  this.jalarBankYActualizarVariableDeServicio();
                 }
               });
             }).then((result) => {
-              window.location.reload();
+
             });
           }else{
             Swal.fire({
@@ -581,5 +582,9 @@ export class CollectMoneyComponent implements OnInit{
         });
       }
     });
+  }
+  jalarBankYActualizarVariableDeServicio(){
+    let bank = JSON.parse(localStorage.getItem('bank') || '{}');
+    this.ServiceUser.setCurrentAplicationMoney(bank.volunteer_currency+bank.aplication_currency);
   }
 }

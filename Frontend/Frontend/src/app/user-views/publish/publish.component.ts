@@ -590,7 +590,7 @@ export class PublishComponent implements OnInit{
           confirmButtonText: 'Ok'
         }).then((result) => {
           localStorage.setItem('bank', JSON.stringify(data));
-          window.location.reload();
+          this.jalarBankYActualizarVariableDeServicio();
         });
       }else{
         Swal.fire({
@@ -906,6 +906,11 @@ export class PublishComponent implements OnInit{
         });
       }
     });
+  }
+
+  jalarBankYActualizarVariableDeServicio(){
+    let bank = JSON.parse(localStorage.getItem('bank') || '{}');
+    this.Service.setCurrentAplicationMoney(bank.volunteer_currency+bank.aplication_currency);
   }
 
 }

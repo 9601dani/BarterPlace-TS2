@@ -25,7 +25,7 @@
       <mat-icon matTooltip='Moneda Aplicacion'>
         savings
       </mat-icon>
-      {{this.bank_user.aplication_currency+this.bank_user.volunteer_currency}}
+      {{getMoney()}}
     </div>
     <button mat-icon-button [matMenuTriggerFor]="menu_1" class="example-icon">
       <div *ngIf="user.profile_picture==null">
@@ -47,6 +47,9 @@
       <mat-icon>paid</mat-icon>
     </button>
     <button (click)="changePantalla('records-pay')" mat-menu-item>Historial Wallet
+      <mat-icon>history</mat-icon>
+    </button>
+    <button (click)="changePantalla('history-tranfer')" mat-menu-item>Historial Transferencias
       <mat-icon>history</mat-icon>
     </button>
     <button (click)="changePantalla('records-buyed')" mat-menu-item>Historial Compras
@@ -80,6 +83,9 @@
   </div>
   <div *ngIf="this.getPantalla()=='messages'">
     <app-chat-frontend></app-chat-frontend>
+  </div>
+  <div *ngIf="this.getPantalla()=='history-tranfer'">
+    <app-history-tranfer></app-history-tranfer>
   </div>
 
 
