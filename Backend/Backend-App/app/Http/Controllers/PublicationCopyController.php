@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PublicationCopy;
 use App\Http\Controllers\BankController;
+use App\Models\Publication;
 
 class PublicationCopyController extends Controller
 {
@@ -64,7 +65,7 @@ class PublicationCopyController extends Controller
             $bank->updateAplicationCurrency3($request->username_seller, $publication_copy->total_cost);
         }else if($publication_copy->publication_type_id == 3){
             $bank = new BankController;
-            $bank->updateAplicationCurrency3($request->username_buyer, $publication_copy->total_cost);
+            $bank->updateAplicationCurrency4($request->username_buyer, $publication_copy->total_cost);
         }
         
         return $publication_copy;
@@ -95,5 +96,30 @@ class PublicationCopyController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function verificarParticipacionAnt(Request $request,string $id)
+    {
+        $publication_copy = PublicationCopy::query()
+        ->where('title', $request->title)
+        ->where('username_seller', $request->username_seller)
+        ->where('username_buyer', $request->username_buyer)
+        ->where('publication_type_id', $request->publication_type_id)
+        ->where('category', $request->category)
+        ->where('unit_price', $request->unit_price)
+        ->where('quantity', $request->quantity)
+        ->where('total_cost', $request->total_cost)
+        ->get();
+
+        if($publication_copy->isEmpty()){
+            $publication = Publication::find($id);
+            $publication->quantity_stock -= 1;
+
+            if($publication->quantity_stock == 0){
+                $publication->status = 'completed';
+            }
+            $publication->save();
+        }
+        
     }
 }

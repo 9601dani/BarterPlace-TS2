@@ -148,4 +148,15 @@ export class RecordsPayComponent implements OnInit {
    this.dataSource.data = recarga;
    this.cdr.detectChanges();
   }
+
+  formatearFecha(fech: string){
+    // Crear un objeto Date, asumiendo la entrada en formato yy/MM/dd
+    const fecha = new Date(fech);
+    const dia = fecha.getDate().toString().padStart(2, '0'); // Asegura dos dígitos
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // getMonth() es 0-indexado
+    const anio = fecha.getFullYear();
+
+    // Formatear y retornar la fecha como dd/mm/yyyy
+    return `${dia}/${mes}/${anio}`;
+  }
 }

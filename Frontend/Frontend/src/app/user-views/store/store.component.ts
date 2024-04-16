@@ -270,15 +270,108 @@ export class StoreComponent implements OnInit {
   }
 
   ofertarPublication(publication: Publication){
-    console.log('Quiero ofertar la publicacion: ', publication);
+    Swal.fire({
+      title: 'Contactar al vendedor',
+      text: 'Deseas contactar al vendedor de esta publicacion?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Contactar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if(result.isConfirmed){
+        Swal.fire({
+          title: 'Te redirigiremos al chat, para contactar al vendedor <strong>'+ publication.username+
+            '</strong>, recuerda que por medio de su nombre de usuario podras encontrarlo',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          this.Service.setPantalla('messages');
+        });
+      }
+    });
   }
 
   voluntariarPublication(publication: Publication){
-    console.log('Quiero voluntariar la publicacion: ', publication);
+    Swal.fire({
+      title: '¿Estas seguro de ser voluntario esta publicacion?',
+      text: "No podras revertir esta accion!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ser voluntario'
+    }).then((result) => {
+      if (result.isConfirmed){
+        let publicationCopy= new PublicationCopy(
+          publication.id,
+          publication.title,
+          publication.description,
+          this.formatearFechaParaMySQL(new Date()),
+          publication.username,
+          this.user.username,
+          publication.foto,
+          publication.unit_price,
+          publication.publication_type_id,
+          publication.category,
+          publication.unit_price,
+          1);
+        this.Service.revisarVoluntariado(publicationCopy).subscribe((data: any) => {
+          if(!data){
+            Swal.fire({
+              title: 'Voluntariado!',
+              text: 'Ya eres voluntario de esta publicacion',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            }).then((result) => {
+            });
+          }else{
+            this.Service.comprarProducto(publicationCopy).subscribe((data: any) => {
+              if(data){
+                Swal.fire({
+                  title: 'Voluntariado!',
+                  text: 'Se ha completado el voluntariado con exito',
+                  icon: 'success',
+                  confirmButtonText: 'Ok'
+                }).then((result) => {
+                  this.getAllPublications();
+                  this.actualizarBank();
+                });
+              }else{
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'La publicacion no ha sido voluntariada',
+                  icon: 'error',
+                  confirmButtonText: 'Ok'
+                });
+              }
+            });
+          }
+        });
+      }
+    });
   }
 
   contactarPublication(publication: Publication){
-    console.log('Quiero contactar al vendedor de la publicacion: ', publication);
+    //TODO: ire al chat con el usuario que publico la publicacion
+    Swal.fire({
+      title: 'Contactar al vendedor',
+      text: 'Deseas contactar al vendedor de esta publicacion?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Contactar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if(result.isConfirmed){
+        Swal.fire({
+          title: 'Te redirigiremos al chat, para contactar al vendedor <strong>'+ publication.username+
+          '</strong>, recuerda que por medio de su nombre de usuario podras encontrarlo',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        }).then((result) => {
+          this.Service.setPantalla('messages');
+        });
+      }
+    });
   }
 
 

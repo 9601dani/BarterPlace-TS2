@@ -45,6 +45,7 @@ export class RecordsBuyedComponent implements OnInit{
   ]
 
 
+
   total_gastado_publications: number = 0;
   total_obtenido_volunter: number = 0;
 
@@ -64,7 +65,7 @@ export class RecordsBuyedComponent implements OnInit{
     const parts: string[] = date.split("-");
 
     // Reorganizar los componentes en el nuevo formato
-    const newDateFormat: string = `${parts[2]}/${parts[1]}/${parts[0]}`; // DD/mm/YYYY
+    const newDateFormat: string = `${parts[1]}/${parts[2]}/${parts[0]}`; // DD/mm/YYYY
 
     return newDateFormat;
   }

@@ -89,7 +89,7 @@ Route::delete('/packmoney/{id}', [PackMoneyController::class, 'destroy']);
 //RUTAS PARA LA VENTA DE PRODUCTOS
 Route::post('/sellPublication',[PublicationCopyController::class, 'store']);
 Route::get('/publicationsBuyed/{username_buyer}',[PublicationCopyController::class, 'index']);
-
+Route::post('/volunter/{id}',[PublicationCopyController::class, 'verificarParticipacionAnt']);
 Route::get('/chats/{username}', [ChatsController::class, 'show']);
 Route::post('/chatsS', [ChatsController::class, 'verExistenciaChat']);
 Route::post('/chats', [ChatsController::class, 'store']);

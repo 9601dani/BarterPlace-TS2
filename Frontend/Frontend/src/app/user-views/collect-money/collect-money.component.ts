@@ -333,6 +333,7 @@ export class CollectMoneyComponent implements OnInit{
                  //seteo el bank al localstorage
                  localStorage.setItem('bank', JSON.stringify(data));
                  this.jalarBankYActualizarVariableDeServicio();
+                 this.recargarBankVariable();
                }
              });
            }).then((result) => {
@@ -388,6 +389,7 @@ export class CollectMoneyComponent implements OnInit{
                 //seteo el bank al localstorage
                   localStorage.setItem('bank', JSON.stringify(data));
                   this.jalarBankYActualizarVariableDeServicio();
+                  this.recargarBankVariable();
                 }
               });
             }).then((result) => {
@@ -567,6 +569,7 @@ export class CollectMoneyComponent implements OnInit{
                   //seteo el bank al localstorage
                   localStorage.setItem('bank', JSON.stringify(data));
                   this.jalarBankYActualizarVariableDeServicio();
+                  this.recargarBankVariable();
                 }
               });
             }).then((result) => {
@@ -586,5 +589,10 @@ export class CollectMoneyComponent implements OnInit{
   jalarBankYActualizarVariableDeServicio(){
     let bank = JSON.parse(localStorage.getItem('bank') || '{}');
     this.ServiceUser.setCurrentAplicationMoney(bank.volunteer_currency+bank.aplication_currency);
+  }
+
+  recargarBankVariable(){
+    let bank = JSON.parse(localStorage.getItem('bank') || '{}');
+    this.ServiceUser.setCurrentMoney(bank.money);
   }
 }

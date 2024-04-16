@@ -17,6 +17,7 @@ export class UserService {
   private readonly APIUrl:string='http://localhost:8000/api';
   private pantalla: string = '';
   private current_aplication_money: number = 0;
+  private current_money: number = 0;
   constructor(
     private HttpClient: HttpClient
   ) { }
@@ -35,6 +36,14 @@ export class UserService {
 
   public getCurrentAplicationMoney(){
     return this.current_aplication_money;
+  }
+
+  public setCurrentMoney(current_money: number){
+    this.current_money = current_money;
+  }
+
+  public getCurrentMoney(){
+    return this.current_money;
   }
 
   public sendRequestSeller(username:string){
@@ -147,8 +156,11 @@ export class UserService {
   /*FROM SELL*/
 
   public comprarProducto(publicacion_a_vender: PublicationCopy){
-    console.log('El producto a vender es: ', publicacion_a_vender);
     return this.HttpClient.post(`${this.APIUrl}/sellPublication`, publicacion_a_vender);
+  }
+
+  public revisarVoluntariado(publicacion_a_vender: PublicationCopy){
+    return this.HttpClient.post(`${this.APIUrl}/volunter/${publicacion_a_vender.id}`, {publication_a_vender: publicacion_a_vender});
   }
 
   public venderProducto(publicacion_vendida: Publication){
