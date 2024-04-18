@@ -19,6 +19,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     console.log("Hello, i'm going to get the test data!");
-    this.getTest();
+    //this.getTest();
   }
 }
