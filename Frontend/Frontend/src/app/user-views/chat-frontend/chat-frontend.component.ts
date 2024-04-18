@@ -198,8 +198,8 @@ export class ChatFrontendComponent implements OnInit{
         }else{
           //verifico que tenga el monto suficiente
           let bank = JSON.parse(localStorage.getItem('bank') || '{}');
-          if( bank.aplication_currency < monto){
-            Swal.showValidationMessage('No tienes suficiente dinero');
+          if( bank.aplication_currency < monto || this.currentUser.role != 'user'){
+            Swal.showValidationMessage('No se puede realizar la transferencia, debido a que no tiene el monto suficiente o no es un usuario');
           }else{
             //envio mensaje de transferencia
             const date = new Date();
