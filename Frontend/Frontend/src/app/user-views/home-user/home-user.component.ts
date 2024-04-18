@@ -34,7 +34,6 @@ export class HomeUserComponent implements OnInit{
       }
     });
     this.changePantalla(this.Service.getPantalla());
-    console.log(this.Service.getPantalla());
   }
 
   public cerrarSesion(){

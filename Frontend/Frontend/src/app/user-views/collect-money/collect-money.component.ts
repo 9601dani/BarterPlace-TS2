@@ -154,7 +154,6 @@ export class CollectMoneyComponent implements OnInit{
     this.ServiceUser.getTarjets(this.user.username).subscribe((data: any)=>{
       if(data!=null){
         this.tarjets = data;
-        console.log(this.tarjets);
       }else{
         this.tarjets = [];
       }
@@ -165,7 +164,6 @@ export class CollectMoneyComponent implements OnInit{
     this.ServiceUser.getMyAccountBank(this.user.username).subscribe((data: any)=>{
       if(data!=null){
         this.accounts = data;
-        console.log(this.accounts);
       }
     });
   }
